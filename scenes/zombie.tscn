@@ -1,0 +1,112 @@
+[gd_scene load_steps=15 format=3 uid="uid://cl0vxbm3iugrg"]
+
+[ext_resource type="Script" path="res://scripts/zombie.gd" id="1_th0mh"]
+[ext_resource type="Texture2D" uid="uid://40p38av5uqh0" path="res://assets/zombie.png" id="2_m4prw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2pkqp"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uxw3b"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ysdnx"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bbgnj"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6d0w8"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(0, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7dqw"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(50, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuo6x"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(100, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xafnp"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(150, 50, 50, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_11mes"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2pkqp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uxw3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ysdnx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbgnj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6d0w8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7dqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuo6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xafnp")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_44wcc"]
+size = Vector2(14, 14)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_74v56"]
+radius = 216.009
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
+radius = 21.0
+
+[node name="zombie" type="CharacterBody2D" groups=["zombie"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_th0mh")
+
+[node name="Spritesheet" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_11mes")
+animation = &"walking"
+frame_progress = 0.755918
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 5)
+shape = SubResource("RectangleShape2D_44wcc")
+
+[node name="targeting" type="Area2D" parent="."]
+visible = false
+disable_mode = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="targeting"]
+shape = SubResource("CircleShape2D_74v56")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Melee" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
+shape = SubResource("CircleShape2D_axwvo")
+
+[connection signal="body_entered" from="Melee" to="." method="_on_melee_body_entered"]

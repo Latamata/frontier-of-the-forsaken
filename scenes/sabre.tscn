@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1oiwddddlb18"]
+
+[ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="1_7a1hg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sk524"]
+size = Vector2(20.5013, 3.00667)
+
+[node name="sabre" type="Area2D"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(17.1092, -0.716725)
+rotation = 3.14117
+scale = Vector2(0.684366, 0.656655)
+texture = ExtResource("1_7a1hg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(17.1091, -0.716725)
+shape = SubResource("RectangleShape2D_sk524")
+disabled = true

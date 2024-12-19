@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5sp5rfc0njo5"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_cfcmk"]
+[ext_resource type="PackedScene" uid="uid://dit4wkbv0e3nr" path="res://scenes/player.tscn" id="2_hrp5o"]
+[ext_resource type="PackedScene" uid="uid://ds1svqdxxlh85" path="res://scenes/npc.tscn" id="4_buhuq"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_cfcmk")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="player" parent="." instance=ExtResource("2_hrp5o")]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="NPCGROUP" type="Node2D" parent="."]
+
+[node name="npc" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-399, -58)
+
+[node name="npc2" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-399, -8)
+
+[node name="npc3" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-398, 34)
+
+[node name="npc4" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-398, 78)
+
+[node name="npc5" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-399, 123)
+
+[node name="npc6" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-399, 165)
+
+[node name="npc7" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-399, 205)
+
+[node name="npc8" parent="NPCGROUP" instance=ExtResource("4_buhuq")]
+position = Vector2(-399, 250)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
