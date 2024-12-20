@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d11nep0qfx3xu"]
 
 [ext_resource type="Texture2D" uid="uid://dnxqmh7l8d4ry" path="res://assets/inventory.png" id="1_6quic"]
-[ext_resource type="Script" path="res://scenes/ui.gd" id="1_eji1r"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_eji1r"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4of4x"]
 font_size = 41

@@ -14,7 +14,19 @@ grow_vertical = 2
 script = ExtResource("1_yge0d")
 
 [node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 0
-offset_right = 131.0
-offset_bottom = 101.0
+visible = false
+layout_mode = 1
+grow_horizontal = 2
+grow_vertical = 2
 columns = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="hideandshow" type="Button" parent="."]
+layout_mode = 0
+offset_right = 73.0
+offset_bottom = 31.0
+text = "Click me"
+
+[connection signal="button_down" from="hideandshow" to="." method="_on_hideandshow_button_down"]
+[connection signal="mouse_entered" from="hideandshow" to="." method="_on_hideandshow_mouse_entered"]
+[connection signal="mouse_exited" from="hideandshow" to="." method="_on_hideandshow_mouse_exited"]

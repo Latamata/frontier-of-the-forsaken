@@ -90,6 +90,9 @@ func swing_sword():
 
 
 func _on_sabre_body_entered(body):
+	print(body)
+	if body.name == "tree":
+		body.chopped_down()
 	if body.is_in_group("zombie"):
 		body.player_die()
 		#print("hit zombie")

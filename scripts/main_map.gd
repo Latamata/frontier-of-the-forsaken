@@ -57,4 +57,3 @@ func _on_turn_button_down():
 		move_wagon_to_line(current_path, 1)
 	else:
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
-

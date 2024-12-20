@@ -209,3 +209,15 @@ func _on_ui_ui_interaction_started():
 func _on_ui_ui_interaction_ended():
 	is_ui_interacting = false
 	#print(is_ui_interacting)
+
+
+func _on_wagon_ui_2_hovered_wagon() -> void:
+	is_ui_interacting = true
+
+
+func _on_wagon_ui_2_hovered_wagon_exit() -> void:
+	is_ui_interacting = false
+
+
+func _on_items_item_picked_up(item_type: Variant) -> void:
+	print($wagon/wagonUI2.add_next_slot())

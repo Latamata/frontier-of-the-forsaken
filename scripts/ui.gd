@@ -95,6 +95,3 @@ func _on_battlemap_ui_mouse_entered():
 func _on_battlemap_ui_mouse_exited():
 	emit_signal("ui_interaction_ended") 
 	#print("mouse exited the ui thing")
-
-
-
