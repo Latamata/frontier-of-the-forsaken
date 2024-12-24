@@ -1,59 +1,84 @@
 extends Node2D
 
-var path_follow : PathFollow2D
 @onready var path_2d = $Path2D
+@onready var path_2d_2 = $Path2D2
 @onready var wagonpin = $wagonpin
 @onready var ui = $UI
-@onready var path_2d_2 = $Path2D2
-var speed : float = 50  # Movement speed (pixels per second)
-var current_path : Path2D = path_2d
-var mountain_points = [7,10,6,2,15]
+@onready var turn_button = $wagonpin/turn  # Assuming TurnButton is a child of the UI
+var speed: float = 50  # Movement speed (pixels per second)
+
+# Track the current path (global variable)
+var current_path: Path2D = path_2d
+
+var mountain_points = [7, 10, 6, 2, 15]
 
 func _ready():
-	# Debugging: Ensure UI is initialized
-	if ui == null:
-		print("Error: UI node not found!")
+	if ui == null or path_2d == null or path_2d_2 == null or wagonpin == null:
+		print("Error: One or more nodes are missing!")
 		return
 
-	# Hide UI at the start
+	# Debugging: Check if the path nodes are initialized properly
+	if path_2d == null:
+		print("Error: path_2d node is null!")
+	if path_2d_2 == null:
+		print("Error: path_2d_2 node is null!")
+	
 	ui.hide_map_ui(true)
 	ui.set_UI_resources()
+	
+	# Ensure that the global path is set correctly
+	current_path = Globals.current_line if Globals.current_line != null else path_2d
+	#print("Current path initialized:", current_path)
+	
+	move_wagon_to_line(current_path, Globals.geo_map_camp)
+	_update_turn_button_visibility()
 
-	# Place the wagonpin at the global location based on Globals.geo_map_camp
-	#want to get this loading not just the position but also the line
-	wagonpin.position = path_2d.curve.get_point_position(Globals.geo_map_camp)
+func move_wagon_to_line(target_line: Path2D, line_point: int):
+	if target_line == null:
+		print("Error: target_line is null!")
+		return
+	
+	if target_line.curve == null:
+		print("Error: target_line.curve is null!")
+		return
+	
+	var point_position = target_line.curve.get_point_position(line_point)
+	wagonpin.global_position = target_line.global_position + point_position
+	#print("Moved wagon to:", wagonpin.global_position)
+	
+	# Update the global current path
+	Globals.current_line = target_line
 
+	_update_turn_button_visibility()
+
+# Update visibility of the turn button based on the wagon's position
+func _update_turn_button_visibility():
+	# Make turn button visible when the wagon reaches the specific point (for example, point 8)
+	if Globals.geo_map_camp == 8:
+		turn_button.visible = true
+	else:
+		turn_button.visible = false
+
+func _on_ui_move_action():
+	print(current_path)
+	var total_points = current_path.curve.get_point_count()
+	if Globals.geo_map_camp < total_points - 1:
+		Globals.geo_map_camp += 1
+	else:
+		Globals.geo_map_camp = 0
+
+	move_wagon_to_line(current_path, Globals.geo_map_camp)
+
+func _on_turn_button_down():
+	if Globals.geo_map_camp == 8:
+		Globals.geo_map_camp = 1
+		current_path = path_2d_2  # Update to the new path
+		move_wagon_to_line(path_2d_2, 0)  # Move the wagon to the start of the new path
+		_update_turn_button_visibility()  # Hide the button again after the turn
 
 func _on_ui_camp_action():
-	#print(Globals.geo_map_camp )
 	# Handle camp action based on Globals.geo_map_camp
-	#this definatly needs work in detecting the correct points where each map will be loaded
 	if Globals.geo_map_camp in mountain_points:
 		get_tree().change_scene_to_file("res://scenes/mountain.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/desert.tscn")
-
-func move_wagon_to_line(target_line: Path2D, line_point: int):
-	var new_position = target_line.global_position + target_line.curve.get_point_position(line_point)
-	#print("Moving wagon to new position:", new_position)
-	wagonpin.global_position = new_position
-
-func _on_ui_move_action():
-	var total_points = path_2d.curve.get_point_count()
-	if Globals.geo_map_camp == 7:
-		path_2d_2.visible = true
-	
-	if Globals.geo_map_camp < total_points - 1:
-		Globals.geo_map_camp += 1
-		move_wagon_to_line(path_2d, Globals.geo_map_camp)
-	else:
-		Globals.geo_map_camp = 0
-
-func _on_turn_button_down():
-	if Globals.geo_map_camp == 7:
-		print("Switching to path 2")
-		Globals.geo_map_camp = 1
-		current_path = path_2d_2  # Update current_path reference
-		move_wagon_to_line(current_path, 1)
-	else:
-		move_wagon_to_line(current_path, Globals.geo_map_camp)

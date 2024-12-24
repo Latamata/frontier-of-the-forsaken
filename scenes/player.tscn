@@ -95,7 +95,7 @@ texture = ExtResource("3_vos4w")
 position = Vector2(28.0534, -1.00281)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, 18)
+position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_lf6aj")
 
 [node name="reload" type="Timer" parent="."]
@@ -103,19 +103,20 @@ wait_time = 10.0
 autostart = true
 
 [node name="gatherarea" type="Area2D" parent="."]
+position = Vector2(-8, -33)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="gatherarea"]
 position = Vector2(9, 15)
 shape = SubResource("CircleShape2D_4atda")
 
 [node name="sabre" parent="." instance=ExtResource("4_vajmw")]
-position = Vector2(9, 16)
+position = Vector2(1, -17)
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.7
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(7.25, 13.75)
+position = Vector2(-0.75, -19.25)
 sprite_frames = SubResource("SpriteFrames_5crhn")
 animation = &"walking"
 

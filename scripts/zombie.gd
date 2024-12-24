@@ -37,27 +37,37 @@ func _physics_process(delta):
 
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()
+	
 	if bodies_in_area.size() > 0:
-		# Set the first body as the target
-		target = bodies_in_area[0]
-		#move_to_position(target.global_position)
+		#print(bodies_in_area[0].name)
+		var closest_target = null
+		var closest_distance = INF  # Start with a very large distance
+
+		for body in bodies_in_area:
+			# Only target bodies that are in the "zombie" group
+			if body.is_in_group("npc") or body.name == 'player':
+				var distance = global_position.distance_to(body.global_position)
+				if distance < closest_distance:
+					closest_target = body
+					closest_distance = distance
+
+		# Set the closest valid target
+		target = closest_target
+
+
 func sprite_frame_direction():
-	if direction.x < 0 and abs(direction.x) > abs(direction.y):
+	if abs(direction.x) > abs(direction.y):  # Prioritize horizontal movement
 		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = true
-	elif direction.x > 0 and abs(direction.x) > abs(direction.y):
-		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = false
-	elif direction.y < 0 and abs(direction.y) > abs(direction.x):
-		pass
-		#animated_sprite_2d.animation = "new_animation"
-		#animated_sprite_2d.play()
-	elif direction.y > 0 and abs(direction.y) > abs(direction.x):
-		#animated_sprite_2d.animation = "another_animation"
-		#animated_sprite_2d.play()
-		pass
+		animated_sprite_2d.flip_h = direction.x < 0
+	elif abs(direction.y) > abs(direction.x):  # Vertical movement
+		if direction.y < 0:
+			#animated_sprite_2d.animation = "up_walk"
+			animated_sprite_2d.play()
+		elif direction.y > 0:
+			#animated_sprite_2d.animation = "down_walk"
+			animated_sprite_2d.play()
+
 func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position
@@ -65,9 +75,14 @@ func move_to_position(new_target_position: Vector2):
 
 func player_die():
 	health -= 25
-	animated_sprite_2d.frame = 3
-	if health < 50:
+	animated_sprite_2d.frame = 3  # Assuming frame 3 is the "damaged" animation frame
+	if health <= 0:
+		#animated_sprite_2d.animation = "die"
+		#animated_sprite_2d.play()
+		# Optionally: Add a delay before freeing the zombie
 		queue_free()
+
+
 
 func _on_targeting_body_exited(body):
 	# Reset target if the current target leaves the area

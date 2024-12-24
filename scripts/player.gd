@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 60.0
+var SPEED = 60.0
 var reloaded = true
 var gather = false
 var direction
@@ -30,26 +30,22 @@ func _input(event):
 		rotate_gun()
 
 func sprite_frame_direction():
-	if direction == Vector2(-1, 0):
-		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = true
-		#print(animated_sprite_2d.animation = )
-		
-	elif direction == Vector2(1, 0):
-		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = false
-		#animated_sprite_2d.frame = 2
 	if direction == Vector2(0, -1):
 		animated_sprite_2d.animation = "new_animation"
 		animated_sprite_2d.stop()
-		#animated_sprite_2d.frame = 1
-		pass
-	elif direction == Vector2(0, 1):
-		pass
-		#animated_sprite_2d.frame = 0
-	
+	elif direction.x != 0:
+		animated_sprite_2d.animation = "walking"
+		animated_sprite_2d.play()
+		animated_sprite_2d.flip_h = direction.x < 0
+	else:
+		animated_sprite_2d.stop()  # Stop animation when no horizontal movement
+
+func slow_affect(activate):
+	if activate:
+		SPEED = 30.0
+	else:
+		SPEED = 60.0
+
 func player_die():
 	queue_free()
 
@@ -77,20 +73,17 @@ func _on_gatherarea_body_entered(body):
 		gather = false
 
 func swing_sword():
-	# Align the sword with the mouse before swinging
-	var mouse_position = get_global_mouse_position()
-	var direction_to_mouse = (mouse_position - global_position).normalized()
-	var angle = direction_to_mouse.angle()
+	sabre.rotation = (get_global_mouse_position() - global_position).normalized().angle() + 45
+	sabre.get_child(1).disabled = false  # Enable sword hitbox
+	$Timer.start()  # Start the timer
 
-	sabre.rotation = angle+45  # Base the swing on this angle
-	sabre.get_child(1).disabled = false  # Enable the sword's hitbox
-
-	# Animate the sword swing
-	$Timer.start()  # Timer to reset the rotation after swing duration
-
+func _on_timer_timeout():
+	sabre.rotation = 0
+	sabre.get_child(1).disabled = true
+	$Timer.stop()  # Explicitly stop the timer when done
 
 func _on_sabre_body_entered(body):
-	print(body)
+	#print(body)
 	if body.name == "tree":
 		body.chopped_down()
 	if body.is_in_group("zombie"):
@@ -102,7 +95,3 @@ func rotate_sword_to_mouse():
 	var direction_to_mouse = (mouse_position - sabre.global_position).normalized()
 	var angle = direction_to_mouse.angle()
 	sabre.rotation = angle
-
-func _on_timer_timeout():
-	sabre.rotation = 0
-	sabre.get_child(1).disabled = true

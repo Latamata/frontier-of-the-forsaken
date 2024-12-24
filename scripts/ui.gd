@@ -9,28 +9,15 @@ signal ui_interaction_turn
 signal ui_interaction_ended()
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
-@onready var inventory = $Panel
+@onready var inventory = $wagonUI
 @onready var foodamount = $resourcesUI/foodamount
 @onready var wateramount = $resourcesUI/wateramount
-@onready var grid_container = $Panel/GridContainer
-var buttons = []
+
 
 
 func _ready():
-	# Get all the TextureButtons in the GridContainer
-	buttons = grid_container.get_children()
-	# Loop through each button and connect its "pressed" signal
-	for button in buttons:
-		button.connect("button_down", Callable(self, "_on_texture_button_pressed").bind(button))
+	pass
 
-func _on_texture_button_pressed(button):
-	# Print the button's global position
-	#print("Button clicked at global position:", button.global_position)
-	#button.position 
-	# Identify the button index based on its position in the array
-	var index = buttons.find(button)
-	if index != -1:
-		print("Button at index", index, "was pressed")
 
 
 func _process(_delta):

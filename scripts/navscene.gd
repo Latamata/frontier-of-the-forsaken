@@ -32,6 +32,20 @@ func _ready():
 
 	ui.hide_map_ui(false)
 	ui.set_UI_resources()
+	var player_tile = tile_map.local_to_map(player.global_position)
+	
+func _process(delta: float) -> void:
+	update_speed_based_on_tile()
+func update_speed_based_on_tile():
+	var player_tile = tile_map.local_to_map(player.global_position)
+	var tile_data = tile_map.get_cell_tile_data(0, player_tile)
+	#print(tile_data)
+	if tile_data and tile_data.get_custom_data_by_layer_id(1):
+		##current_speed = slow_speed
+		player.slow_affect(true)
+	else:
+		player.slow_affect(false)
+		#pass
 
 func _input(event):
 	if is_ui_interacting:

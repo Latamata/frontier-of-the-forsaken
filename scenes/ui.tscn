@@ -1,11 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d11nep0qfx3xu"]
+[gd_scene load_steps=3 format=3 uid="uid://d11nep0qfx3xu"]
 
-[ext_resource type="Texture2D" uid="uid://dnxqmh7l8d4ry" path="res://assets/inventory.png" id="1_6quic"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_eji1r"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_4of4x"]
-font_size = 41
-font_color = Color(0.341176, 1, 1, 1)
+[ext_resource type="PackedScene" uid="uid://bxrfc2ttiaojn" path="res://scenes/wagon_ui.tscn" id="2_wks6p"]
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
@@ -125,163 +121,11 @@ offset_right = 97.0
 offset_bottom = 49.0
 vertical_alignment = 1
 
-[node name="Panel" type="Panel" parent="."]
-visible = false
-offset_left = 321.0
-offset_top = 197.0
-offset_right = 735.0
-offset_bottom = 536.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="inventoryUI" type="BoxContainer" parent="Panel"]
-layout_mode = 1
-offset_right = 412.0
-offset_bottom = 326.0
-size_flags_horizontal = 3
-size_flags_vertical = 10
-alignment = 1
-
-[node name="Label" type="Label" parent="Panel/inventoryUI"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-text = "Inventory"
-label_settings = SubResource("LabelSettings_4of4x")
-
-[node name="GridContainer" type="GridContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -110.0
-offset_top = -198.0
-offset_right = 110.0
-grow_horizontal = 2
-grow_vertical = 0
-columns = 5
-
-[node name="TextureButton" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton2" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton3" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton4" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton5" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton6" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton7" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton8" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton9" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton10" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton11" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton12" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton13" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton14" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton15" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton16" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton17" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton18" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton19" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
-
-[node name="TextureButton20" type="TextureButton" parent="Panel/GridContainer"]
-layout_direction = 2
-layout_mode = 2
-tooltip_text = "1"
-texture_normal = ExtResource("1_6quic")
+[node name="wagonUI" parent="." instance=ExtResource("2_wks6p")]
+offset_left = -554.0
+offset_top = -297.5
+offset_right = -1706.0
+offset_bottom = -945.5
 
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
