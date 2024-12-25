@@ -8,14 +8,22 @@ var target_position: Vector2
 var SPEED = 19.0
 var forward_angle: float = 0
 var target
-var HEALTH = 100
-@onready var gun_marker = $Musket/Marker2D 
-@onready var gun = $Musket 
+var HEALTH = 100  # NPC's starting health
+@export var MAX_HEALTH = 100  # Maximum health of the NPC for scaling
+@onready var gun_marker = $Musket/Marker2D
+@onready var gun = $Musket
 @export var gun_offset = Vector2(0, -25)
 @export var gun_radius = 20.0
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var targeting = $targeting
+@onready var healthbar: ProgressBar = $Healthbar
+
+func _ready():
+	# Initialize health bar values
+	healthbar.min_value = 0
+	healthbar.max_value = MAX_HEALTH
+	healthbar.value = HEALTH
 
 func _physics_process(delta):
 	if moving:
@@ -30,7 +38,6 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED * delta)
 	
 	move_and_collide(velocity)
-
 
 	if is_aiming:
 		if target and is_instance_valid(target):
@@ -77,15 +84,27 @@ func rotate_gun(target_angle: float):
 		gun.flip_v = false
 	gun.z_index = 0 if target_angle < 0 else 1
 
+func take_damage(amount: int):
+	HEALTH -= amount
+	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
+	healthbar.value = HEALTH  # Update health bar
+
+	if HEALTH <= 0:
+		die()
+
+func die():
+	queue_free()
+	Globals.add_soldier_count(-1)
+
 func player_die():
 	$takedamage.start()
-	
+
 func slow_affect(activate):
 	if activate:
 		SPEED = 15.0
 	else:
 		SPEED = 30.0
-		
+
 func fire_gun():
 	if reloaded:
 		reloaded = false
@@ -95,13 +114,10 @@ func _on_timer_timeout():
 	reloaded = true
 
 func _on_takedamage_timeout():
-	HEALTH -= 50
-	if HEALTH <= 0:
-		queue_free()
-		Globals.add_soldier_count(-1)
+	take_damage(50)
 
 func move_to_position(new_target_position: Vector2):
-	# Instead of calling a nonexistent move_to_position, set the target position for the NavigationAgent2D
+	# Set the target position for the NavigationAgent2D
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position
 	moving = true
