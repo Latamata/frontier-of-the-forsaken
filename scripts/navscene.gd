@@ -36,19 +36,20 @@ func _ready():
 
 func _process(delta: float) -> void:
 	update_speed_based_on_tile()
-	update_npc_speeds_based_on_tile()  # For NPCs
+	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
 	
-func update_npc_speeds_based_on_tile():
-	for npc in npcgroup.get_children():
-		if not is_instance_valid(npc):  # Use the global function
+func update_npc_and_zombie_speeds_based_on_tile():
+	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
+		if not is_instance_valid(npc):  # Ensure npc is valid
 			continue
-		var npc_tile = tile_map.local_to_map(npc.global_position)
-		var tile_data = tile_map.get_cell_tile_data(0, npc_tile)
+			
+		var npc_tile = tile_map.local_to_map(npc.global_position)  # Get the tile position of the npc
+		var tile_data = tile_map.get_cell_tile_data(0, npc_tile)  # Get tile data from the map
 		
-		if tile_data and tile_data.get_custom_data_by_layer_id(1):
-			npc.slow_affect(true)
+		if tile_data and tile_data.get_custom_data_by_layer_id(1):  # Check if the tile has custom data for slow
+			npc.slow_affect(true)  # Apply slow effect
 		else:
-			npc.slow_affect(false)
+			npc.slow_affect(false)  # Remove slow effect
 
 
 func update_speed_based_on_tile():

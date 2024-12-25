@@ -5,7 +5,7 @@ var moving = true
 var target_position: Vector2
 var health = 100
 var target = null
-var SPEED = 9.0  # Base speed
+var SPEED = 19.0  # Base speed
 var time_since_last_path_update = 0.0
 var path_update_interval = 0.1  # Update pathfinding every 0.1 seconds
 
@@ -82,7 +82,11 @@ func player_die():
 		# Optionally: Add a delay before freeing the zombie
 		queue_free()
 
-
+func slow_affect(activate):
+	if activate:
+		SPEED = 20.0
+	else:
+		SPEED = 40.0
 
 func _on_targeting_body_exited(body):
 	# Reset target if the current target leaves the area
