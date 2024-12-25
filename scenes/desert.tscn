@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfnqfog4rkboc"]
+[gd_scene load_steps=3 format=3 uid="uid://cfnqfog4rkboc"]
 
 [ext_resource type="PackedScene" uid="uid://cpma71hojt8wy" path="res://scenes/navscene.tscn" id="1_ik3h7"]
-[ext_resource type="PackedScene" uid="uid://dmwjkpxynax05" path="res://scenes/items.tscn" id="2_dmk4i"]
 [ext_resource type="PackedScene" uid="uid://b3xf8oag4guqg" path="res://scenes/tree.tscn" id="2_mrbo3"]
 
 [node name="navscene" instance=ExtResource("1_ik3h7")]
@@ -12,6 +11,3 @@ layer_0/tile_data = PackedInt32Array(458755, 786432, 22, 524293, 786432, 22, 458
 
 [node name="tree" parent="." index="9" instance=ExtResource("2_mrbo3")]
 position = Vector2(-203, -32)
-
-[node name="Items" parent="." index="10" instance=ExtResource("2_dmk4i")]
-position = Vector2(-209, 62)

@@ -5,7 +5,7 @@ var is_aiming = false
 var moving = false
 var reloaded = true
 var target_position: Vector2
-const SPEED = 19.0
+var SPEED = 19.0
 var forward_angle: float = 0
 var target
 var HEALTH = 100
@@ -21,15 +21,16 @@ func _physics_process(delta):
 	if moving:
 		if not navigation_agent_2d.is_navigation_finished():
 			direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
-			velocity = direction * SPEED
+			velocity = direction * SPEED * delta  # Multiply by delta for move_and_collide
 			sprite_frame_direction()
 		else:
 			moving = false
 			velocity = Vector2.ZERO
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
-		animated_sprite_2d.stop()
-	move_and_slide()
+		velocity = velocity.move_toward(Vector2.ZERO, SPEED * delta)
+	
+	move_and_collide(velocity)
+
 
 	if is_aiming:
 		if target and is_instance_valid(target):
@@ -78,7 +79,13 @@ func rotate_gun(target_angle: float):
 
 func player_die():
 	$takedamage.start()
-
+	
+func slow_affect(activate):
+	if activate:
+		SPEED = 15.0
+	else:
+		SPEED = 30.0
+		
 func fire_gun():
 	if reloaded:
 		reloaded = false
