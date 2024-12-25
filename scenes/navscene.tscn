@@ -760,8 +760,6 @@ autostart = true
 
 [node name="player" parent="." instance=ExtResource("5_bbw0p")]
 position = Vector2(-321, 47)
-gun_offset = Vector2(10, 10)
-gun_radius = 1.0
 
 [connection signal="hovered_wagon" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_hovered_wagon"]
 [connection signal="hovered_wagon_exit" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_hovered_wagon_exit"]

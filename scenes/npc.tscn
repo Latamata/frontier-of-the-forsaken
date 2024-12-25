@@ -84,14 +84,14 @@ collision_mask = 2
 script = ExtResource("1_6lh2a")
 
 [node name="Musket" type="Sprite2D" parent="."]
-position = Vector2(20, -2)
+position = Vector2(20, -26)
 texture = ExtResource("2_wp1fx")
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]
 position = Vector2(28.0534, -1.00281)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.817878, 14.0452)
+position = Vector2(0.817879, -9.9548)
 shape = SubResource("RectangleShape2D_2owqg")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -100,6 +100,7 @@ target_desired_distance = 1.0
 path_postprocessing = 1
 
 [node name="targeting" type="Area2D" parent="."]
+position = Vector2(0, -24)
 collision_layer = 2
 collision_mask = 2
 
@@ -114,7 +115,7 @@ wait_time = 7.522
 wait_time = 2.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-2, 2)
+position = Vector2(-2, -22)
 sprite_frames = SubResource("SpriteFrames_p12vx")
 animation = &"walking"
 

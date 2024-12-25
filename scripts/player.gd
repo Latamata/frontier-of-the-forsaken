@@ -8,7 +8,7 @@ var targetResource
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var gun = $Musket
-@export var gun_offset = Vector2(10, 10)
+@export var gun_offset = Vector2(10, -15)
 @export var gun_radius = 1.0
 @onready var camera_2d = $"../Camera2D"
 @onready var sabre = $sabre

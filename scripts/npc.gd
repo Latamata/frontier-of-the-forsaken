@@ -11,7 +11,7 @@ var target
 var HEALTH = 100
 @onready var gun_marker = $Musket/Marker2D 
 @onready var gun = $Musket 
-@export var gun_offset = Vector2(0, 0)
+@export var gun_offset = Vector2(0, -25)
 @export var gun_radius = 20.0
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var navigation_agent_2d = $NavigationAgent2D
