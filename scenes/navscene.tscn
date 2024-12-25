@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=24 format=3 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Texture2D" uid="uid://bprs5wk8f2qia" path="res://assets/TilesetFloor.png" id="1_p51p1"]
@@ -28,6 +28,12 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_csa8g"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_uefjw"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
@@ -520,6 +526,8 @@ texture = ExtResource("1_p51p1")
 9:15/0 = 0
 11:15/0 = 0
 12:15/0 = 0
+12:15/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uefjw")
+12:15/0/custom_data_0 = true
 12:15/0/custom_data_1 = true
 13:15/0 = 0
 14:15/0 = 0

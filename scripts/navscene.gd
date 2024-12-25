@@ -33,9 +33,24 @@ func _ready():
 	ui.hide_map_ui(false)
 	ui.set_UI_resources()
 	var player_tile = tile_map.local_to_map(player.global_position)
-	
+
 func _process(delta: float) -> void:
 	update_speed_based_on_tile()
+	update_npc_speeds_based_on_tile()  # For NPCs
+	
+func update_npc_speeds_based_on_tile():
+	for npc in npcgroup.get_children():
+		if not is_instance_valid(npc):  # Use the global function
+			continue
+		var npc_tile = tile_map.local_to_map(npc.global_position)
+		var tile_data = tile_map.get_cell_tile_data(0, npc_tile)
+		
+		if tile_data and tile_data.get_custom_data_by_layer_id(1):
+			npc.slow_affect(true)
+		else:
+			npc.slow_affect(false)
+
+
 func update_speed_based_on_tile():
 	var player_tile = tile_map.local_to_map(player.global_position)
 	var tile_data = tile_map.get_cell_tile_data(0, player_tile)
