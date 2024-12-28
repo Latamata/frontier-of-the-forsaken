@@ -76,10 +76,10 @@ animations = [{
 size = Vector2(14, 14)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_74v56"]
-radius = 216.009
+radius = 257.158
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
-radius = 21.0
+radius = 31.0161
 
 [node name="zombie" type="CharacterBody2D" groups=["zombie"]]
 collision_layer = 2
@@ -111,8 +111,13 @@ shape = SubResource("CircleShape2D_74v56")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [node name="Melee" type="Area2D" parent="."]
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
 shape = SubResource("CircleShape2D_axwvo")
 
+[node name="Meleetimer" type="Timer" parent="."]
+wait_time = 2.277
+
 [connection signal="body_entered" from="Melee" to="." method="_on_melee_body_entered"]
+[connection signal="timeout" from="Meleetimer" to="." method="_on_timer_timeout"]

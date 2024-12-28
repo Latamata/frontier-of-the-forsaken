@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ds1svqdxxlh85"]
+[gd_scene load_steps=16 format=3 uid="uid://ds1svqdxxlh85"]
 
 [ext_resource type="Script" path="res://scripts/npc.gd" id="1_6lh2a"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="2_wp1fx"]
@@ -79,6 +79,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_jxr0e"]
+radius = 39.0128
+
 [node name="npc" type="CharacterBody2D" groups=["npc"]]
 collision_mask = 2
 script = ExtResource("1_6lh2a")
@@ -114,8 +117,8 @@ collision_mask = 2
 position = Vector2(4.90725, -6.13553)
 shape = SubResource("CircleShape2D_gqid2")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 7.522
+[node name="gunreloadtimer" type="Timer" parent="."]
+wait_time = 5.0
 
 [node name="takedamage" type="Timer" parent="."]
 wait_time = 2.0
@@ -125,6 +128,21 @@ position = Vector2(-2, -22)
 sprite_frames = SubResource("SpriteFrames_p12vx")
 animation = &"walking"
 
+[node name="Melee" type="Area2D" parent="."]
+position = Vector2(0, -22)
+collision_layer = 2
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
+shape = SubResource("CircleShape2D_jxr0e")
+
+[node name="Meleetimer" type="Timer" parent="."]
+wait_time = 2.277
+
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="gunreloadtimer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="takedamage" to="." method="_on_takedamage_timeout"]
+[connection signal="body_entered" from="Melee" to="." method="_on_melee_body_entered"]
+[connection signal="body_exited" from="Melee" to="." method="_on_melee_body_exited"]
+[connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

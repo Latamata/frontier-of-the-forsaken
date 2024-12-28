@@ -9,7 +9,7 @@ func _process(delta):
 
 func _on_body_entered(body):
 	if body is CharacterBody2D:
-		body.player_die()
+		body.take_damage(20)
 		queue_free()
 	else:
 		queue_free()

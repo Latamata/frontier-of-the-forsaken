@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var direction = Vector2.RIGHT
+var melee_cd = true
 var is_aiming = false
 var moving = false
 var reloaded = true
@@ -18,6 +19,9 @@ var HEALTH = 100  # NPC's starting health
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var targeting = $targeting
 @onready var healthbar: ProgressBar = $Healthbar
+@onready var meleetimer: Timer = $Meleetimer
+
+var overlapping_bodies = []  # List of bodies in melee range
 
 func _ready():
 	# Initialize health bar values
@@ -36,7 +40,7 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED * delta)
-	
+
 	move_and_collide(velocity)
 
 	if is_aiming:
@@ -49,13 +53,16 @@ func _physics_process(delta):
 	else:
 		rotate_gun(forward_angle)
 
+	# Apply melee damage if cooldown allows
+	if melee_cd and overlapping_bodies.size() > 0:
+		apply_melee_damage()
+
 func sprite_frame_direction():
 	if abs(direction.x) > abs(direction.y):
 		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.play()
 		animated_sprite_2d.flip_h = direction.x < 0
 	elif abs(direction.y) > abs(direction.x):
-		# Example for vertical movement
 		pass
 
 func find_zombies_in_area():
@@ -96,9 +103,6 @@ func die():
 	queue_free()
 	Globals.add_soldier_count(-1)
 
-func player_die():
-	$takedamage.start()
-
 func slow_affect(activate):
 	if activate:
 		SPEED = 15.0
@@ -108,16 +112,34 @@ func slow_affect(activate):
 func fire_gun():
 	if reloaded:
 		reloaded = false
-		$Timer.start()
+		$gunreloadtimer.start()
 
 func _on_timer_timeout():
 	reloaded = true
 
 func _on_takedamage_timeout():
-	take_damage(50)
+	take_damage(0)
 
 func move_to_position(new_target_position: Vector2):
 	# Set the target position for the NavigationAgent2D
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position
 	moving = true
+
+func _on_melee_body_entered(body: Node2D) -> void:
+	if body.is_in_group("zombie") and body not in overlapping_bodies:
+		overlapping_bodies.append(body)
+
+func _on_melee_body_exited(body: Node2D) -> void:
+	if body in overlapping_bodies:
+		overlapping_bodies.erase(body)
+
+func apply_melee_damage():
+	for body in overlapping_bodies:
+		if is_instance_valid(body):
+			body.take_damage(30)  # Adjust damage amount as needed
+	melee_cd = false
+	meleetimer.start()
+
+func _on_meleetimer_timeout() -> void:
+	melee_cd = true

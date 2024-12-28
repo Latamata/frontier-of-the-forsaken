@@ -75,19 +75,15 @@ func _on_gatherarea_body_entered(body):
 func swing_sword():
 	sabre.rotation = (get_global_mouse_position() - global_position).normalized().angle() + 45
 	sabre.get_child(1).disabled = false  # Enable sword hitbox
-	$Timer.start()  # Start the timer
+	$Meleetimer.start()  # Start the timer
 
-func _on_timer_timeout():
-	sabre.rotation = 0
-	sabre.get_child(1).disabled = true
-	$Timer.stop()  # Explicitly stop the timer when done
 
 func _on_sabre_body_entered(body):
 	#print(body)
 	if body.name == "tree":
 		body.chopped_down()
 	if body.is_in_group("zombie"):
-		body.player_die()
+		body.take_damage(20)
 		#print("hit zombie")
 
 func rotate_sword_to_mouse():
@@ -95,3 +91,9 @@ func rotate_sword_to_mouse():
 	var direction_to_mouse = (mouse_position - sabre.global_position).normalized()
 	var angle = direction_to_mouse.angle()
 	sabre.rotation = angle
+
+
+func _on_meleetimer_timeout() -> void:
+	sabre.rotation = 0
+	sabre.get_child(1).disabled = true
+	$Meleetimer.stop()  # Explicitly stop the timer when done

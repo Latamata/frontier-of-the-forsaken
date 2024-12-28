@@ -2,8 +2,9 @@ extends CharacterBody2D
 
 var direction = Vector2.RIGHT
 var moving = true
+var melee_cd = true
 var target_position: Vector2
-var health = 100
+var HEALTH = 100
 var target = null
 var SPEED = 19.0  # Base speed
 var time_since_last_path_update = 0.0
@@ -35,7 +36,6 @@ func _physics_process(delta):
 		else:
 			moving = false
 			velocity = Vector2.ZERO  # Stop movement when reaching the target
-
 	else:
 		find_target()
 
@@ -51,7 +51,6 @@ func find_target():
 			if distance < closest_distance:
 				closest_target = body
 				closest_distance = distance
-
 		# Set the closest valid target
 		target = closest_target
 
@@ -70,29 +69,38 @@ func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position
 	moving = true
+func take_damage(amount: int):
+	HEALTH -= amount
+	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
+	healthbar.value = HEALTH  # Update health bar
 
-func player_die():
-	health -= 25
-	update_healthbar()
-	animated_sprite_2d.frame = 3  # Assuming frame 3 is the "damaged" animation frame
-	if health <= 0:
-		queue_free()
+	if HEALTH <= 0:
+		die()
+
+func die():
+	queue_free()
+	Globals.add_soldier_count(-1)
 
 func slow_affect(activate):
 	if activate:
-		SPEED = 20.0
+		SPEED = 15.0
 	else:
-		SPEED = 40.0
+		SPEED = 30.0
 
 func _on_targeting_body_exited(body):
 	# Reset target if the current target leaves the area
 	if body == target:
 		target = null
 
-func _on_melee_body_entered(body):
-	if body.is_in_group("npc"):
-		body.player_die()
-
 func update_healthbar():
 	# Sync the healthbar with the current health
-	healthbar.value = health
+	healthbar.value = HEALTH
+
+func _on_melee_body_entered(body):
+	if body.is_in_group("npc") && melee_cd:
+		body.take_damage(40)
+		melee_cd = false
+		$Meleetimer.start()
+
+func _on_timer_timeout() -> void:
+	melee_cd = true
