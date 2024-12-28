@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+var HEALTH = 100
 var SPEED = 60.0
 var reloaded = true
 var gather = false
@@ -46,7 +47,16 @@ func slow_affect(activate):
 	else:
 		SPEED = 60.0
 
-func player_die():
+func take_damage(amount: int):
+	print("running")
+	HEALTH -= amount
+	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
+	#healthbar.value = HEALTH  # Update health bar
+
+	if HEALTH <= 0:
+		die()
+
+func die():
 	queue_free()
 
 func rotate_gun():

@@ -35,7 +35,8 @@ func _ready():
 	var player_tile = tile_map.local_to_map(player.global_position)
 
 func _process(delta: float) -> void:
-	update_speed_based_on_tile()
+	if player != null:
+		update_speed_based_on_tile()
 	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
 	
 func update_npc_and_zombie_speeds_based_on_tile():

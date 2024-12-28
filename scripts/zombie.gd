@@ -97,7 +97,10 @@ func update_healthbar():
 	healthbar.value = HEALTH
 
 func _on_melee_body_entered(body):
-	if body.is_in_group("npc") && melee_cd:
+	if body.name == 'player':
+		print(body)
+		body.take_damage(20)
+	if body.is_in_group("npc") && body.name == 'player' && melee_cd:
 		body.take_damage(40)
 		melee_cd = false
 		$Meleetimer.start()
