@@ -58,12 +58,16 @@ func _physics_process(delta):
 		apply_melee_damage()
 
 func sprite_frame_direction():
-	if abs(direction.x) > abs(direction.y):
+	if abs(direction.x) > abs(direction.y):  # Horizontal movement
 		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = direction.x < 0
-	elif abs(direction.y) > abs(direction.x):
-		pass
+		animated_sprite_2d.flip_h = direction.x < 0  # Flip for left direction
+	elif abs(direction.y) > abs(direction.x):  # Vertical movement
+		
+		if direction.y < 0:
+			animated_sprite_2d.animation = "walking_away"  # Moving upward
+		else:
+			animated_sprite_2d.animation = "walking_toward"  # Moving downward
+	animated_sprite_2d.play()
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()

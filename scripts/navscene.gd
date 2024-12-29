@@ -7,6 +7,7 @@ extends Node2D
 @onready var player = $player
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
+@onready var wagon_ui_2: Control = $wagon/wagonUI2
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
 var musketgun: PackedScene = preload("res://scenes/items.tscn")
@@ -23,12 +24,11 @@ var rotation_angle: float
 func _ready():
 	var starting_position = Vector2(-200, 100)  # Initial position of npcs
 	var offset = Vector2(0, -50)  # Offset to subtract each iteration npcs
-	$wagon/wagonUI2.add_next_slot()
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
 		musketman_instance.global_position = starting_position  # Set position
 		npcgroup.add_child(musketman_instance)
-		starting_position += offset  
+		starting_position += offset
 
 	ui.hide_map_ui(false)
 	ui.set_UI_resources()
@@ -87,8 +87,8 @@ func _input(event):
 		var nearest_tile_position = get_nearest_tile(current_mouse_position)
 		spawn_double_line_at_position(nearest_tile_position, rotation_angle)
 	assign_npcs_to_indicators(rotation_angle)
-	if Input.is_action_just_pressed("ui_accept"):
-		player.swing_sword()
+	if Input.is_action_just_pressed("ui_accept") && player != null:
+		player.swing_sword() 
 		if player.targetResource != null:
 			player.targetResource.queue_free()
 
@@ -104,7 +104,7 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 					continue
 				var tile_data = tile_map.get_cell_tile_data(0, check_coords)
 				
-				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)): 
+				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)):
 					return tile_map.map_to_local(check_coords)
 		search_radius += 1
 	return tile_map.map_to_local(tile_coords)
@@ -260,3 +260,7 @@ func _on_wagon_ui_2_mouse_entered() -> void:
 
 func _on_wagon_ui_2_mouse_exited() -> void:
 	is_ui_interacting = false
+
+
+func _on_items_item_collected() -> void:
+	wagon_ui_2.add_next_slot(preload("res://assets/musket.png") )

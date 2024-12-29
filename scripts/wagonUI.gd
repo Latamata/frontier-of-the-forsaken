@@ -5,65 +5,51 @@ extends Control
 
 signal hovered_wagon
 signal hovered_wagon_exit
-# Number of inventory slots (adjust as needed)
+signal item_added(item_texture)  # Define the signal
+
 var slot_count = 9
-var selected_item = null  # Store the currently selected TextureRect
-var hovered_item = null  # Store the curvrently hovered TextureRect
+var selected_item = null
+var hovered_item = null
 var itemlist = []
+
 func _ready():
 	populate_inventory()
 
-
+# Function to populate inventory slots
 func populate_inventory():
 	for i in range(slot_count):
 		var texture_rect = TextureRect.new()
 		
-		#if i == 1:
-		itemlist.append(true)
-			#texture_rect.filled = true
-			#texture_rect.texture = preload("res://assets/rose.png")
-		#else:
-			#itemlist.append(false)
-			#texture_rect.texture = preload("res://assets/inventory.png")
+		itemlist.append(false)  # Initialize slots with false (empty)
 		texture_rect.name = "Slot_%d" % i
-		
-		texture_rect.texture = preload("res://assets/inventory.png")
-		# Connect the gui_input signal
+		texture_rect.texture = preload("res://assets/inventory.png")  # Empty inventory slot
 		texture_rect.connect("gui_input", Callable(self, "_on_texture_rect_gui_input").bind(texture_rect))
-
-		# Connect mouse enter and exit signals
 		texture_rect.connect("mouse_entered", Callable(self, "_on_texture_rect_mouse_entered").bind(texture_rect))
 		texture_rect.connect("mouse_exited", Callable(self, "_on_texture_rect_mouse_exited").bind(texture_rect))
-
 		grid_container.add_child(texture_rect)
 
-var original_position = Vector2()  # Store the original position of the selected item
+var original_position = Vector2()
 
+# Handle mouse input for selecting and moving items in inventory
 func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:  
-			# Check if the selected item has a valid texture (non-empty slot)
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if texture_rect.texture != preload("res://assets/inventory.png"):
 				selected_item = texture_rect
 				original_position = selected_item.position
-
-		elif event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:  
+		elif event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			if hovered_item and selected_item:
-				# Get indices of selected and hovered slots
 				var selected_index = grid_container.get_children().find(selected_item)
 				var hovered_index = grid_container.get_children().find(hovered_item)
-				
-				# Case 1: Dropping onto an empty slot
+
 				if itemlist[hovered_index] == false and selected_item.texture != preload("res://assets/inventory.png"):
-					hovered_item.texture = selected_item.texture  # Move texture
-					selected_item.texture = preload("res://assets/inventory.png")  # Clear original slot
+					hovered_item.texture = selected_item.texture
+					selected_item.texture = preload("res://assets/inventory.png")
+					itemlist[hovered_index] = true
+					itemlist[selected_index] = false
+					emit_signal("item_added", hovered_item.texture)  # Emit the signal when item is added
 
-					itemlist[hovered_index] = true  # Update hovered slot as occupied
-					itemlist[selected_index] = false  # Mark original slot as empty
-
-				# Case 2: Swapping between occupied slots
 				elif itemlist[hovered_index] == true:
-					# Swap textures and states
 					var temp_texture = selected_item.texture
 					selected_item.texture = hovered_item.texture
 					hovered_item.texture = temp_texture
@@ -72,41 +58,41 @@ func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 					itemlist[selected_index] = itemlist[hovered_index]
 					itemlist[hovered_index] = temp_state
 
-			# Reset z_index and clear selection
 			if selected_item:
 				selected_item = null
 
-		# If no valid drop, reset to original position
 		elif selected_item:
 			selected_item.position = original_position
 			selected_item = null
 
-
+# Update the list of items in inventory
 func update_itemlist():
 	for i in range(grid_container.get_child_count()):
 		var slot = grid_container.get_child(i)
 		itemlist[i] = slot.texture != preload("res://assets/inventory.png")
 
+# Handle mouse enter and exit events for visual feedback
 func _on_texture_rect_mouse_entered(texture_rect):
 	hovered_item = texture_rect
-	texture_rect.modulate = Color(1, 0, 0)  # Highlight in red for visual feedback
+	texture_rect.modulate = Color(1, 0, 0)  # Highlight slot in red
 
 func _on_texture_rect_mouse_exited(texture_rect):
-	texture_rect.modulate = Color(1, 1, 1)  # Reset to default
+	texture_rect.modulate = Color(1, 1, 1)  # Reset to default color
 	if hovered_item == selected_item:
 		hovered_item = null
 
-func add_next_slot():
-	for i in range(itemlist.size()):  # Iterate by index
-		var item = itemlist[i]
-		if item:
-			# Update the corresponding child's texture in grid_container
+# Add a new item to the next available slot
+func add_next_slot(item_texture: Texture):
+	for i in range(itemlist.size()):
+		if not itemlist[i]:  # Find the first empty slot
 			var slot = grid_container.get_child(i)
-			slot.texture = preload("res://assets/blackspot.png")
-			itemlist[i] = false
+			slot.texture = item_texture  # Use the passed-in item texture
+			itemlist[i] = true  # Mark slot as filled
+			emit_signal("item_added", item_texture)  # Emit signal with the item texture as argument
 			return
 
 
+# Handle hide and show functionality for inventory
 func _on_hideandshow_mouse_entered() -> void:
 	emit_signal("hovered_wagon")
 
@@ -114,9 +100,4 @@ func _on_hideandshow_mouse_exited() -> void:
 	emit_signal("hovered_wagon_exit")
 
 func _on_hideandshow_button_down() -> void:
-	if grid_container.visible:
-		grid_container.visible = false
-		#hideandshow.visible = true
-	else:
-		grid_container.visible = true
-		#hideandshow.visible = false
+	grid_container.visible = not grid_container.visible

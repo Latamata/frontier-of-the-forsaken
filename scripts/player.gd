@@ -31,15 +31,19 @@ func _input(event):
 		rotate_gun()
 
 func sprite_frame_direction():
-	if direction == Vector2(0, -1):
-		animated_sprite_2d.animation = "new_animation"
-		animated_sprite_2d.stop()
-	elif direction.x != 0:
-		animated_sprite_2d.animation = "walking"
+	if direction == Vector2(0, -1):  # Specific case for upward movement
+		animated_sprite_2d.animation = "walking_away"
+		animated_sprite_2d.play()  # Play animation for consistency
+	elif direction.x != 0:  # Horizontal movement
+		animated_sprite_2d.animation = "walking_side"
+		animated_sprite_2d.flip_h = direction.x < 0  # Flip sprite for left direction
 		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = direction.x < 0
-	else:
-		animated_sprite_2d.stop()  # Stop animation when no horizontal movement
+	elif direction.y > 0:  # Downward movement
+		animated_sprite_2d.animation = "walking_toward"
+		animated_sprite_2d.play()
+	else:  # No movement
+		animated_sprite_2d.stop()
+
 
 func slow_affect(activate):
 	if activate:
