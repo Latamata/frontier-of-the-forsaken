@@ -23,7 +23,7 @@ var rotation_angle: float
 func _ready():
 	var starting_position = Vector2(-200, 100)  # Initial position of npcs
 	var offset = Vector2(0, -50)  # Offset to subtract each iteration npcs
-
+	$wagon/wagonUI2.add_next_slot()
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
 		musketman_instance.global_position = starting_position  # Set position
@@ -232,23 +232,31 @@ func _on_ui_fire_action():
 				fire_gun(npc)
 				npc.fire_gun()
 
+#prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
 	is_ui_interacting = true
 	is_rotating = false
-	#print(is_ui_interacting)
-
-func _on_ui_ui_interaction_ended():
+	
+func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
-	#print(is_ui_interacting)
-
 
 func _on_wagon_ui_2_hovered_wagon() -> void:
 	is_ui_interacting = true
-
+	is_rotating = false
 
 func _on_wagon_ui_2_hovered_wagon_exit() -> void:
 	is_ui_interacting = false
+	is_rotating = false
 
 
 func _on_items_item_picked_up(item_type: Variant) -> void:
-	print($wagon/wagonUI2.add_next_slot())
+	print()
+
+
+func _on_wagon_ui_2_mouse_entered() -> void:
+	is_ui_interacting = true
+	is_rotating = false
+
+
+func _on_wagon_ui_2_mouse_exited() -> void:
+	is_ui_interacting = false

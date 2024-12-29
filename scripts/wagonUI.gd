@@ -97,19 +97,14 @@ func _on_texture_rect_mouse_exited(texture_rect):
 		hovered_item = null
 
 func add_next_slot():
-	var ListCount = 0
-
 	for i in range(itemlist.size()):  # Iterate by index
 		var item = itemlist[i]
-
 		if item:
 			# Update the corresponding child's texture in grid_container
 			var slot = grid_container.get_child(i)
 			slot.texture = preload("res://assets/blackspot.png")
-			itemlist[i] = false  
+			itemlist[i] = false
 			return
-		ListCount +=1
-	
 
 
 func _on_hideandshow_mouse_entered() -> void:

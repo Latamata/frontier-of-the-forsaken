@@ -771,6 +771,8 @@ position = Vector2(-321, 47)
 
 [connection signal="hovered_wagon" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_hovered_wagon"]
 [connection signal="hovered_wagon_exit" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_hovered_wagon_exit"]
+[connection signal="mouse_entered" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_mouse_entered"]
+[connection signal="mouse_exited" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_mouse_exited"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]
 [connection signal="ui_interaction_ended" from="UI" to="." method="_on_ui_ui_interaction_ended"]

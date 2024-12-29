@@ -23,9 +23,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="hideandshow" type="Button" parent="."]
 layout_mode = 0
-offset_right = 73.0
-offset_bottom = 31.0
+offset_left = 61.0
+offset_top = 6.0
+offset_right = 134.0
+offset_bottom = 37.0
 text = "Click me"
+icon_alignment = 2
 
 [connection signal="button_down" from="hideandshow" to="." method="_on_hideandshow_button_down"]
 [connection signal="mouse_entered" from="hideandshow" to="." method="_on_hideandshow_mouse_entered"]

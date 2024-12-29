@@ -45,13 +45,17 @@ func _on_ui_move_action():
 		var total_points = current_path.curve.get_point_count()
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
+		_update_turn_button_visibility()  # Check visibility after each move
+
 
 func _on_turn_button_down():
 	if Globals.geo_map_camp == 8:
-		Globals.geo_map_camp = 0  # Reset to start of the new path
-		Globals.current_line = (Globals.current_line + 1) % paths.size()
-		current_path = paths[Globals.current_line]
-		move_wagon_to_line(current_path, Globals.geo_map_camp)
+		Globals.geo_map_camp = 0  # Reset to the start of the new path
+		Globals.current_line = (Globals.current_line + 1) % paths.size()  # Cycle to the next path
+		current_path = paths[Globals.current_line]  # Update to the new path
+		move_wagon_to_line(current_path, Globals.geo_map_camp)  # Move wagon on the new path
+		_update_turn_button_visibility()
+
 
 func _on_ui_camp_action():
 	if Globals.geo_map_camp in mountain_points:
