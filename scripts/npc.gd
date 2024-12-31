@@ -40,6 +40,7 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED * delta)
+		animated_sprite_2d.stop()
 
 	move_and_collide(velocity)
 

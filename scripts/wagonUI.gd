@@ -15,18 +15,26 @@ var itemlist = []
 func _ready():
 	populate_inventory()
 
-# Function to populate inventory slots
 func populate_inventory():
 	for i in range(slot_count):
 		var texture_rect = TextureRect.new()
+
+		# Set the stretch mode to avoid scaling
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP  # Keeps the original texture size
 		
+		# Optional: Adjust size using the texture's inherent size
+		texture_rect.texture = preload("res://assets/inventory.png")  # Empty inventory slot
+		texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		texture_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+
+		# Ensure parent container enforces size constraints
 		itemlist.append(false)  # Initialize slots with false (empty)
 		texture_rect.name = "Slot_%d" % i
-		texture_rect.texture = preload("res://assets/inventory.png")  # Empty inventory slot
 		texture_rect.connect("gui_input", Callable(self, "_on_texture_rect_gui_input").bind(texture_rect))
 		texture_rect.connect("mouse_entered", Callable(self, "_on_texture_rect_mouse_entered").bind(texture_rect))
 		texture_rect.connect("mouse_exited", Callable(self, "_on_texture_rect_mouse_exited").bind(texture_rect))
 		grid_container.add_child(texture_rect)
+
 
 var original_position = Vector2()
 

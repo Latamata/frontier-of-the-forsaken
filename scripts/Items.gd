@@ -1,13 +1,12 @@
 extends Node2D
 
 
+signal item_collected(item_id)  # Signal with a parameter for the item identifier
 
-
-signal item_collected  # Custom signal to notify the Level script
-
+# Assume you have an `item_id` variable set up to uniquely identify this item
+var item_id: String = "Gun"  # Replace with the actual item ID
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name == "player":  # Make sure the body is the player or another object you want to interact with
-		# Emit the custom signal to notify the Level script
-		emit_signal("item_collected")  # Send the item reference or other data
-		print('adaslkfnas')
+	if body.name == "player":  # Make sure the body is the player
+		emit_signal("item_collected", item_id)  # Emit the signal with the item ID
+		queue_free()  # Remove the item from the scene

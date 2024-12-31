@@ -249,10 +249,6 @@ func _on_wagon_ui_2_hovered_wagon_exit() -> void:
 	is_rotating = false
 
 
-func _on_items_item_picked_up(item_type: Variant) -> void:
-	print()
-
-
 func _on_wagon_ui_2_mouse_entered() -> void:
 	is_ui_interacting = true
 	is_rotating = false
@@ -262,5 +258,5 @@ func _on_wagon_ui_2_mouse_exited() -> void:
 	is_ui_interacting = false
 
 
-func _on_items_item_collected() -> void:
+func _on_items_item_collected(item_id) -> void:
 	wagon_ui_2.add_next_slot(preload("res://assets/musket.png") )

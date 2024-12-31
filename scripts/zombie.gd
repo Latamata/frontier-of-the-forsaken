@@ -64,7 +64,8 @@ func sprite_frame_direction():
 			animated_sprite_2d.play()
 		elif direction.y > 0:
 			animated_sprite_2d.play()
-
+	else:
+		animated_sprite_2d.animation = "default"
 func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position
