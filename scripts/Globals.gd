@@ -4,7 +4,7 @@ var is_global_aiming = false
 
 # Properties
 var food: int =  100 # setget add_food, get_food
-var geo_map_camp: int = 1 # setget add_geo_map_camp, get_geo_map_camp
+var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var current_line: int = 0
 var wood: int = 1 # setget add_wood, get_wood

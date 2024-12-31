@@ -9,8 +9,10 @@ extends Node2D
 var current_path: Path2D
 var speed: float = 50  # Movement speed (pixels per second)
 
-# Define special points or conditions for paths
-var mountain_points = [7, 10, 6, 2, 15]
+var mountain_points_by_line = [
+	[1, 7, 10],       # Mountain points for Path2D
+	[6, 2, 15]     # Mountain points for Path2D2
+]
 
 func _ready():
 	ui.hide_map_ui(true)
@@ -33,7 +35,7 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	line_point = clamp(line_point, 0, target_line.curve.get_point_count() - 1)
 	var point_position = target_line.curve.get_point_position(line_point)
 	wagonpin.global_position = target_line.global_position + point_position
-	print("Moved wagon to:", wagonpin.global_position)
+	#print("Moved wagon to:", wagonpin.global_position)
 	_update_turn_button_visibility()
 
 func _update_turn_button_visibility():
@@ -58,7 +60,8 @@ func _on_turn_button_down():
 
 
 func _on_ui_camp_action():
-	if Globals.geo_map_camp in mountain_points:
+	print('camp trail # ' , Globals.geo_map_camp)
+	if current_path and Globals.geo_map_camp in mountain_points_by_line[Globals.current_line]:
 		get_tree().change_scene_to_file("res://scenes/mountain.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/desert.tscn")
