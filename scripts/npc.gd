@@ -36,13 +36,24 @@ func _physics_process(delta):
 			velocity = direction * SPEED * delta  # Multiply by delta for move_and_collide
 			sprite_frame_direction()
 		else:
+			print('running')
 			moving = false
 			velocity = Vector2.ZERO
 	else:
+		var forward_direction = Vector2(cos(forward_angle), sin(forward_angle)).normalized()
+		direction = forward_direction
+		velocity = forward_direction * (SPEED * delta)  # Adjust the multiplier to control the "step" size
+		sprite_frame_direction()
+
+		# Gradually reduce velocity to simulate stopping
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED * delta)
-		animated_sprite_2d.stop()
+		if velocity.length() < 0.01:  # Threshold to ensure clean stop
+			velocity = Vector2.ZERO
+			animated_sprite_2d.stop()
 
 	move_and_collide(velocity)
+
+
 
 	if is_aiming:
 		if target and is_instance_valid(target):

@@ -207,8 +207,8 @@ func fire_gun(firing_entity: Node2D):
 
 func _on_timer_timeout():
 	if zombiegroup.get_child_count() < 1:
-		for row in range(4):  # 5 rows
-			for col in range(4):  # 5 columns
+		for row in range(1):  # 5 rows
+			for col in range(1):  # 5 columns
 				var zombie = ZOMBIE.instantiate()
 				zombie.position = Vector2(50 * col, 50 * row)  # Adjust spacing for a grid
 				zombie.name = "zombie_%d_%d" % [row, col]  # Unique name for debugging
