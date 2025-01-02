@@ -34,10 +34,10 @@ func _ready():
 	ui.set_UI_resources()
 	var player_tile = tile_map.local_to_map(player.global_position)
 
-#func _process(delta: float) -> void:
-	#if player != null:
-		#update_speed_based_on_tile()
-	#update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+func _process(delta: float) -> void:
+	if player != null:
+		update_speed_based_on_tile()
+	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
 	
 func update_npc_and_zombie_speeds_based_on_tile():
 	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
