@@ -117,18 +117,26 @@ func rotate_position_around_center(unitposition: Vector2, center: Vector2, angle
 	return center + rotated_direction  # Return the new position
 
 func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle: float = 0.0):
-	# Clear previous indicators
+	# Hide all existing indicators
 	for child in indicaters.get_children():
-		child.queue_free()
+		child.visible = false
 
 	var row_spacing = 25  # Distance between the two lines
 	var indicator_spacing = 50  # Distance between indicators in each line
 	var line_offset = -((npcgroup.get_child_count() / 2) - 1) * indicator_spacing / 2  # Center both lines around start_position
 	var placed_positions = []
+	var current_index = 0
 
 	# Spawn NPCs in the formation
 	for i in range(npcgroup.get_child_count()):
-		var indicator_instance = IndicatorScene.instantiate()
+		# Reuse an existing indicator or create a new one if needed
+		var indicator_instance: Node2D
+		if current_index < indicaters.get_child_count():
+			indicator_instance = indicaters.get_child(current_index)
+			indicator_instance.visible = true
+		else:
+			indicator_instance = IndicatorScene.instantiate()
+			indicaters.add_child(indicator_instance)
 
 		# Determine row (top or bottom) and position along the line
 		var row = i % 2
@@ -141,11 +149,12 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 
 		# Rotate the indicator position around the start position
 		indicator_position = rotate_position_around_center(indicator_position, start_position, unit_rotation_angle)
-		#print(indicator_position)
-		# Set position and add to the scene
+
+		# Set position and add to placed positions
 		indicator_instance.position = get_nearest_tile(indicator_position, placed_positions)
-		indicaters.add_child(indicator_instance)
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
+		current_index += 1
+
 
 func spawn_square_formation_at_position(start_position: Vector2, unit_rotation_angle: float = 0.0):
 	# Clear previous indicators
