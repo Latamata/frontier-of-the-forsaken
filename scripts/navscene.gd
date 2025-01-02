@@ -34,10 +34,10 @@ func _ready():
 	ui.set_UI_resources()
 	var player_tile = tile_map.local_to_map(player.global_position)
 
-func _process(delta: float) -> void:
-	if player != null:
-		update_speed_based_on_tile()
-	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+#func _process(delta: float) -> void:
+	#if player != null:
+		#update_speed_based_on_tile()
+	#update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
 	
 func update_npc_and_zombie_speeds_based_on_tile():
 	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
@@ -204,16 +204,16 @@ func fire_gun(firing_entity: Node2D):
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
+func spawn_zombies(rows: int, cols: int):
+	for row in range(rows):
+		for col in range(cols):
+			var zombie = ZOMBIE.instantiate()
+			zombie.position = Vector2(50 * col, 50 * row)
+			zombiegroup.add_child(zombie)
 
 func _on_timer_timeout():
 	if zombiegroup.get_child_count() < 1:
-		for row in range(1):  # 5 rows
-			for col in range(1):  # 5 columns
-				var zombie = ZOMBIE.instantiate()
-				zombie.position = Vector2(50 * col, 50 * row)  # Adjust spacing for a grid
-				zombie.name = "zombie_%d_%d" % [row, col]  # Unique name for debugging
-				zombiegroup.add_child(zombie)
-				zombie.add_to_group("zombies")
+		spawn_zombies(2, 2)
 
 func _on_ui_aim_action():
 	# Toggle the global aiming state

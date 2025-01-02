@@ -183,6 +183,15 @@ size_flags_horizontal = 4
 
 [node name="Meleetimer" type="Timer" parent="."]
 
+[node name="Healthbar" type="ProgressBar" parent="."]
+modulate = Color(0.141176, 1, 0.14902, 1)
+z_index = 2
+z_as_relative = false
+offset_left = -40.0
+offset_top = -86.0
+offset_right = 48.0
+offset_bottom = -59.0
+
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
 [connection signal="body_entered" from="gatherarea" to="." method="_on_gatherarea_body_entered"]
 [connection signal="body_entered" from="sabre" to="." method="_on_sabre_body_entered"]

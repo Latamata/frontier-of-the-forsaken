@@ -13,7 +13,12 @@ var targetResource
 @export var gun_radius = 1.0
 @onready var camera_2d = $"../Camera2D"
 @onready var sabre = $sabre
+@onready var healthbar: ProgressBar = $Healthbar
 
+func _ready():
+	# Initialize the healthbar
+	update_healthbar()
+	
 func _physics_process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if direction != Vector2.ZERO:
@@ -44,7 +49,9 @@ func sprite_frame_direction():
 	else:  # No movement
 		animated_sprite_2d.stop()
 
-
+func update_healthbar():
+	# Sync the healthbar with the current health
+	healthbar.value = HEALTH
 func slow_affect(activate):
 	if activate:
 		SPEED = 30.0
@@ -55,7 +62,7 @@ func take_damage(amount: int):
 	#print("running")
 	HEALTH -= amount
 	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
-	#healthbar.value = HEALTH  # Update health bar
+	healthbar.value = HEALTH  # Update health bar
 
 	if HEALTH <= 0:
 		die()

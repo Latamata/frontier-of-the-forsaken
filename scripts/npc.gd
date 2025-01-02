@@ -36,7 +36,6 @@ func _physics_process(delta):
 			velocity = direction * SPEED * delta  # Multiply by delta for move_and_collide
 			sprite_frame_direction()
 		else:
-			print('running')
 			moving = false
 			velocity = Vector2.ZERO
 	else:

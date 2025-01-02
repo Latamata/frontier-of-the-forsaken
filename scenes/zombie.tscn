@@ -92,6 +92,9 @@ shape = SubResource("CircleShape2D_axwvo")
 wait_time = 2.277
 
 [node name="Healthbar" type="ProgressBar" parent="."]
+modulate = Color(0.141176, 1, 0.14902, 1)
+z_index = 2
+z_as_relative = false
 offset_left = -40.0
 offset_top = -86.0
 offset_right = 48.0
