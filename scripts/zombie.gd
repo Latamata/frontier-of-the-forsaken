@@ -14,7 +14,9 @@ var path_update_interval = 0.1  # Update pathfinding every 0.1 seconds
 @onready var navigation_agent_2d = $NavigationAgent2D
 @onready var targeting = $targeting
 @onready var healthbar: ProgressBar = $Healthbar
+@onready var meleetimer: Timer = $Meleetimer
 
+var overlapping_bodies = []  # List of bodies in melee range
 func _ready():
 	# Initialize the healthbar
 	update_healthbar()
@@ -38,6 +40,8 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO  # Stop movement when reaching the target
 	else:
 		find_target()
+	if melee_cd and overlapping_bodies.size() > 0:
+		apply_melee_damage()
 
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()
@@ -97,14 +101,20 @@ func update_healthbar():
 	# Sync the healthbar with the current health
 	healthbar.value = HEALTH
 
-func _on_melee_body_entered(body):
-	if body.name == 'player':
-		print(body)
-		body.take_damage(20)
-	if body.is_in_group("npc") || body.name == 'player' && melee_cd:
-		body.take_damage(40)
-		melee_cd = false
-		$Meleetimer.start()
+func _on_melee_body_entered(body: Node2D) -> void:
+	if body.is_in_group("npc") and body not in overlapping_bodies:
+		overlapping_bodies.append(body)
 
-func _on_timer_timeout() -> void:
+func _on_melee_body_exited(body: Node2D) -> void:
+	if body in overlapping_bodies:
+		overlapping_bodies.erase(body)
+
+func apply_melee_damage():
+	for body in overlapping_bodies:
+		if is_instance_valid(body):
+			body.take_damage(30)  # Adjust damage amount as needed
+	melee_cd = false
+	meleetimer.start()
+
+func _on_meleetimer_timeout() -> void:
 	melee_cd = true

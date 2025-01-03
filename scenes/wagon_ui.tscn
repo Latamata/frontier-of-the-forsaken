@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxrfc2ttiaojn"]
+[gd_scene load_steps=3 format=3 uid="uid://bxrfc2ttiaojn"]
 
 [ext_resource type="Script" path="res://scripts/wagonUI.gd" id="1_yge0d"]
+[ext_resource type="Texture2D" uid="uid://c27vspjhh78nq" path="res://assets/blackspot.png" id="2_pcf4k"]
 
 [node name="wagonUI" type="Control"]
 layout_mode = 3
@@ -20,6 +21,10 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 3
 metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer"]
+layout_mode = 2
+texture = ExtResource("2_pcf4k")
 
 [node name="hideandshow" type="Button" parent="."]
 layout_mode = 0
