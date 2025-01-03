@@ -1,4 +1,4 @@
-extends Control
+extends StaticBody2D
 
 @onready var grid_container = $GridContainer
 @onready var hideandshow: Button = $hideandshow
@@ -99,9 +99,11 @@ func add_next_slot(item_texture: Texture):
 
 # Handle hide and show functionality for inventory
 func _on_hideandshow_mouse_entered() -> void:
+	$hideandshow.modulate = Color(1, 1, 0)  # Change to red (adjust the color as needed)
 	emit_signal("hovered_wagon")
 
 func _on_hideandshow_mouse_exited() -> void:
+	$hideandshow.modulate = Color(1, 1, 1)  # Reset to default (white)
 	emit_signal("hovered_wagon_exit")
 
 func _on_hideandshow_button_down() -> void:

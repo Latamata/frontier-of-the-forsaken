@@ -1,33 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxrfc2ttiaojn"]
+[gd_scene load_steps=4 format=3 uid="uid://bxrfc2ttiaojn"]
 
 [ext_resource type="Script" path="res://scripts/wagonUI.gd" id="1_yge0d"]
+[ext_resource type="Texture2D" uid="uid://bx78mr26vavlo" path="res://assets/wagon.png" id="2_ktjna"]
 
-[node name="wagonUI" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1152.0
-offset_bottom = -648.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbq65"]
+size = Vector2(227.148, 120)
+
+[node name="wagonUI" type="StaticBody2D"]
 script = ExtResource("1_yge0d")
+
+[node name="hideandshow" type="Button" parent="."]
+offset_right = 248.0
+offset_bottom = 200.0
+focus_mode = 0
+icon = ExtResource("2_ktjna")
+flat = true
+expand_icon = true
 
 [node name="GridContainer" type="GridContainer" parent="."]
 visible = false
 clip_contents = true
-layout_mode = 1
 columns = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="hideandshow" type="Button" parent="."]
-layout_mode = 0
-offset_left = 61.0
-offset_top = -34.0
-offset_right = 134.0
-offset_bottom = -3.0
-text = "Click me"
-icon_alignment = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 3
+visibility_layer = 3
+position = Vector2(113.426, 133)
+shape = SubResource("RectangleShape2D_lbq65")
 
 [connection signal="button_down" from="hideandshow" to="." method="_on_hideandshow_button_down"]
 [connection signal="mouse_entered" from="hideandshow" to="." method="_on_hideandshow_mouse_entered"]

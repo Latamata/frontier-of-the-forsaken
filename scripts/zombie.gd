@@ -102,7 +102,7 @@ func update_healthbar():
 	healthbar.value = HEALTH
 
 func _on_melee_body_entered(body: Node2D) -> void:
-	if body.is_in_group("npc") and body not in overlapping_bodies:
+	if body.is_in_group("npc") || body.name == 'player' and body not in overlapping_bodies:
 		overlapping_bodies.append(body)
 
 func _on_melee_body_exited(body: Node2D) -> void:

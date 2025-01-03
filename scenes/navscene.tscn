@@ -1,11 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=22 format=3 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Texture2D" uid="uid://bprs5wk8f2qia" path="res://assets/TilesetFloor.png" id="1_p51p1"]
-[ext_resource type="PackedScene" uid="uid://bxrfc2ttiaojn" path="res://scenes/wagon_ui.tscn" id="4_q45a2"]
 [ext_resource type="PackedScene" uid="uid://dit4wkbv0e3nr" path="res://scenes/player.tscn" id="5_bbw0p"]
 [ext_resource type="PackedScene" uid="uid://d11nep0qfx3xu" path="res://scenes/ui.tscn" id="5_qn5ki"]
-[ext_resource type="PackedScene" uid="uid://bw7xh0xgjmtjm" path="res://scenes/wagon.tscn" id="6_k1s0f"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_rcg8y"]
 tile_data = PackedInt32Array(0, 131073, 4, 65536, 131073, 5, 131072, 131073, 6, 1, 196609, 4, 65537, 196609, 5, 131073, 196609, 6, 196609, 196609, 7, 262145, 196609, 8, 2, 262145, 4, 65538, 262145, 5, 131074, 262145, 6)
@@ -743,21 +741,6 @@ format = 2
 layer_0/name = "GROUND"
 layer_1/name = "foilage"
 
-[node name="wagon" parent="." instance=ExtResource("6_k1s0f")]
-position = Vector2(-664, -276)
-
-[node name="wagonUI2" parent="wagon" instance=ExtResource("4_q45a2")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = -31.2035
-offset_top = -44.5177
-offset_right = -31.2035
-offset_bottom = -44.5177
-grow_horizontal = 1
-grow_vertical = 1
-metadata/_edit_use_anchors_ = true
-
 [node name="UI" parent="." instance=ExtResource("5_qn5ki")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -776,10 +759,6 @@ autostart = true
 [node name="player" parent="." instance=ExtResource("5_bbw0p")]
 position = Vector2(-321, 47)
 
-[connection signal="hovered_wagon" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_hovered_wagon"]
-[connection signal="hovered_wagon_exit" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_hovered_wagon_exit"]
-[connection signal="mouse_entered" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_mouse_entered"]
-[connection signal="mouse_exited" from="wagon/wagonUI2" to="." method="_on_wagon_ui_2_mouse_exited"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]
 [connection signal="ui_interaction_ended" from="UI" to="." method="_on_ui_ui_interaction_ended"]

@@ -7,7 +7,6 @@ extends Node2D
 @onready var player = $player
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
-@onready var wagon_ui_2: Control = $wagon/wagonUI2
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
 var musketgun: PackedScene = preload("res://scenes/items.tscn")
@@ -253,19 +252,16 @@ func _on_wagon_ui_2_hovered_wagon() -> void:
 	is_ui_interacting = true
 	is_rotating = false
 
-func _on_wagon_ui_2_hovered_wagon_exit() -> void:
-	is_ui_interacting = false
-	is_rotating = false
+
+func _on_items_item_collected(item_id) -> void:
+	$wagonUI.add_next_slot(preload("res://assets/inventoryicons.png") )
 
 
-func _on_wagon_ui_2_mouse_entered() -> void:
+func _on_wagon_ui_hovered_wagon() -> void:
 	is_ui_interacting = true
 	is_rotating = false
 
 
-func _on_wagon_ui_2_mouse_exited() -> void:
+func _on_wagon_ui_hovered_wagon_exit() -> void:
 	is_ui_interacting = false
-
-
-func _on_items_item_collected(item_id) -> void:
-	wagon_ui_2.add_next_slot(preload("res://assets/inventoryicons.png") )
+	is_rotating = false

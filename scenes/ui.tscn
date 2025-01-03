@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d11nep0qfx3xu"]
+[gd_scene load_steps=2 format=3 uid="uid://d11nep0qfx3xu"]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_eji1r"]
-[ext_resource type="PackedScene" uid="uid://bxrfc2ttiaojn" path="res://scenes/wagon_ui.tscn" id="2_wks6p"]
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
@@ -120,12 +119,6 @@ offset_top = 26.0
 offset_right = 97.0
 offset_bottom = 49.0
 vertical_alignment = 1
-
-[node name="wagonUI" parent="." instance=ExtResource("2_wks6p")]
-offset_left = -554.0
-offset_top = -297.5
-offset_right = -1706.0
-offset_bottom = -945.5
 
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
