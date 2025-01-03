@@ -20,12 +20,9 @@ func populate_inventory():
 		var texture_rect = TextureRect.new()
 
 		# Set the stretch mode to avoid scaling
-		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP  # Keeps the original texture size
 		
 		# Optional: Adjust size using the texture's inherent size
 		texture_rect.texture = preload("res://assets/inventory.png")  # Empty inventory slot
-		texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		texture_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 		# Ensure parent container enforces size constraints
 		itemlist.append(false)  # Initialize slots with false (empty)

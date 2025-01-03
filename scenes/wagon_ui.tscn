@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxrfc2ttiaojn"]
+[gd_scene load_steps=2 format=3 uid="uid://bxrfc2ttiaojn"]
 
 [ext_resource type="Script" path="res://scripts/wagonUI.gd" id="1_yge0d"]
-[ext_resource type="Texture2D" uid="uid://c27vspjhh78nq" path="res://assets/blackspot.png" id="2_pcf4k"]
 
 [node name="wagonUI" type="Control"]
 layout_mode = 3
@@ -16,22 +15,17 @@ script = ExtResource("1_yge0d")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 visible = false
+clip_contents = true
 layout_mode = 1
-grow_horizontal = 2
-grow_vertical = 2
 columns = 3
 metadata/_edit_use_anchors_ = true
-
-[node name="TextureRect" type="TextureRect" parent="GridContainer"]
-layout_mode = 2
-texture = ExtResource("2_pcf4k")
 
 [node name="hideandshow" type="Button" parent="."]
 layout_mode = 0
 offset_left = 61.0
-offset_top = 6.0
+offset_top = -34.0
 offset_right = 134.0
-offset_bottom = 37.0
+offset_bottom = -3.0
 text = "Click me"
 icon_alignment = 2
 

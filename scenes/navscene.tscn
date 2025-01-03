@@ -60,11 +60,10 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_uuv30"]
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_m5l1y"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
-source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_r6s4m"]
@@ -461,7 +460,7 @@ texture = ExtResource("1_p51p1")
 11:11/0 = 0
 12:11/0 = 0
 14:11/0 = 0
-14:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uuv30")
+14:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_m5l1y")
 15:11/0 = 0
 16:11/0 = 0
 17:11/0 = 0
@@ -748,8 +747,16 @@ layer_1/name = "foilage"
 position = Vector2(-664, -276)
 
 [node name="wagonUI2" parent="wagon" instance=ExtResource("4_q45a2")]
-offset_right = 0.0
-offset_bottom = 0.0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -31.2035
+offset_top = -44.5177
+offset_right = -31.2035
+offset_bottom = -44.5177
+grow_horizontal = 1
+grow_vertical = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="UI" parent="." instance=ExtResource("5_qn5ki")]
 

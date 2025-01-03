@@ -268,4 +268,4 @@ func _on_wagon_ui_2_mouse_exited() -> void:
 
 
 func _on_items_item_collected(item_id) -> void:
-	wagon_ui_2.add_next_slot(preload("res://assets/musket.png") )
+	wagon_ui_2.add_next_slot(preload("res://assets/inventoryicons.png") )
