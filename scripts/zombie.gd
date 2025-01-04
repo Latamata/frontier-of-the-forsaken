@@ -59,17 +59,18 @@ func find_target():
 		target = closest_target
 
 func sprite_frame_direction():
-	if abs(direction.x) > abs(direction.y):  # Prioritize horizontal movement
+	if abs(direction.x) > abs(direction.y):  # Horizontal movement
 		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.play()
-		animated_sprite_2d.flip_h = direction.x < 0
+		animated_sprite_2d.flip_h = direction.x < 0  # Flip for left direction
 	elif abs(direction.y) > abs(direction.x):  # Vertical movement
+		
 		if direction.y < 0:
-			animated_sprite_2d.play()
-		elif direction.y > 0:
-			animated_sprite_2d.play()
-	else:
-		animated_sprite_2d.animation = "default"
+			animated_sprite_2d.animation = "walking_away"  # Moving upward
+		else:
+			animated_sprite_2d.animation = "walking_toward"  # Moving downward
+			pass
+	animated_sprite_2d.play()
+
 func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position

@@ -52,8 +52,6 @@ func _physics_process(delta):
 
 	move_and_collide(velocity)
 
-
-
 	if is_aiming:
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
