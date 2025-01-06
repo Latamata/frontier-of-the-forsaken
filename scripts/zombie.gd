@@ -25,6 +25,7 @@ func _ready():
 	update_healthbar()
 
 func _physics_process(delta):
+	print(target)
 	time_since_last_path_update += delta
 
 	if target and is_instance_valid(target):
@@ -33,6 +34,7 @@ func _physics_process(delta):
 			time_since_last_path_update = 0.0  # Reset timer
 			sprite_frame_direction()
 
+		# Move toward the target if navigation is not finished
 		if not navigation_agent_2d.is_navigation_finished():
 			direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
 			velocity = direction * SPEED
@@ -41,9 +43,10 @@ func _physics_process(delta):
 			moving = false
 			velocity = Vector2.ZERO
 	else:
-		direction = Vector2.ZERO  # Reset direction if no valid target
+		animated_sprite_2d.animation = "default"
 		find_target()
 
+	# Handle melee
 	if melee_cd and overlapping_bodies.size() > 0:
 		apply_melee_damage()
 

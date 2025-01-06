@@ -7,6 +7,8 @@
 size = Vector2(227.148, 120)
 
 [node name="wagonUI" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_yge0d")
 
 [node name="hideandshow" type="Button" parent="."]

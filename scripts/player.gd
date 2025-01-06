@@ -34,6 +34,7 @@ func _physics_process(delta):
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_gun()
+		#pass
 
 func sprite_frame_direction():
 	if direction == Vector2(0, -1):  # Specific case for upward movement
