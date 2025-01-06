@@ -121,7 +121,7 @@ animations = [{
 size = Vector2(14, 14)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_74v56"]
-radius = 257.158
+radius = 170.839
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
 radius = 31.0161
@@ -139,14 +139,12 @@ position = Vector2(-3, 5)
 shape = SubResource("RectangleShape2D_44wcc")
 
 [node name="targeting" type="Area2D" parent="."]
-visible = false
 disable_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="targeting"]
 shape = SubResource("CircleShape2D_74v56")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
 
 [node name="Melee" type="Area2D" parent="."]
 monitorable = false

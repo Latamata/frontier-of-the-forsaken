@@ -33,7 +33,6 @@ func _physics_process(delta):
 			time_since_last_path_update = 0.0  # Reset timer
 			sprite_frame_direction()
 
-		# Move toward the target if navigation is not finished
 		if not navigation_agent_2d.is_navigation_finished():
 			direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
 			velocity = direction * SPEED
@@ -42,10 +41,9 @@ func _physics_process(delta):
 			moving = false
 			velocity = Vector2.ZERO
 	else:
-		animated_sprite_2d.animation = "default"
+		direction = Vector2.ZERO  # Reset direction if no valid target
 		find_target()
 
-	# Handle melee
 	if melee_cd and overlapping_bodies.size() > 0:
 		apply_melee_damage()
 
@@ -112,7 +110,7 @@ func update_healthbar():
 func _on_melee_body_entered(body: Node2D) -> void:
 	if body.is_in_group("npc") and body not in overlapping_bodies:
 		overlapping_bodies.append(body)
-	if body.name == 'player' and body not in overlapping_bodies:
+	if body.name == 'player':
 		overlapping_bodies.append(body)
 
 func apply_melee_damage():
