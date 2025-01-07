@@ -221,7 +221,7 @@ func spawn_zombies(rows: int, cols: int):
 
 func _on_timer_timeout():
 	if zombiegroup.get_child_count() < 1:
-		spawn_zombies(1, 1)
+		spawn_zombies(2, 2)
 
 func _on_ui_aim_action():
 	# Toggle the global aiming state

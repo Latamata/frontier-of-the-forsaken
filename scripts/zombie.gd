@@ -25,7 +25,6 @@ func _ready():
 	update_healthbar()
 
 func _physics_process(delta):
-	print(target)
 	time_since_last_path_update += delta
 
 	if target and is_instance_valid(target):

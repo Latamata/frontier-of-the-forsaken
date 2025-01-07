@@ -60,7 +60,7 @@ func _on_turn_button_down():
 
 
 func _on_ui_camp_action():
-	print('camp trail # ' , Globals.geo_map_camp)
+	#print('camp trail # ' , Globals.geo_map_camp)
 	if current_path and Globals.geo_map_camp in mountain_points_by_line[Globals.current_line]:
 		get_tree().change_scene_to_file("res://scenes/mountain.tscn")
 	else:

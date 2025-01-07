@@ -1,14 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://b3xf8oag4guqg"]
 
-[ext_resource type="Script" path="res://scenes/tree.gd" id="1_xljco"]
+[ext_resource type="Script" path="res://scripts/tree.gd" id="1_xljco"]
 [ext_resource type="Texture2D" uid="uid://dfxxojk4llo66" path="res://assets/world_tileset.png" id="2_d2ue6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_un75c"]
 size = Vector2(20, 15)
 
-[node name="tree" type="StaticBody2D"]
-collision_layer = 3
-collision_mask = 3
+[node name="tree" type="StaticBody2D" groups=["plant"]]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_xljco")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

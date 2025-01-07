@@ -18,7 +18,7 @@ var targetResource
 func _ready():
 	# Initialize the healthbar
 	update_healthbar()
-	
+
 func _physics_process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if direction != Vector2.ZERO:
@@ -53,6 +53,7 @@ func sprite_frame_direction():
 func update_healthbar():
 	# Sync the healthbar with the current health
 	healthbar.value = HEALTH
+
 func slow_affect(activate):
 	if activate:
 		SPEED = 30.0
@@ -89,10 +90,6 @@ func rotate_gun():
 func _on_reload_timeout():
 	reloaded = true
 
-func _on_gatherarea_body_entered(body):
-	if body.name == "tree":
-		#targetResource = body
-		gather = false
 
 func swing_sword():
 	sabre.rotation = (get_global_mouse_position() - global_position).normalized().angle() + 45
@@ -102,7 +99,8 @@ func swing_sword():
 
 func _on_sabre_body_entered(body):
 	#print(body)
-	if body.name == "tree":
+	if body.is_in_group("plant"):
+		print("running")
 		body.chopped_down()
 	if body.is_in_group("zombie"):
 		body.take_damage(20)
