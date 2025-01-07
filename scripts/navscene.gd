@@ -21,6 +21,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	#on ready spawn npcs
 	var starting_position = Vector2(-200, 100)  # Initial position of npcs
 	var offset = Vector2(0, -50)  # Offset to subtract each iteration npcs
 	for i in range(Globals.soldier_count):
@@ -31,13 +32,12 @@ func _ready():
 
 	ui.hide_map_ui(false)
 	ui.set_UI_resources()
-	var player_tile = tile_map.local_to_map(player.global_position)
 
 func _process(delta: float) -> void:
 	if player != null:
 		update_speed_based_on_tile()
 	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
-	
+
 func update_npc_and_zombie_speeds_based_on_tile():
 	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
 		if not is_instance_valid(npc):  # Ensure npc is valid

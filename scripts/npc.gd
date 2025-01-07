@@ -10,7 +10,7 @@ var SPEED = 19.0
 var forward_angle: float = 0
 var target
 var HEALTH = 100  # NPC's starting health
-@export var MAX_HEALTH = 100  # Maximum health of the NPC for scaling
+@export var MAX_HEALTH = 100  # Used to set the health max on the loading of healthbar
 @onready var gun_marker = $Musket/Marker2D
 @onready var gun = $Musket
 @export var gun_offset = Vector2(0, -25)

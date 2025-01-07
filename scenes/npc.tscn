@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="3_rsjd5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2owqg"]
-size = Vector2(17.9933, 19.9096)
+size = Vector2(17.9933, 13)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gqid2"]
 radius = 545.258
@@ -138,6 +138,7 @@ animations = [{
 radius = 31.0161
 
 [node name="npc" type="CharacterBody2D" groups=["npc"]]
+position = Vector2(0, -3)
 collision_mask = 2
 script = ExtResource("1_6lh2a")
 
@@ -149,7 +150,7 @@ texture = ExtResource("2_wp1fx")
 position = Vector2(28.0534, -1.00281)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.817879, -9.9548)
+position = Vector2(1.81788, -4.5)
 shape = SubResource("RectangleShape2D_2owqg")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -197,6 +198,7 @@ offset_left = -40.0
 offset_top = -86.0
 offset_right = 48.0
 offset_bottom = -59.0
+metadata/_edit_use_anchors_ = true
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
 [connection signal="timeout" from="gunreloadtimer" to="." method="_on_timer_timeout"]
