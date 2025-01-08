@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://b3xf8oag4guqg"]
 
 [ext_resource type="Script" path="res://scripts/tree.gd" id="1_xljco"]
-[ext_resource type="Texture2D" uid="uid://dfxxojk4llo66" path="res://assets/world_tileset.png" id="2_d2ue6"]
+[ext_resource type="Texture2D" uid="uid://c5ak1mmopr0jw" path="res://assets/trees.png" id="2_0vmqr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_un75c"]
-size = Vector2(20, 15)
+size = Vector2(126, 37)
 
 [node name="tree" type="StaticBody2D" groups=["plant"]]
 collision_layer = 4
@@ -12,12 +12,12 @@ collision_mask = 4
 script = ExtResource("1_xljco")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -2.5)
+position = Vector2(11, -18.5)
 shape = SubResource("RectangleShape2D_un75c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(4.76837e-07, -44)
+position = Vector2(7, -147)
 scale = Vector2(1.25, 2)
-texture = ExtResource("2_d2ue6")
+texture = ExtResource("2_0vmqr")
 region_enabled = true
-region_rect = Rect2(0, 48, 16, 48)
+region_rect = Rect2(128.219, 0.195107, 105.195, 148.259)

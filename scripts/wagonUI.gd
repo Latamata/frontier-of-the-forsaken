@@ -11,7 +11,7 @@ var slot_count = 9
 var selected_item = null
 var hovered_item = null
 var itemlist = []
-
+var gun = preload("res://assets/inventoryicons.png")
 func _ready():
 	populate_inventory()
 
@@ -71,10 +71,10 @@ func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 			selected_item = null
 
 # Update the list of items in inventory
-func update_itemlist():
-	for i in range(grid_container.get_child_count()):
-		var slot = grid_container.get_child(i)
-		itemlist[i] = slot.texture != preload("res://assets/inventory.png")
+#func update_itemlist():
+	#for i in range(grid_container.get_child_count()):
+		#var slot = grid_container.get_child(i)
+		#itemlist[i] = slot.texture != preload("res://assets/inventory.png")
 
 # Handle mouse enter and exit events for visual feedback
 func _on_texture_rect_mouse_entered(texture_rect):
@@ -83,17 +83,18 @@ func _on_texture_rect_mouse_entered(texture_rect):
 
 func _on_texture_rect_mouse_exited(texture_rect):
 	texture_rect.modulate = Color(1, 1, 1)  # Reset to default color
-	if hovered_item == selected_item:
+	if hovered_item == texture_rect:
 		hovered_item = null
 
+
 # Add a new item to the next available slot
-func add_next_slot(item_texture: Texture):
+func add_next_slot(item_type):
 	for i in range(itemlist.size()):
 		if not itemlist[i]:  # Find the first empty slot
-			var slot = grid_container.get_child(i)
-			slot.texture = item_texture  # Use the passed-in item texture
+			var slot = grid_container.get_child(i)  # Assumes grid_container contains inventory slots
+			if item_type == 'gun':
+				slot.texture = gun  # Use the passed-in item texture
 			itemlist[i] = true  # Mark slot as filled
-			emit_signal("item_added", item_texture)  # Emit signal with the item texture as argument
 			return
 
 

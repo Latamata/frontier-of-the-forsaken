@@ -212,6 +212,7 @@ func fire_gun(firing_entity: Node2D):
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
+
 func spawn_zombies(rows: int, cols: int):
 	for row in range(rows):
 		for col in range(cols):
@@ -254,7 +255,7 @@ func _on_wagon_ui_2_hovered_wagon() -> void:
 
 
 func _on_items_item_collected(item_id) -> void:
-	$wagonUI.add_next_slot(preload("res://assets/inventoryicons.png") )
+	$wagonUI.add_next_slot('gun' )
 
 
 func _on_wagon_ui_hovered_wagon() -> void:

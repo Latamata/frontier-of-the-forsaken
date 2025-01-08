@@ -62,10 +62,7 @@ func _update_ui_resources():
 	foodamount.text = str(Globals.food)
 	wateramount.text = str(Globals.water)
 
-
-func _on_button_button_down():
-	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )
-
+#-----------------BATTLE MAP UI----------------------
 func _on_aim_button_down():
 	
 	emit_signal("aim_action")
@@ -83,3 +80,7 @@ func _on_battlemap_ui_mouse_entered():
 func _on_battlemap_ui_mouse_exited():
 	emit_signal("ui_interaction_ended") 
 	#print("mouse exited the ui thing")
+
+
+func _on_geomap_button_down() -> void:
+	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )
