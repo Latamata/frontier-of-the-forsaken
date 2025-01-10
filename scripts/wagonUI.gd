@@ -70,12 +70,6 @@ func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 			selected_item.position = original_position
 			selected_item = null
 
-# Update the list of items in inventory
-#func update_itemlist():
-	#for i in range(grid_container.get_child_count()):
-		#var slot = grid_container.get_child(i)
-		#itemlist[i] = slot.texture != preload("res://assets/inventory.png")
-
 # Handle mouse enter and exit events for visual feedback
 func _on_texture_rect_mouse_entered(texture_rect):
 	hovered_item = texture_rect

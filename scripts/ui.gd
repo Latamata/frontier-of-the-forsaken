@@ -15,11 +15,6 @@ signal ui_interaction_ended()
 
 
 
-func _ready():
-	pass
-
-
-
 func _process(_delta):
 	if Input.is_action_just_pressed("inventory") :
 		#inventory_manage()
@@ -64,7 +59,6 @@ func _update_ui_resources():
 
 #-----------------BATTLE MAP UI----------------------
 func _on_aim_button_down():
-	
 	emit_signal("aim_action")
 	#print("Move button pressed - Signal emitted")
 
