@@ -22,21 +22,48 @@ var rotation_angle: float
 
 func _ready():
 	#on ready spawn npcs
-	var starting_position = Vector2(-200, 100)  # Initial position of npcs
+	var starting_position = Vector2(-600, 100)  # Initial position of npcs
 	var offset = Vector2(0, -50)  # Offset to subtract each iteration npcs
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
 		musketman_instance.global_position = starting_position  # Set position
 		npcgroup.add_child(musketman_instance)
 		starting_position += offset
+	$UI.hide_map_ui(false)
+#func _process(_delta: float) -> void:
+	#if player != null:
+		#update_speed_based_on_tile()
+	#update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+func _input(event):
+	if is_ui_interacting:
+		return
 
-	ui.hide_map_ui(false)
-	ui.set_UI_resources()
+	if event is InputEventMouseButton:
+		match event.button_index:
+			MOUSE_BUTTON_WHEEL_DOWN:
+				if event.pressed:
+					camera_2d.zoom = Vector2(1, 1)
+			MOUSE_BUTTON_WHEEL_UP:
+				if event.pressed:
+					camera_2d.zoom = Vector2(2, 2)
+			MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					is_rotating = true
+					initial_click_position = get_local_mouse_position()
+				else:
+					is_rotating = false
 
-func _process(delta: float) -> void:
-	if player != null:
-		update_speed_based_on_tile()
-	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+	# Process rotation logic if active
+	if is_rotating:
+		var current_time = Time.get_ticks_msec()
+		if current_time - last_update_time > update_interval:
+			process_rotation()
+			last_update_time = current_time
+
+	# Handle "accept" action for player interaction
+	if Input.is_action_just_pressed("ui_accept") and player:
+		#handle_accept_action()
+		pass
 
 func update_npc_and_zombie_speeds_based_on_tile():
 	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
@@ -51,7 +78,6 @@ func update_npc_and_zombie_speeds_based_on_tile():
 		else:
 			npc.slow_affect(false)  # Remove slow effect
 
-
 func update_speed_based_on_tile():
 	var player_tile = tile_map.local_to_map(player.global_position)
 	var tile_data = tile_map.get_cell_tile_data(0, player_tile)
@@ -62,34 +88,21 @@ func update_speed_based_on_tile():
 	else:
 		player.slow_affect(false)
 		#pass
+#OPTIMIZATION for placement
+var last_update_time = 0.0  # Tracks the last time rotation logic was updated
+var update_interval = 100.0  # Minimum interval between updates (in seconds)
+#var start_ticks = OS.get_ticks_msec()
 
-func _input(event):
-	if is_ui_interacting:
-		return
-	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			camera_2d.zoom = Vector2(1,1)
-		if event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			camera_2d.zoom = Vector2(2,2)
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			is_rotating = true  # Start tracking rotation
-			initial_click_position = get_local_mouse_position()  # Store the position where the click started
-		else:
-			is_rotating = false
-	if is_rotating:
-		# If the mouse button is held down, calculate the rotation angle
-		var current_mouse_position = get_local_mouse_position()
-		
-		# Get the angle between the initial click position and the current mouse position
-		rotation_angle = (current_mouse_position - initial_click_position).angle()
-		# Now spawn the double line at the nearest tile and apply the calculated rotation
+
+
+func process_rotation():
+	var current_mouse_position = get_local_mouse_position()
+	if initial_click_position.distance_to(current_mouse_position) > 5:  # Only update if the mouse moved significantly
+		var rotation_angle = (current_mouse_position - initial_click_position).angle()
 		var nearest_tile_position = get_nearest_tile(current_mouse_position)
 		spawn_double_line_at_position(nearest_tile_position, rotation_angle)
-	assign_npcs_to_indicators(rotation_angle)
-	if Input.is_action_just_pressed("ui_accept") && player != null:
-		player.swing_sword() 
-		if player.targetResource != null:
-			player.targetResource.queue_free()
+		assign_npcs_to_indicators(rotation_angle)
+
 
 func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Vector2:
 	var tile_coords = tile_map.local_to_map(tile_map.to_local(selected_position))
@@ -122,7 +135,7 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 
 	var row_spacing = 25  # Distance between the two lines
 	var indicator_spacing = 50  # Distance between indicators in each line
-	var line_offset = -((npcgroup.get_child_count() / 2) - 1) * indicator_spacing / 2  # Center both lines around start_position
+	var line_offset = -((npcgroup.get_child_count() / 2.0) - 1) * indicator_spacing / 2.0  # Center both lines around start_position
 	var placed_positions = []
 	var current_index = 0
 
@@ -139,7 +152,7 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 
 		# Determine row (top or bottom) and position along the line
 		var row = i % 2
-		var position_in_line = i / 2
+		var position_in_line = i / 2.0
 
 		# Calculate position relative to the start position
 		var indicator_position = start_position
@@ -154,38 +167,6 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
 		current_index += 1
 
-
-func spawn_square_formation_at_position(start_position: Vector2, unit_rotation_angle: float = 0.0):
-	# Clear previous indicators
-	for child in indicaters.get_children():
-		child.queue_free()
-
-	var spacing = 50  # Distance between indicators in the square
-	var npc_count = npcgroup.get_child_count()
-	var grid_size = int(ceil(sqrt(npc_count)))  # Ensure grid_size is an integer
-	var placed_positions = []
-
-	# Spawn NPCs in a square formation
-	for i in range(npc_count):
-		var indicator_instance = IndicatorScene.instantiate()
-
-		# Determine row and column in the grid
-		var row = i % grid_size
-		var col = i / grid_size
-
-		# Calculate position relative to the start position
-		var indicator_position = start_position
-		indicator_position.x += (col - (grid_size - 1) / 2) * spacing  # Center the square horizontally
-		indicator_position.y += (row - (grid_size - 1) / 2) * spacing  # Center the square vertically
-
-		# Rotate the indicator position around the start position
-		indicator_position = rotate_position_around_center(indicator_position, start_position, unit_rotation_angle)
-		
-		# Set position and add to the scene
-		indicator_instance.position = get_nearest_tile(indicator_position, placed_positions)
-		indicaters.add_child(indicator_instance)
-		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
-
 func assign_npcs_to_indicators(forward_angle: float):
 	var indicators = indicaters.get_children()
 	for i in range(min(npcgroup.get_child_count(), indicators.size())):
@@ -199,7 +180,7 @@ func fire_gun(firing_entity: Node2D):
 	if not is_instance_valid(firing_entity) or not firing_entity.has_node("Musket/Marker2D"):
 		print("Error: Invalid firing entity or missing Musket/Marker2D node.")
 		return
-	
+	# Fire the musket ball
 	var musketBall = BULLET.instantiate()
 	var gun_marker = firing_entity.get_node("Musket/Marker2D")
 	musketBall.position = gun_marker.global_position
@@ -222,7 +203,7 @@ func spawn_zombies(rows: int, cols: int):
 
 func _on_timer_timeout():
 	if zombiegroup.get_child_count() < 1:
-		spawn_zombies(2, 2)
+		spawn_zombies(4, 4)
 
 func _on_ui_aim_action():
 	# Toggle the global aiming state
@@ -232,9 +213,7 @@ func _on_ui_aim_action():
 	for npc in npcgroup.get_children():
 		npc.is_aiming = Globals.is_global_aiming
 
-
 func _on_ui_fire_action():
-	#camera_2d.zoom = Vector2(2,2)
 	for npc in npcgroup.get_children():
 		if is_instance_valid(npc):
 			if npc.reloaded:
@@ -253,15 +232,9 @@ func _on_wagon_ui_2_hovered_wagon() -> void:
 	is_ui_interacting = true
 	is_rotating = false
 
-
-func _on_items_item_collected(item_id) -> void:
-	$wagonUI.add_next_slot('gun' )
-
-
 func _on_wagon_ui_hovered_wagon() -> void:
 	is_ui_interacting = true
 	is_rotating = false
-
 
 func _on_wagon_ui_hovered_wagon_exit() -> void:
 	is_ui_interacting = false
