@@ -30,14 +30,15 @@ func _ready():
 		npcgroup.add_child(musketman_instance)
 		starting_position += offset
 	$UI.hide_map_ui(false)
+
 #func _process(_delta: float) -> void:
 	#if player != null:
 		#update_speed_based_on_tile()
 	#update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+
 func _input(event):
 	if is_ui_interacting:
 		return
-
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_DOWN:
@@ -52,14 +53,12 @@ func _input(event):
 					initial_click_position = get_local_mouse_position()
 				else:
 					is_rotating = false
-
 	# Process rotation logic if active
 	if is_rotating:
 		var current_time = Time.get_ticks_msec()
 		if current_time - last_update_time > update_interval:
 			process_rotation()
 			last_update_time = current_time
-
 	# Handle "accept" action for player interaction
 	if Input.is_action_just_pressed("ui_accept") and player:
 		#handle_accept_action()
@@ -98,7 +97,7 @@ var update_interval = 100.0  # Minimum interval between updates (in seconds)
 func process_rotation():
 	var current_mouse_position = get_local_mouse_position()
 	if initial_click_position.distance_to(current_mouse_position) > 5:  # Only update if the mouse moved significantly
-		var rotation_angle = (current_mouse_position - initial_click_position).angle()
+		rotation_angle = (current_mouse_position - initial_click_position).angle()
 		var nearest_tile_position = get_nearest_tile(current_mouse_position)
 		spawn_double_line_at_position(nearest_tile_position, rotation_angle)
 		assign_npcs_to_indicators(rotation_angle)

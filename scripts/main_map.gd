@@ -11,35 +11,23 @@ var speed: float = 50  # Movement speed (pixels per second)
 # Define mountain points by line and path connections
 var mountain_points_by_line = [
 	[1, 7, 10],  # Mountain points for Path2D
-	[6, 2, 15]   # Mountain points for Path2D2
+	[6, 2, 15],   # Mountain points for Path2D2
+	[6, 2, 15]   # Mountain points for Path2D3
 ]
 var path_connections = {
 	0: {  # Path2D
-		4: {"path_index": 2, "point_index": 0},  # Point 4 in Path2D connects to Path2D3, point 0
-		8: {"path_index": 1, "point_index": 0}   # Point 8 in Path2D connects to Path2D2, point 0
+		4: {"line": 2, "point": 0},  # Point 4 in Path2D connects to Path2D3, point 0
+		8: {"line": 1, "point": 0}   # Point 8 in Path2D connects to Path2D2, point 0
 	},
-	1: {  # Path2D2
-		8: {"path_index": 2, "point_index": 3}   # Point 8 in Path2D2 connects to Path2D3, point 3
+	1: {  # Path2D3
+		0: {"line": 0, "point": 8},  # Point 0 in Path2D3 connects back to Path2D, point 4
+		13: {"line": 0, "point": 10}   # Point 3 in Path2D3 connects to Path2D2, point 8
 	},
-	2: {  # Path2D3
-		0: {"path_index": 0, "point_index": 4},  # Point 0 in Path2D3 connects back to Path2D, point 4
-		3: {"path_index": 1, "point_index": 8}   # Point 3 in Path2D3 connects to Path2D2, point 8
+	2: {  # Path2D2
+		5: {"line": 0, "point": 10}   # Point 8 in Path2D2 connects to Path2D3, point 3
 	}
 }
 
-var point_connections = {
-	0: {  # Path2D
-		4: {"line": 2, "point": 0},  # Point 4 connects to Path2D3, point 0
-		8: {"line": 1, "point": 0}   # Point 8 connects to Path2D2, point 0
-	},
-	1: {  # Path2D2
-		8: {"line": 2, "point": 3}   # Point 8 connects to Path2D3, point 3
-	},
-	2: {  # Path2D3
-		0: {"line": 0, "point": 4},  # Point 0 connects back to Path2D, point 4
-		3: {"line": 1, "point": 8}   # Point 3 connects to Path2D2, point 8
-	}
-}
 
 func _ready():
 	# Initialize UI and validate Globals
@@ -65,9 +53,9 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	_update_turn_button_visibility()
 
 func _update_turn_button_visibility():
-	# Show the turn button if the wagon is at a point with a connection
-	var connection = path_connections.get(Globals.current_line, {}).get(Globals.geo_map_camp, null)
-	turn_button.visible = connection != null
+	# Check if the current point has a connection and show/hide the turn button
+	turn_button.visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
+
 
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
@@ -77,8 +65,8 @@ func _on_ui_move_action():
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 
 func _check_for_connection():
-	# Automatically switch paths if there is a connection at the current point
-	var current_line_connections = point_connections.get(Globals.current_line, {})
+	# Switch paths if there's a connection at the current point
+	var current_line_connections = path_connections.get(Globals.current_line, {})
 	if Globals.geo_map_camp in current_line_connections:
 		var connection = current_line_connections[Globals.geo_map_camp]
 		Globals.current_line = connection["line"]
@@ -86,15 +74,17 @@ func _check_for_connection():
 		current_path = paths[Globals.current_line]
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 
+
 func _on_turn_button_down():
-	# Handle manual path switching when the turn button is clicked
+	# Manually switch paths if the turn button is clicked
 	var connection = path_connections.get(Globals.current_line, {}).get(Globals.geo_map_camp, null)
 	if connection:
-		Globals.current_line = connection["path_index"]
-		Globals.geo_map_camp = connection["point_index"]
+		Globals.current_line = connection["line"]
+		Globals.geo_map_camp = connection["point"]
 		current_path = paths[Globals.current_line]
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 		_update_turn_button_visibility()
+
 
 func _on_ui_camp_action():
 	# Switch to appropriate scene based on the current location
