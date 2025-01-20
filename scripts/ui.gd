@@ -10,8 +10,6 @@ signal ui_interaction_ended()
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
 
-@onready var foodamount = $resourcesUI/foodamount
-@onready var wateramount = $resourcesUI/wateramount
 
 
 
@@ -37,25 +35,24 @@ func hide_map_ui(hideorshow):
 		#get_tree().paused = true   # Pause the game when opening the inventory
 
 func _on_camp_button_down():
-	
 	emit_signal("camp_action")
 	#print("Camp button pressed - Signal emitted")
 
 func _on_move_button_down():
 	Globals.add_food(-20)
-	set_UI_resources()
+	#set_UI_resources()
 	emit_signal("move_action")
 	#print("Move button pressed - Signal emitted")
 
-func set_UI_resources():
-	call_deferred("_update_ui_resources")
+#func set_UI_resources():
+	#call_deferred("_update_ui_resources")
 
-func _update_ui_resources():
-	if foodamount == null:
-		print("Error: foodamount node not found!")
-		return
-	foodamount.text = str(Globals.food)
-	wateramount.text = str(Globals.water)
+#func _update_ui_resources():
+	#if foodamount == null:
+		#print("Error: foodamount node not found!")
+		#return
+	#foodamount.text = str(Globals.food)
+	#wateramount.text = str(Globals.water)
 
 #-----------------BATTLE MAP UI----------------------
 func _on_aim_button_down():

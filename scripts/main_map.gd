@@ -32,7 +32,6 @@ var path_connections = {
 func _ready():
 	# Initialize UI and validate Globals
 	ui.hide_map_ui(true)
-	ui.set_UI_resources()
 
 	if Globals.current_line < 0 or Globals.current_line >= paths.size():
 		print("Invalid Globals.current_line. Falling back to default.")

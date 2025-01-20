@@ -19,26 +19,37 @@ var is_ui_interacting = false  # To track if the mouse button is being held
 var is_rotating = false  # To track if the mouse button is being held
 var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
-
 func _ready():
-	#on ready spawn npcs
-	var starting_position = Vector2(-600, 100)  # Initial position of npcs
-	var offset = Vector2(0, -50)  # Offset to subtract each iteration npcs
+	# On ready spawn npcs
+	var starting_position = Vector2(-600, -150)  # Initial position of the first musketman
+	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
+	var column_offset = Vector2(0, 50)  # Offset for moving to the next column
+	var column_height = 2  # Number of musketmen per column
+	ui.hide_map_ui(false)
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
-		musketman_instance.global_position = starting_position  # Set position
+		
+		# Calculate the row and column index
+		var row = i % column_height  # Alternates between 0 and `column_height - 1`
+		var column = i / column_height  # Moves to the next column after every `column_height` musketmen
+		
+		# Set the position
+		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
+		
+		# Add to the group
 		npcgroup.add_child(musketman_instance)
-		starting_position += offset
-	$UI.hide_map_ui(false)
 
-#func _process(_delta: float) -> void:
-	#if player != null:
-		#update_speed_based_on_tile()
-	#update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+
+
+func _process(_delta: float) -> void:
+	if player != null:
+		update_speed_based_on_tile()
+	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
 
 func _input(event):
 	if is_ui_interacting:
 		return
+
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_DOWN:
@@ -59,10 +70,10 @@ func _input(event):
 		if current_time - last_update_time > update_interval:
 			process_rotation()
 			last_update_time = current_time
+
 	# Handle "accept" action for player interaction
 	if Input.is_action_just_pressed("ui_accept") and player:
-		#handle_accept_action()
-		pass
+		player.weapon_hitbox()
 
 func update_npc_and_zombie_speeds_based_on_tile():
 	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
@@ -91,7 +102,6 @@ func update_speed_based_on_tile():
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
 var update_interval = 100.0  # Minimum interval between updates (in seconds)
 #var start_ticks = OS.get_ticks_msec()
-
 
 
 func process_rotation():
@@ -192,6 +202,7 @@ func fire_gun(firing_entity: Node2D):
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
+	$Musketvolley.play()
 
 func spawn_zombies(rows: int, cols: int):
 	for row in range(rows):

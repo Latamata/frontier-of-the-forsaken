@@ -28,6 +28,7 @@ func _physics_process(delta):
 	time_since_last_path_update += delta
 
 	if target and is_instance_valid(target):
+		#print(target)
 		if time_since_last_path_update > path_update_interval:
 			navigation_agent_2d.target_position = target.global_position
 			time_since_last_path_update = 0.0  # Reset timer
@@ -37,7 +38,7 @@ func _physics_process(delta):
 		if not navigation_agent_2d.is_navigation_finished():
 			direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
 			velocity = direction * SPEED
-			move_and_collide(velocity * delta)
+			move_and_slide()
 		else:
 			moving = false
 			velocity = Vector2.ZERO
@@ -57,10 +58,12 @@ func find_target():
 		var closest_distance = INF  # Large initial distance
 
 		for body in bodies_in_area:
-			var distance = global_position.distance_to(body.global_position)
-			if distance < closest_distance:
-				closest_target = body
-				closest_distance = distance
+			# Ensure the body is a valid target (e.g., has health or belongs to a specific group)
+			if body.is_in_group("npc") or body.name == "player":  # Adjust as needed
+				var distance = global_position.distance_to(body.global_position)
+				if distance < closest_distance:
+					closest_target = body
+					closest_distance = distance
 
 		target = closest_target
 

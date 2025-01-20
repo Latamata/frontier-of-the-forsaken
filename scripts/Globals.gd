@@ -8,14 +8,14 @@ var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var current_line: int = 0
 var wood: int = 1 # setget add_wood, get_wood
-var soldier_count: int = 15 # setget add_soldier_count, get_soldier_count
+var soldier_count: int = 12 # setget add_soldier_count, get_soldier_count
 var water: int = 1 # setget add_water, get_water
 var happiness: int = 1 # setget add_happiness, get_happiness
 var health: int = 1 # setget add_health, get_health
 var wagon_speed: int = 1 # setget add_wagon_speed, get_wagon_speed
+
 # Optional: Setter/Getter for geo_map_camp if needed
 func set_current_line(value ) -> void:
-	
 	current_line = value
 	print("Globals.current_line updated to:", value)
 
@@ -30,7 +30,6 @@ func get_food() -> int:
 func add_geo_map_camp(value: int) -> void:
 	geo_map_camp += value
 	geo_map_camp = max(0, geo_map_camp)
-
 
 func add_wood(value: int) -> void:
 	wood += value

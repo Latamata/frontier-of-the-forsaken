@@ -87,31 +87,29 @@ func rotate_gun():
 	#else:
 		#gun.z_index = 1
 
+func weapon_hitbox():
+	if reloaded:
+		var hitbox_area = $sabre
+		var overlapping_bodies = hitbox_area.get_overlapping_bodies()
+		
+		for body in overlapping_bodies:
+			if body.is_in_group('zombie'):
+				body.take_damage(50)
+				print("Hit zombie: ", body.name)
+
+		reloaded = false
+		$Meleetimer.start()
+
+func _on_meleetimer_timeout() -> void:
+	reloaded = true
+
 func _on_reload_timeout():
 	reloaded = true
 
 
-func swing_sword():
-	sabre.rotation = (get_global_mouse_position() - global_position).normalized().angle() + 45
-	sabre.get_child(1).disabled = false  # Enable sword hitbox
-	$Meleetimer.start()  # Start the timer
-
-
-func _on_sabre_body_entered(body):
-	if body.is_in_group("plant"):
-		body.chopped_down()
-	if body.is_in_group("zombie"):
-		body.take_damage(20)
-		#print("hit zombie")
 
 func rotate_sword_to_mouse():
 	var mouse_position = get_global_mouse_position()
 	var direction_to_mouse = (mouse_position - sabre.global_position).normalized()
 	var angle = direction_to_mouse.angle()
 	sabre.rotation = angle
-
-
-func _on_meleetimer_timeout() -> void:
-	sabre.rotation = 0
-	sabre.get_child(1).disabled = true
-	$Meleetimer.stop()  # Explicitly stop the timer when done

@@ -117,27 +117,30 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_44wcc"]
-size = Vector2(26, 45)
+[sub_resource type="CircleShape2D" id="CircleShape2D_qyjg4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_74v56"]
-radius = 170.839
+radius = 218.449
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
 radius = 31.0161
 
 [node name="zombie" type="CharacterBody2D" groups=["zombie"]]
-position = Vector2(1, -26)
-collision_layer = 2
-collision_mask = 3
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+platform_on_leave = 2
+platform_floor_layers = 0
+safe_margin = 7.08
 script = ExtResource("1_th0mh")
 
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
+position = Vector2(5, -19)
 sprite_frames = SubResource("SpriteFrames_11mes")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-3, 0.5)
-shape = SubResource("RectangleShape2D_44wcc")
+position = Vector2(1, -5)
+shape = SubResource("CircleShape2D_qyjg4")
 
 [node name="targeting" type="Area2D" parent="."]
 disable_mode = 2
@@ -146,8 +149,15 @@ disable_mode = 2
 shape = SubResource("CircleShape2D_74v56")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
+simplify_path = true
+simplify_epsilon = 1.111
+radius = 55.45
+debug_enabled = true
 
 [node name="Melee" type="Area2D" parent="."]
+visible = false
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
@@ -157,7 +167,7 @@ shape = SubResource("CircleShape2D_axwvo")
 wait_time = 2.277
 
 [node name="Healthbar" type="ProgressBar" parent="."]
-modulate = Color(0.141176, 1, 0.14902, 1)
+modulate = Color(0.141176, 1, 0.14902, 0.619608)
 z_index = 2
 z_as_relative = false
 offset_left = -40.0
@@ -167,6 +177,4 @@ offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
-[connection signal="body_entered" from="Melee" to="." method="_on_melee_body_entered"]
-[connection signal="body_exited" from="Melee" to="." method="_on_melee_body_exited"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

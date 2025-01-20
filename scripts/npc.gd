@@ -6,7 +6,7 @@ var is_aiming = false
 var moving = false
 var reloaded = true
 var target_position: Vector2
-var SPEED = 19.0
+var speed = 19.0
 var forward_angle: float = 0
 var target
 var HEALTH = 100  # NPC's starting health
@@ -16,10 +16,11 @@ var HEALTH = 100  # NPC's starting health
 @export var gun_offset = Vector2(0, -25)
 @export var gun_radius = 20.0
 @onready var animated_sprite_2d = $AnimatedSprite2D
-@onready var navigation_agent_2d = $NavigationAgent2D
+#@onready var navigation_agent_2d = $NavigationAgent2D
 @onready var targeting = $targeting
 @onready var healthbar: ProgressBar = $Healthbar
 @onready var meleetimer: Timer = $Meleetimer
+@onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 
 var overlapping_bodies = []  # List of bodies in melee range
 
@@ -29,29 +30,24 @@ func _ready():
 	healthbar.max_value = MAX_HEALTH
 	healthbar.value = HEALTH
 
-func _physics_process(delta):
+# Assuming you are already setting the target position
+func _process(_delta):
 	if moving:
-		if not navigation_agent_2d.is_navigation_finished():
-			direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
-			velocity = direction * SPEED * delta  # Multiply by delta for move_and_collide
-			sprite_frame_direction()
-		else:
+		# Ask NavigationAgent2D for the next point on the path
+		var next_position = navigation_agent_2d.get_next_path_position()
+		
+		# If close enough to the target, stop moving
+		if global_position.distance_to(next_position) < 5:
 			moving = false
-			velocity = Vector2.ZERO
+			navigation_agent_2d.set_target_position(global_position)  # Reset the target position
+		else:
+			# Calculate the direction and move
+			direction = (next_position - global_position).normalized()
+			velocity = direction * speed
+			move_and_slide()
+			sprite_frame_direction()
 	else:
-		var forward_direction = Vector2(cos(forward_angle), sin(forward_angle)).normalized()
-		direction = forward_direction
-		velocity = forward_direction * (SPEED * delta)  # Adjust the multiplier to control the "step" size
-		sprite_frame_direction()
-
-		# Gradually reduce velocity to simulate stopping
-		velocity = velocity.move_toward(Vector2.ZERO, SPEED * delta)
-		if velocity.length() < 0.01:  # Threshold to ensure clean stop
-			velocity = Vector2.ZERO
-			animated_sprite_2d.stop()
-
-	move_and_collide(velocity)
-
+		animated_sprite_2d.animation = "idle"
 	if is_aiming:
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
@@ -62,21 +58,21 @@ func _physics_process(delta):
 	else:
 		rotate_gun(forward_angle)
 
-	# Apply melee damage if cooldown allows
-	if melee_cd and overlapping_bodies.size() > 0:
-		apply_melee_damage()
-
 func sprite_frame_direction():
 	if abs(direction.x) > abs(direction.y):  # Horizontal movement
 		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.flip_h = direction.x < 0  # Flip for left direction
+		animated_sprite_2d.play()
 	elif abs(direction.y) > abs(direction.x):  # Vertical movement
-		
 		if direction.y < 0:
 			animated_sprite_2d.animation = "walking_away"  # Moving upward
 		else:
 			animated_sprite_2d.animation = "walking_toward"  # Moving downward
-	animated_sprite_2d.play()
+		animated_sprite_2d.play()
+	else:
+		animated_sprite_2d.animation = "idle"
+
+
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()
@@ -118,9 +114,9 @@ func die():
 
 func slow_affect(activate):
 	if activate:
-		SPEED = 15.0
+		speed = 15.0
 	else:
-		SPEED = 30.0
+		speed = 30.0
 
 func fire_gun():
 	if reloaded:
@@ -134,10 +130,10 @@ func _on_takedamage_timeout():
 	take_damage(0)
 
 func move_to_position(new_target_position: Vector2):
-	# Set the target position for the NavigationAgent2D
 	target_position = new_target_position
-	navigation_agent_2d.target_position = target_position
+	navigation_agent_2d.set_target_position(target_position)  # Set the target for navigation
 	moving = true
+
 
 func _on_melee_body_entered(body: Node2D) -> void:
 	if body.is_in_group("zombie") and body not in overlapping_bodies:
@@ -147,12 +143,19 @@ func _on_melee_body_exited(body: Node2D) -> void:
 	if body in overlapping_bodies:
 		overlapping_bodies.erase(body)
 
-func apply_melee_damage():
-	for body in overlapping_bodies:
-		if is_instance_valid(body):
-			body.take_damage(30)  # Adjust damage amount as needed
-	melee_cd = false
-	meleetimer.start()
-
-func _on_meleetimer_timeout() -> void:
+func _on_meleetimer_timeout():
 	melee_cd = true
+	$Melee.disabled = false  # Enable melee collision when cooldown is over
+
+func apply_melee_damage():
+	if melee_cd:
+		return  # Don't apply damage if in cooldown
+
+	if overlapping_bodies.size() > 0:
+		for body in overlapping_bodies:
+			if is_instance_valid(body):
+				body.take_damage(30)
+		
+		melee_cd = false  # Disable melee until cooldown ends
+		$Melee.disabled = true  # Disable melee collision during cooldown
+		meleetimer.start()  # Start the cooldown timer
