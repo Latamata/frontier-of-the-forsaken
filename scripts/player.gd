@@ -9,17 +9,22 @@ var targetResource
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var gun = $Musket
-@export var gun_offset = Vector2(10, -15)
-@export var gun_radius = 1.0
-@onready var camera_2d = $"../Camera2D"
 @onready var sabre = $sabre
 @onready var healthbar: ProgressBar = $Healthbar
+@onready var camera_2d = $"../../Camera2D"
+
+var weapons = []  # List to hold weapons
+var current_weapon_index = 0  # Index for switching
 
 func _ready():
+	# Initialize weapons list
+	weapons = [gun, sabre]
+	set_active_weapon(0)  # Start with the first weapon
+
 	# Initialize the healthbar
 	update_healthbar()
 
-func _physics_process(delta):
+func _process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if direction != Vector2.ZERO:
 		camera_2d.global_position = global_position
@@ -29,13 +34,29 @@ func _physics_process(delta):
 	else:
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
-	#rotate_sword_to_mouse()  # Keep sword aligned to the mouse
+
+	# Switch weapons using number keys or a cycle button
+	#if Input.is_action_just_pressed("switch_weapon"):  # Define in InputMap
+		#switch_weapon()
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		rotate_gun()
-		#pass
+		rotate_weapon(weapons[current_weapon_index])  # Rotate the active weapon
+func get_current_weapon():
+	return weapons[current_weapon_index]  # Returns the active weapon node
 
+func switch_weapon():
+	# Increment index and loop around
+	current_weapon_index = (current_weapon_index + 1) % weapons.size()
+	set_active_weapon(current_weapon_index)
+
+func set_active_weapon(index):
+	# Hide all weapons first
+	for weapon in weapons:
+		weapon.hide()
+
+	# Show selected weapon
+	weapons[index].show()
 func sprite_frame_direction():
 	if direction == Vector2(0, -1):  # Specific case for upward movement
 		animated_sprite_2d.animation = "walking_away"
@@ -70,32 +91,46 @@ func take_damage(amount: int):
 		die()
 
 func die():
-	queue_free()
+	animated_sprite_2d.stop()  # Stop movement animation
+	set_physics_process(false)  # Disable further movement
+	set_process(false)
 
-func rotate_gun():
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
+	tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
+	tween.tween_callback(queue_free)  # Remove after animation
+
+
+func rotate_weapon(current_weapon):
 	var mouse_position = get_global_mouse_position()
 	var direction_to_mouse = (mouse_position - global_position).normalized()
 	var angle = direction_to_mouse.angle()
-	sabre.rotation = angle
-	sabre.position = direction_to_mouse * gun_radius + gun_offset
-	#if angle > PI / 2 or angle < -PI / 2:
-		#gun.flip_v = true
-	#else:
-		#gun.flip_v = false
-	#if angle < 0:
-		#gun.z_index = 0
-	#else:
-		#gun.z_index = 1
 
+	current_weapon.rotation = angle
+	var weapon_radius = 25.0  
+	current_weapon.position = Vector2(cos(angle), sin(angle)) * weapon_radius + Vector2(0, -25)
+	if angle > PI / 2 or angle < -PI / 2:
+		current_weapon.flip_v = true
+	else:
+		current_weapon.flip_v = false
+	if angle < 0:
+		current_weapon.z_index = 0
+	else:
+		current_weapon.z_index = 1
 func weapon_hitbox():
 	if reloaded:
-		var hitbox_area = $sabre
+		var hitbox_area = weapons[current_weapon_index]  # Get current weapon
+
 		var overlapping_bodies = hitbox_area.get_overlapping_bodies()
-		
 		for body in overlapping_bodies:
-			if body.is_in_group('zombie'):
+			if body.is_in_group("zombie"):
 				body.take_damage(50)
 				print("Hit zombie: ", body.name)
+
+		var overlapping_areas = hitbox_area.get_overlapping_areas()
+		for area in overlapping_areas:
+			if area.is_in_group("plant"):	
+				area.chopped_down()
 
 		reloaded = false
 		$Meleetimer.start()
@@ -105,11 +140,3 @@ func _on_meleetimer_timeout() -> void:
 
 func _on_reload_timeout():
 	reloaded = true
-
-
-
-func rotate_sword_to_mouse():
-	var mouse_position = get_global_mouse_position()
-	var direction_to_mouse = (mouse_position - sabre.global_position).normalized()
-	var angle = direction_to_mouse.angle()
-	sabre.rotation = angle

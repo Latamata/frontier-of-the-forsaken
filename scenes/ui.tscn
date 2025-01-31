@@ -1,10 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://d11nep0qfx3xu"]
+[gd_scene load_steps=3 format=3 uid="uid://d11nep0qfx3xu"]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_eji1r"]
+[ext_resource type="PackedScene" uid="uid://c7fy6vj4kxy1u" path="res://scenes/inventory.tscn" id="2_ca7nl"]
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_eji1r")
+
+[node name="inventory" parent="." instance=ExtResource("2_ca7nl")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = -163.0
+offset_right = -99.0
+offset_bottom = -163.0
 
 [node name="battlemapUI" type="Panel" parent="."]
 self_modulate = Color(1, 1, 0.184314, 0.415686)
@@ -46,6 +58,22 @@ focus_mode = 0
 mouse_filter = 1
 text = "Fire"
 
+[node name="inventory_button" type="Button" parent="battlemapUI"]
+layout_mode = 0
+offset_right = 114.0
+offset_bottom = 32.0
+focus_mode = 0
+text = "inventory"
+
+[node name="weapontoggle" type="Button" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 23.0
+offset_right = 380.0
+offset_bottom = 38.0
+focus_mode = 0
+text = "weapon"
+
 [node name="mapgeoUI" type="Panel" parent="."]
 self_modulate = Color(1, 1, 0.184314, 0.415686)
 layout_direction = 1
@@ -79,11 +107,20 @@ focus_mode = 0
 text = "camp
 "
 
+[node name="food" type="RichTextLabel" parent="mapgeoUI"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 173.5
+offset_right = 134.0
+offset_bottom = 223.5
+
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="battlemapUI/aim" to="." method="_on_aim_button_down"]
 [connection signal="button_down" from="battlemapUI/geomap" to="." method="_on_geomap_button_down"]
 [connection signal="button_down" from="battlemapUI/Fire" to="." method="_on_fire_button_down"]
+[connection signal="button_down" from="battlemapUI/inventory_button" to="." method="_on_inventory_button_button_down"]
+[connection signal="button_down" from="battlemapUI/weapontoggle" to="." method="_on_weapontoggle_button_down"]
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="mapgeoUI/move" to="." method="_on_move_button_down"]

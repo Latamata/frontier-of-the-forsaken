@@ -49,6 +49,7 @@ func _process(_delta):
 	else:
 		animated_sprite_2d.animation = "idle"
 	if is_aiming:
+		#print('running')
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
 			var target_angle = direction_to_target.angle()
@@ -72,9 +73,8 @@ func sprite_frame_direction():
 	else:
 		animated_sprite_2d.animation = "idle"
 
-
-
 func find_zombies_in_area():
+	
 	var bodies_in_area = targeting.get_overlapping_bodies()
 	if bodies_in_area.size() == 0:
 		target = null
@@ -85,6 +85,7 @@ func find_zombies_in_area():
 	for body in bodies_in_area:
 		if body.is_in_group("zombie") and is_instance_valid(body):
 			var distance_to_body = global_position.distance_to(body.global_position)
+			print("running")
 			if distance_to_body < closest_distance:
 				closest_distance = distance_to_body
 				target = body
@@ -109,7 +110,15 @@ func take_damage(amount: int):
 		die()
 
 func die():
-	queue_free()
+	animated_sprite_2d.stop()  # Stop movement animation
+	set_physics_process(false)  # Disable further movement
+	set_process(false)
+
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
+	tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
+	tween.tween_callback(queue_free)  # Remove after animation
+
 	Globals.add_soldier_count(-1)
 
 func slow_affect(activate):
@@ -133,7 +142,6 @@ func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
 	navigation_agent_2d.set_target_position(target_position)  # Set the target for navigation
 	moving = true
-
 
 func _on_melee_body_entered(body: Node2D) -> void:
 	if body.is_in_group("zombie") and body not in overlapping_bodies:

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c7ljr04u4mixs"
+path="res://.godot/imported/Musket Single Shot Distant 3 - QuickSounds.com.mp3-63aeebb9cf8618855e87c98ff6ad051b.mp3str"
+
+[deps]
+
+source_file="res://sound/Musket Single Shot Distant 3 - QuickSounds.com.mp3"
+dest_files=["res://.godot/imported/Musket Single Shot Distant 3 - QuickSounds.com.mp3-63aeebb9cf8618855e87c98ff6ad051b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -4,7 +4,7 @@ extends Node2D
 @onready var tile_map = $Enviorment/TileMap
 @onready var npcgroup = $NPCGROUP
 @onready var zombiegroup = $ZOMBIEGROUP
-@onready var player = $player
+@onready var player = $Node2D/player
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
 
@@ -19,7 +19,9 @@ var is_ui_interacting = false  # To track if the mouse button is being held
 var is_rotating = false  # To track if the mouse button is being held
 var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
+
 func _ready():
+	spawn_zombies(4, 2,Vector2(500,200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-600, -150)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -28,28 +30,25 @@ func _ready():
 	ui.hide_map_ui(false)
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
-		
 		# Calculate the row and column index
 		var row = i % column_height  # Alternates between 0 and `column_height - 1`
 		var column = i / column_height  # Moves to the next column after every `column_height` musketmen
-		
 		# Set the position
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
-		
 		# Add to the group
 		npcgroup.add_child(musketman_instance)
-
-
 
 func _process(_delta: float) -> void:
 	if player != null:
 		update_speed_based_on_tile()
 	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
 
+#OPTIMIZATION for placement
+var last_update_time = 0.0  # Tracks the last time rotation logic was updated
+var update_interval = 100.0  # Minimum interval between updates (in seconds)
 func _input(event):
 	if is_ui_interacting:
 		return
-
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_DOWN:
@@ -71,9 +70,12 @@ func _input(event):
 			process_rotation()
 			last_update_time = current_time
 
-	# Handle "accept" action for player interaction
 	if Input.is_action_just_pressed("ui_accept") and player:
-		player.weapon_hitbox()
+		var current_weapon = player.get_current_weapon()
+		
+		if current_weapon == player.gun:  # Ensure only the gun can shoot
+			fire_gun(player)
+
 
 func update_npc_and_zombie_speeds_based_on_tile():
 	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
@@ -97,12 +99,6 @@ func update_speed_based_on_tile():
 		player.slow_affect(true)
 	else:
 		player.slow_affect(false)
-		#pass
-#OPTIMIZATION for placement
-var last_update_time = 0.0  # Tracks the last time rotation logic was updated
-var update_interval = 100.0  # Minimum interval between updates (in seconds)
-#var start_ticks = OS.get_ticks_msec()
-
 
 func process_rotation():
 	var current_mouse_position = get_local_mouse_position()
@@ -111,7 +107,6 @@ func process_rotation():
 		var nearest_tile_position = get_nearest_tile(current_mouse_position)
 		spawn_double_line_at_position(nearest_tile_position, rotation_angle)
 		assign_npcs_to_indicators(rotation_angle)
-
 
 func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Vector2:
 	var tile_coords = tile_map.local_to_map(tile_map.to_local(selected_position))
@@ -141,13 +136,11 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 	# Hide all existing indicators
 	for child in indicaters.get_children():
 		child.visible = false
-
 	var row_spacing = 25  # Distance between the two lines
 	var indicator_spacing = 50  # Distance between indicators in each line
 	var line_offset = -((npcgroup.get_child_count() / 2.0) - 1) * indicator_spacing / 2.0  # Center both lines around start_position
 	var placed_positions = []
 	var current_index = 0
-
 	# Spawn NPCs in the formation
 	for i in range(npcgroup.get_child_count()):
 		# Reuse an existing indicator or create a new one if needed
@@ -158,19 +151,15 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 		else:
 			indicator_instance = IndicatorScene.instantiate()
 			indicaters.add_child(indicator_instance)
-
 		# Determine row (top or bottom) and position along the line
 		var row = i % 2
 		var position_in_line = i / 2.0
-
 		# Calculate position relative to the start position
 		var indicator_position = start_position
 		indicator_position.x += (row * 2 - 1) * row_spacing  # Offset for top or bottom row
 		indicator_position.y += line_offset + position_in_line * indicator_spacing
-
 		# Rotate the indicator position around the start position
 		indicator_position = rotate_position_around_center(indicator_position, start_position, unit_rotation_angle)
-
 		# Set position and add to placed positions
 		indicator_instance.position = get_nearest_tile(indicator_position, placed_positions)
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
@@ -202,18 +191,18 @@ func fire_gun(firing_entity: Node2D):
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
-	$Musketvolley.play()
 
-func spawn_zombies(rows: int, cols: int):
-	for row in range(rows):
-		for col in range(cols):
+func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float):
+	for _row in range(rows):
+		for _col in range(cols):
 			var zombie = ZOMBIE.instantiate()
-			zombie.position = Vector2(50 * col, 50 * row)
+			zombie.target = $Wagon
+			# Spawn randomly within a circle around the center
+			var angle = randf() * TAU
+			var distance = randf_range(0, radius)
+			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
 			zombiegroup.add_child(zombie)
 
-func _on_timer_timeout():
-	if zombiegroup.get_child_count() < 1:
-		spawn_zombies(4, 4)
 
 func _on_ui_aim_action():
 	# Toggle the global aiming state
@@ -238,14 +227,10 @@ func _on_ui_ui_interaction_started():
 func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
 
-func _on_wagon_ui_2_hovered_wagon() -> void:
-	is_ui_interacting = true
-	is_rotating = false
+func _on_plants_item_collected(item: Variant) -> void:
+	#print("running")
+	$UI.get_child(0).get_child(0).add_next_slot(item)
 
-func _on_wagon_ui_hovered_wagon() -> void:
-	is_ui_interacting = true
-	is_rotating = false
 
-func _on_wagon_ui_hovered_wagon_exit() -> void:
-	is_ui_interacting = false
-	is_rotating = false
+func _on_ui_weapon_toggle() -> void:
+	player.switch_weapon()

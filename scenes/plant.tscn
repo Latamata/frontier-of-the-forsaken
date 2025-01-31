@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3xf8oag4guqg"]
+
+[ext_resource type="Script" path="res://scripts/plant.gd" id="1_hclp6"]
+[ext_resource type="Texture2D" uid="uid://bprs5wk8f2qia" path="res://assets/TilesetFloor.png" id="2_k7nxf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gc171"]
+radius = 26.5424
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahdhe"]
+atlas = ExtResource("2_k7nxf")
+region = Rect2(96.1537, 80.5541, 28.934, 31.6551)
+
+[node name="plants" type="Area2D" groups=["plant"]]
+z_as_relative = false
+y_sort_enabled = true
+script = ExtResource("1_hclp6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12)
+shape = SubResource("CircleShape2D_gc171")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -16)
+texture = SubResource("AtlasTexture_ahdhe")

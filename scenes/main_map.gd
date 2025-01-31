@@ -16,27 +16,23 @@ var mountain_points_by_line = [
 ]
 var path_connections = {
 	0: {  # Path2D
-		4: {"line": 2, "point": 0},  # Point 4 in Path2D connects to Path2D3, point 0
-		8: {"line": 1, "point": 0}   # Point 8 in Path2D connects to Path2D2, point 0
+		8: {"line": 1, "point": 0},  # Point 4 in Path2D connects to Path2D3, point 0
+		12: {"line": 2, "point": 0}   # Point 8 in Path2D connects to Path2D2, point 0
 	},
 	1: {  # Path2D3
 		0: {"line": 0, "point": 8},  # Point 0 in Path2D3 connects back to Path2D, point 4
-		13: {"line": 0, "point": 10}   # Point 3 in Path2D3 connects to Path2D2, point 8
 	},
 	2: {  # Path2D2
-		5: {"line": 0, "point": 10}   # Point 8 in Path2D2 connects to Path2D3, point 3
+		0: {"line": 0, "point": 12}   # Point 8 in Path2D2 connects to Path2D3, point 3
 	}
 }
-
 
 func _ready():
 	# Initialize UI and validate Globals
 	ui.hide_map_ui(true)
-
 	if Globals.current_line < 0 or Globals.current_line >= paths.size():
 		print("Invalid Globals.current_line. Falling back to default.")
 		Globals.current_line = 0
-
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
 
@@ -45,7 +41,6 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	if not target_line or not target_line.curve:
 		print("Error: Invalid target_line or curve!")
 		return
-
 	line_point = clamp(line_point, 0, target_line.curve.get_point_count() - 1)
 	var point_position = target_line.curve.get_point_position(line_point)
 	wagonpin.global_position = target_line.global_position + point_position
@@ -55,24 +50,16 @@ func _update_turn_button_visibility():
 	# Check if the current point has a connection and show/hide the turn button
 	turn_button.visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
 
-
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
-	if current_path and current_path.curve:
+	if current_path and current_path.curve && Globals.food > 0:
+		Globals.add_food(-20)
+		$UI.update_resources()
+		print(Globals.food)
 		var total_points = current_path.curve.get_point_count()
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
-
-func _check_for_connection():
-	# Switch paths if there's a connection at the current point
-	var current_line_connections = path_connections.get(Globals.current_line, {})
-	if Globals.geo_map_camp in current_line_connections:
-		var connection = current_line_connections[Globals.geo_map_camp]
-		Globals.current_line = connection["line"]
-		Globals.geo_map_camp = connection["point"]
-		current_path = paths[Globals.current_line]
-		move_wagon_to_line(current_path, Globals.geo_map_camp)
-
+		
 
 func _on_turn_button_down():
 	# Manually switch paths if the turn button is clicked
@@ -83,7 +70,7 @@ func _on_turn_button_down():
 		current_path = paths[Globals.current_line]
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 		_update_turn_button_visibility()
-
+	print(current_path, 'path<>point',Globals.geo_map_camp)
 
 func _on_ui_camp_action():
 	# Switch to appropriate scene based on the current location

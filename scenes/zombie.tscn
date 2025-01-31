@@ -153,12 +153,9 @@ path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 1.111
 radius = 55.45
-debug_enabled = true
 
 [node name="Melee" type="Area2D" parent="."]
-visible = false
-monitoring = false
-monitorable = false
+position = Vector2(2, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
 shape = SubResource("CircleShape2D_axwvo")
@@ -177,4 +174,6 @@ offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
+[connection signal="body_entered" from="Melee" to="." method="_on_melee_body_entered"]
+[connection signal="body_exited" from="Melee" to="." method="_on_melee_body_exited"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

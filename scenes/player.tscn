@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_y03rj"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="3_vos4w"]
-[ext_resource type="PackedScene" uid="uid://c1oiwddddlb18" path="res://scenes/sabre.tscn" id="4_vajmw"]
+[ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="4_cqufx"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="5_v052w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lcexw"]
@@ -130,9 +130,10 @@ animations = [{
 size = Vector2(18, 16)
 
 [node name="player" type="CharacterBody2D"]
-position = Vector2(0, -6)
-collision_layer = 7
-collision_mask = 7
+z_as_relative = false
+y_sort_enabled = true
+collision_layer = 3
+collision_mask = 3
 slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_block_on_wall = false
@@ -142,8 +143,7 @@ script = ExtResource("1_y03rj")
 
 [node name="Musket" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(19, 9)
-scale = Vector2(0.609091, 0.6)
+position = Vector2(24, -35)
 texture = ExtResource("3_vos4w")
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]
@@ -153,13 +153,14 @@ position = Vector2(28.0534, -1.00281)
 wait_time = 10.0
 autostart = true
 
-[node name="sabre" parent="." instance=ExtResource("4_vajmw")]
-position = Vector2(1, -17)
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-0.75, -19.25)
+position = Vector2(0.25, -25.25)
 sprite_frames = SubResource("SpriteFrames_5crhn")
 animation = &"walking_side"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_lf6aj")
 
 [node name="Meleetimer" type="Timer" parent="."]
 
@@ -173,9 +174,8 @@ offset_right = 48.0
 offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(4, -3)
-shape = SubResource("RectangleShape2D_lf6aj")
+[node name="sabre" type="Sprite2D" parent="."]
+texture = ExtResource("4_cqufx")
 
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
