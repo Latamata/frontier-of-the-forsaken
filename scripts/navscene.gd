@@ -39,9 +39,7 @@ func _ready():
 		npcgroup.add_child(musketman_instance)
 
 func _process(_delta: float) -> void:
-	if player != null:
-		update_speed_based_on_tile()
-	update_npc_and_zombie_speeds_based_on_tile()  # For NPCs
+	update_all_speeds()
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -77,28 +75,22 @@ func _input(event):
 			fire_gun(player)
 
 
-func update_npc_and_zombie_speeds_based_on_tile():
-	for npc in npcgroup.get_children() + zombiegroup.get_children():  # Combine both groups
-		if not is_instance_valid(npc):  # Ensure npc is valid
-			continue
-			
-		var npc_tile = tile_map.local_to_map(npc.global_position)  # Get the tile position of the npc
-		var tile_data = tile_map.get_cell_tile_data(0, npc_tile)  # Get tile data from the map
-		
-		if tile_data and tile_data.get_custom_data_by_layer_id(1):  # Check if the tile has custom data for slow
-			npc.slow_affect(true)  # Apply slow effect
-		else:
-			npc.slow_affect(false)  # Remove slow effect
-
-func update_speed_based_on_tile():
-	var player_tile = tile_map.local_to_map(player.global_position)
-	var tile_data = tile_map.get_cell_tile_data(0, player_tile)
-	#print(tile_data)
-	if tile_data and tile_data.get_custom_data_by_layer_id(1):
-		##current_speed = slow_speed
-		player.slow_affect(true)
+func update_speed_based_on_tile(entity):
+	if not is_instance_valid(entity):
+		return
+	
+	var entity_tile = tile_map.local_to_map(entity.global_position)
+	var tile_data = tile_map.get_cell_tile_data(0, entity_tile)
+	
+	if tile_data and tile_data.get_custom_data_by_layer_id(1):  # Check for slow effect
+		entity.slow_affect(true)
 	else:
-		player.slow_affect(false)
+		entity.slow_affect(false)
+
+func update_all_speeds():
+	for entity in npcgroup.get_children() + zombiegroup.get_children() + [player]:  # Include all entities
+		update_speed_based_on_tile(entity)
+
 
 func process_rotation():
 	var current_mouse_position = get_local_mouse_position()
@@ -228,9 +220,8 @@ func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
 
 func _on_plants_item_collected(item: Variant) -> void:
-	#print("running")
-	$UI.get_child(0).get_child(0).add_next_slot(item)
-
+	#print(ui.get_child(0).hideorshow())
+	ui.get_child(0).add_next_slot(item)
 
 func _on_ui_weapon_toggle() -> void:
 	player.switch_weapon()

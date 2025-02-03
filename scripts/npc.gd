@@ -85,7 +85,6 @@ func find_zombies_in_area():
 	for body in bodies_in_area:
 		if body.is_in_group("zombie") and is_instance_valid(body):
 			var distance_to_body = global_position.distance_to(body.global_position)
-			print("running")
 			if distance_to_body < closest_distance:
 				closest_distance = distance_to_body
 				target = body

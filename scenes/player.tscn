@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dit4wkbv0e3nr"]
+[gd_scene load_steps=22 format=3 uid="uid://dit4wkbv0e3nr"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_y03rj"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="3_vos4w"]
@@ -129,6 +129,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf6aj"]
 size = Vector2(18, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t31gg"]
+size = Vector2(38, 10)
+
 [node name="player" type="CharacterBody2D"]
 z_as_relative = false
 y_sort_enabled = true
@@ -177,5 +180,14 @@ metadata/_edit_use_anchors_ = true
 [node name="sabre" type="Sprite2D" parent="."]
 texture = ExtResource("4_cqufx")
 
+[node name="Area2D" type="Area2D" parent="sabre"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sabre/Area2D"]
+position = Vector2(6, 0)
+shape = SubResource("RectangleShape2D_t31gg")
+
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
+[connection signal="body_entered" from="sabre/Area2D" to="." method="_on_area_2d_body_entered"]

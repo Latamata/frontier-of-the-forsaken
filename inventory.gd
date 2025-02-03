@@ -1,5 +1,4 @@
 extends Control
-
 @onready var grid_container = $GridContainer
 
 # Number of inventory slots (adjust as needed)
@@ -78,7 +77,6 @@ func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 			selected_item.position = original_position
 			selected_item = null
 
-
 func update_itemlist():
 	for i in range(grid_container.get_child_count()):
 		var slot = grid_container.get_child(i)
@@ -110,7 +108,9 @@ func add_next_slot(_placeholder):
 func hideorshow() -> void:
 	if grid_container.visible:
 		grid_container.visible = false
+		$ColorRect.visible = false
 		#hideandshow.visible = true
 	else:
 		grid_container.visible = true
+		$ColorRect.visible = true
 		#hideandshow.visible = false

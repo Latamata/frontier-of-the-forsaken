@@ -6,3 +6,6 @@
 
 [node name="TileMap" parent="Enviorment" index="0"]
 position = Vector2(0, -1)
+
+[node name="zombie" parent="Node2D" index="3"]
+position = Vector2(213, -258)

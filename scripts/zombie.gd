@@ -103,7 +103,8 @@ func die():
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
-	tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
+	#this caueses debuuger message
+	#tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
 	tween.tween_callback(queue_free)  # Remove after animation
 
 func slow_affect(activate):

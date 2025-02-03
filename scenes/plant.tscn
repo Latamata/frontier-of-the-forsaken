@@ -11,8 +11,11 @@ atlas = ExtResource("2_k7nxf")
 region = Rect2(96.1537, 80.5541, 28.934, 31.6551)
 
 [node name="plants" type="Area2D" groups=["plant"]]
+visible = false
 z_as_relative = false
 y_sort_enabled = true
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_hclp6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -22,3 +25,5 @@ shape = SubResource("CircleShape2D_gc171")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1, -16)
 texture = SubResource("AtlasTexture_ahdhe")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
