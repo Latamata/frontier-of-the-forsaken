@@ -13,7 +13,7 @@ var wagon_speed: int = 1 # setget add_wagon_speed, get_wagon_speed
 # Optional: Setter/Getter for geo_map_camp if needed
 func set_current_line(value ) -> void:
 	current_line = value
-	print("Globals.current_line updated to:", value)
+	#print("Globals.current_line updated to:", value)
 
 # Adders and Getters
 func add_food(value: int) -> void:

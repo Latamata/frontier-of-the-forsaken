@@ -55,11 +55,17 @@ func _on_ui_move_action():
 	if current_path and current_path.curve && Globals.food > 0:
 		Globals.add_food(-20)
 		$UI.update_resources()
-		print(Globals.food)
+		
 		var total_points = current_path.curve.get_point_count()
+		
+		# Check if the wagon is at the last point before moving
+		if Globals.geo_map_camp >= total_points - 1:
+			get_tree().change_scene_to_file("res://scenes/endscreen.tscn")
+			return
+		
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
-		
+
 
 func _on_turn_button_down():
 	# Manually switch paths if the turn button is clicked
