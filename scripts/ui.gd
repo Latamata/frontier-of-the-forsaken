@@ -33,7 +33,7 @@ func _on_camp_button_down():
 	#print("Camp button pressed - Signal emitted")
 
 func _on_move_button_down():
-	print(Globals.food)
+	#print(Globals.food)
 	food.text = str(Globals.food)
 	emit_signal("move_action")
 

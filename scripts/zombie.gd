@@ -30,7 +30,7 @@ func _process(delta):
 		#print("runninh")
 		direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
 		velocity = direction * SPEED
-		move_and_slide()
+		
 	else:
 		#moving = false
 		animated_sprite_2d.stop()
@@ -49,7 +49,7 @@ func _process(delta):
 	sprite_frame_direction()
 	if melee_cd and overlapping_bodies.size() > 0:
 		apply_melee_damage()
-
+	move_and_slide()
 # Find a new target if none is assigned
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()
