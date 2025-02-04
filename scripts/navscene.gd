@@ -224,4 +224,5 @@ func _on_plants_item_collected(item: Variant) -> void:
 	ui.get_child(0).add_next_slot(item)
 
 func _on_ui_weapon_toggle() -> void:
-	player.switch_weapon()
+	if player != null:
+		player.switch_weapon()

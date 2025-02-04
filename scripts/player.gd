@@ -51,12 +51,24 @@ func switch_weapon():
 	set_active_weapon(current_weapon_index)
 
 func set_active_weapon(index):
-	# Hide all weapons first
+	# Hide all weapons
 	for weapon in weapons:
 		weapon.hide()
 
 	# Show selected weapon
 	weapons[index].show()
+
+	# Special handling for the sword
+	if sabre is Area2D:
+		var collision = sabre.get_node("CollisionShape2D")
+		if index == weapons.find(sabre):  # If selecting the sword
+			sabre.monitoring = true
+			collision.set_deferred("disabled", false)
+		else:  # If switching to gun
+			sabre.monitoring = false
+			collision.set_deferred("disabled", true)
+
+
 func sprite_frame_direction():
 	if direction == Vector2(0, -1):  # Specific case for upward movement
 		animated_sprite_2d.animation = "walking_away"

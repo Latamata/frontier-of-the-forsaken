@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dtffs12rmgqnn"]
+
+[node name="Endscreen" type="Node2D"]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 211.0
+offset_top = 194.0
+offset_right = 1027.0
+offset_bottom = 418.0
+theme_override_font_sizes/normal_font_size = 50
+text = "You have reached the end"
