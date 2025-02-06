@@ -88,8 +88,6 @@ func add_next_slot(_placeholder):
 			itemlist[i] = true  # Mark as occupied
 			return
 
-
-
 func hideorshow() -> void:
 	if grid_container.visible:
 		grid_container.visible = false

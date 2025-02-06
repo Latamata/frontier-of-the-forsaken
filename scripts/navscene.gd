@@ -21,7 +21,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
-	spawn_zombies(4, 2,Vector2(500,200), 100.0)
+	spawn_zombies(7, 7,Vector2(500,200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-600, -150)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -188,7 +188,7 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float):
 	for _row in range(rows):
 		for _col in range(cols):
 			var zombie = ZOMBIE.instantiate()
-			zombie.target = $Wagon
+			zombie.target = $initialtarget
 			# Spawn randomly within a circle around the center
 			var angle = randf() * TAU
 			var distance = randf_range(0, radius)
