@@ -84,6 +84,8 @@ func move_to_position(new_target_position: Vector2):
 	moving = true
 
 func take_damage(amount: int):
+	if !$Healthbar.visible:
+		$Healthbar.visible = true
 	HEALTH -= amount
 	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
 	healthbar.value = HEALTH  # Update health bar

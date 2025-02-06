@@ -168,6 +168,7 @@ shape = SubResource("RectangleShape2D_lf6aj")
 [node name="Meleetimer" type="Timer" parent="."]
 
 [node name="Healthbar" type="ProgressBar" parent="."]
+visible = false
 modulate = Color(0.141176, 1, 0.14902, 1)
 z_index = 2
 z_as_relative = false

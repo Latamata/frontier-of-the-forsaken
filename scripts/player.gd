@@ -94,7 +94,8 @@ func slow_affect(activate):
 		SPEED = 60.0
 
 func take_damage(amount: int):
-	#print("running")
+	if !$Healthbar.visible:
+		$Healthbar.visible = true
 	HEALTH -= amount
 	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
 	healthbar.value = HEALTH  # Update health bar

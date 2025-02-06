@@ -101,6 +101,8 @@ func rotate_gun(target_angle: float):
 	gun.z_index = 0 if target_angle < 0 else 1
 
 func take_damage(amount: int):
+	if !$Healthbar.visible:
+		$Healthbar.visible = true
 	HEALTH -= amount
 	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
 	healthbar.value = HEALTH  # Update health bar
