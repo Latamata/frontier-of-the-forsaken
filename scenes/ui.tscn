@@ -15,8 +15,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 size_flags_horizontal = 4
 
-[node name="battlemapUI" type="Panel" parent="."]
-self_modulate = Color(1, 1, 0.184314, 0.415686)
+[node name="battlemapUI" type="ColorRect" parent="."]
 layout_direction = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -24,6 +23,7 @@ anchor_bottom = 1.0
 offset_top = -125.0
 offset_right = 1155.0
 grow_vertical = 0
+color = Color(0.647059, 0.427451, 0.290196, 0.788235)
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
@@ -73,8 +73,7 @@ offset_bottom = 38.0
 focus_mode = 0
 text = "weapon"
 
-[node name="mapgeoUI" type="Panel" parent="."]
-self_modulate = Color(1, 1, 0.184314, 0.415686)
+[node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -84,6 +83,7 @@ offset_right = 176.0
 offset_bottom = 329.5
 grow_vertical = 2
 size_flags_horizontal = 0
+color = Color(0.647059, 0.427451, 0.290196, 0.788235)
 
 [node name="move" type="Button" parent="mapgeoUI"]
 layout_mode = 0

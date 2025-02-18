@@ -11,7 +11,7 @@ var targetResource
 @onready var gun = $Musket
 @onready var sabre = $sabre
 @onready var healthbar: ProgressBar = $Healthbar
-@onready var camera_2d = $"../../Camera2D"
+@onready var camera_2d = $"../../../Camera2D"
 
 var weapons = []  # List to hold weapons
 var current_weapon_index = 0  # Index for switching
@@ -158,3 +158,8 @@ func _on_reload_timeout():
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group('zombie'):
 		body.take_damage(40)
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.is_in_group('plant') && get_current_weapon().name == 'sabre':
+		area.chopped_down()

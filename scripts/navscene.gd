@@ -1,10 +1,10 @@
 extends Node2D
 
 @onready var indicaters = $INDICATER
-@onready var tile_map = $Enviorment/TileMap
+@onready var tile_map = $Enviorment/TileMapLayer
 @onready var npcgroup = $NPCGROUP
 @onready var zombiegroup = $ZOMBIEGROUP
-@onready var player = $Node2D/player
+@onready var player = $Enviorment/sorted/player
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
 
@@ -89,7 +89,8 @@ func update_speed_based_on_tile(entity):
 
 func update_all_speeds():
 	for entity in npcgroup.get_children() + zombiegroup.get_children() + [player]:  # Include all entities
-		update_speed_based_on_tile(entity)
+		#update_speed_based_on_tile(entity)
+		pass
 
 
 func process_rotation():
@@ -110,7 +111,8 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 				var check_coords = tile_coords + Vector2i(x_offset, y_offset)
 				if exclude_positions.has(check_coords):
 					continue
-				var tile_data = tile_map.get_cell_tile_data(0, check_coords)
+				var tile_data = tile_map.get_cell_tile_data(check_coords)
+
 				
 				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)):
 					return tile_map.map_to_local(check_coords)
@@ -195,7 +197,6 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float):
 			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
 			zombiegroup.add_child(zombie)
 
-
 func _on_ui_aim_action():
 	# Toggle the global aiming state
 	Globals.is_global_aiming = !Globals.is_global_aiming
@@ -221,6 +222,7 @@ func _on_ui_ui_interaction_ended() -> void:
 
 func _on_plants_item_collected(item: Variant) -> void:
 	#print(ui.get_child(0).hideorshow())
+	print(item)
 	ui.get_child(0).add_next_slot(item)
 
 func _on_ui_weapon_toggle() -> void:

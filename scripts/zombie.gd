@@ -120,6 +120,7 @@ func _on_melee_body_entered(body: Node2D) -> void:
 		overlapping_bodies.append(body)
 	if body.name == 'player':
 		overlapping_bodies.append(body)
+
 func _on_melee_body_exited(body: Node2D) -> void:
 	if body in overlapping_bodies:
 		overlapping_bodies.erase(body)  # Remove the specific body from the list

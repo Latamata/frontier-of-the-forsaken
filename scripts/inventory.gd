@@ -64,12 +64,10 @@ func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 			# Reset selection
 			selected_item = null
 
-
 func update_itemlist():
 	for i in range(grid_container.get_child_count()):
 		var slot = grid_container.get_child(i)
 		itemlist[i] = slot.texture != preload("res://assets/inventory.png")  # True if occupied, False if empty
-
 
 func _on_texture_rect_mouse_entered(texture_rect):
 	hovered_item = texture_rect
@@ -84,14 +82,10 @@ func add_next_slot(_placeholder):
 	for i in range(itemlist.size()):  # Iterate by index
 		if not itemlist[i]:  # If slot is empty (false)
 			var slot = grid_container.get_child(i)  # Get the correct slot
-			slot.texture = preload("res://assets/blackspot.png")  # Assign new texture
+			slot.texture = _placeholder # Assign new texture
 			itemlist[i] = true  # Mark as occupied
 			return
 
 func hideorshow() -> void:
-	if grid_container.visible:
-		grid_container.visible = false
-		$ColorRect.visible = false
-	else:
-		grid_container.visible = true
-		$ColorRect.visible = true
+	visible = !visible  # Toggle visibility
+	get_tree().paused = visible  # Pause the game when menu is visible

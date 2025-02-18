@@ -3,9 +3,3 @@
 [ext_resource type="PackedScene" uid="uid://cpma71hojt8wy" path="res://scenes/navscene.tscn" id="1_ik3h7"]
 
 [node name="navscene" instance=ExtResource("1_ik3h7")]
-
-[node name="TileMap" parent="Enviorment" index="0"]
-position = Vector2(0, -1)
-
-[node name="zombie" parent="Node2D" index="3"]
-position = Vector2(213, -258)

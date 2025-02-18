@@ -191,4 +191,5 @@ shape = SubResource("RectangleShape2D_t31gg")
 
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
+[connection signal="area_entered" from="sabre/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="sabre/Area2D" to="." method="_on_area_2d_body_entered"]
