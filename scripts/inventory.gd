@@ -1,6 +1,8 @@
 extends Control
+
 @onready var grid_container = $GridContainer
 
+signal item_dropped(item) 
 # Number of inventory slots (adjust as needed)
 var slot_count = 9
 var selected_item = null  # Store the currently selected TextureRect
@@ -43,23 +45,28 @@ func _on_texture_rect_gui_input(event: InputEvent, texture_rect):
 				var hovered_index = grid_container.get_children().find(hovered_item)
 
 				# Case 1: Moving to an empty slot
-				if not itemlist[hovered_index]:  # Equivalent to `if itemlist[hovered_index] == false`
+				if not itemlist[hovered_index]:  
 					hovered_item.texture = selected_item.texture
 					selected_item.texture = preload("res://assets/inventory.png")
 
 					# Mark slot states correctly
-					itemlist[hovered_index] = true  # New slot is now occupied
-					itemlist[selected_index] = false  # Old slot is now empty
+					itemlist[hovered_index] = true  
+					itemlist[selected_index] = false  
 
-				# Case 2: Swapping items in occupied slots
+				# Case 2: Swapping items
 				elif itemlist[hovered_index] and selected_item != hovered_item:
 					var temp_texture = selected_item.texture
 					selected_item.texture = hovered_item.texture
 					hovered_item.texture = temp_texture
 
-				else:
-					# Invalid move, reset position
-					selected_item.position = original_position
+			elif selected_item and not hovered_item:
+				# If item is dragged outside, remove it from the inventory
+				selected_item.texture = preload("res://assets/inventory.png")
+				var selected_index = grid_container.get_children().find(selected_item)
+				itemlist[selected_index] = false  # Mark as empty
+				
+				# (Optional) You could trigger a function to spawn the dropped item in the world here
+				emit_signal("item_dropped", preload("res://assets/blackspot.png"))
 
 			# Reset selection
 			selected_item = null

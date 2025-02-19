@@ -113,6 +113,13 @@ offset_top = 173.5
 offset_right = 134.0
 offset_bottom = 223.5
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="item_dropped" from="inventory" to="." method="_on_inventory_item_dropped"]
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="battlemapUI/aim" to="." method="_on_aim_button_down"]

@@ -122,7 +122,6 @@ collision_mask = 2
 script = ExtResource("1_6lh2a")
 
 [node name="Musket" type="Sprite2D" parent="."]
-position = Vector2(20, -26)
 texture = ExtResource("2_wp1fx")
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]

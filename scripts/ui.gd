@@ -8,15 +8,22 @@ signal move_action
 signal ui_interaction_started()
 signal ui_interaction_turn
 signal ui_interaction_ended()
-
+signal inventory_item_dropped(item)  # <-- New signal
 @onready var food: RichTextLabel = $mapgeoUI/food
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
 @onready var inventory: Control = $inventory
 
 
+
 func _ready() -> void:
 	update_resources()
+	inventory.connect("item_dropped", Callable(self, "_on_inventory_signal"))
+
+func _on_inventory_item_dropped(item):
+	print("Inventory item dropped signal received in UI!")
+	emit_signal("inventory_item_dropped", item)  # <-- Re-emitting the signal
+
 func hide_map_ui(hideorshow):
 	if hideorshow:
 		mapgeo.visible = true

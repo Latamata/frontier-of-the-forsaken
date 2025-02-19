@@ -2,8 +2,8 @@ extends Node2D
 
 @onready var indicaters = $INDICATER
 @onready var tile_map = $Enviorment/TileMapLayer
-@onready var npcgroup = $NPCGROUP
-@onready var zombiegroup = $ZOMBIEGROUP
+@onready var npcgroup = $Enviorment/sorted/NPCGROUP
+@onready var zombiegroup = $Enviorment/sorted/ZOMBIEGROUP
 @onready var player = $Enviorment/sorted/player
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
@@ -91,7 +91,6 @@ func update_all_speeds():
 	for entity in npcgroup.get_children() + zombiegroup.get_children() + [player]:  # Include all entities
 		#update_speed_based_on_tile(entity)
 		pass
-
 
 func process_rotation():
 	var current_mouse_position = get_local_mouse_position()
@@ -228,3 +227,13 @@ func _on_plants_item_collected(item: Variant) -> void:
 func _on_ui_weapon_toggle() -> void:
 	if player != null:
 		player.switch_weapon()
+
+
+func _on_ui_inventory_item_dropped(item: Variant) -> void:
+	var droppeditem = musketgun.instantiate()  # Create the item instance
+	droppeditem.position = player.position + Vector2(0, 40)  # Drop slightly below the player
+
+
+	get_tree().current_scene.add_child(droppeditem)  # Add it to the scene
+
+	print("Item dropped:", player.position)
