@@ -42,15 +42,6 @@ region_rect = Rect2(-2.98039, 159.154, 129.991, 96.6942)
 
 [node name="Camera2D" type="Camera2D" parent="wagonpin"]
 
-[node name="turn" type="Button" parent="wagonpin"]
-visible = false
-offset_left = -13.8419
-offset_top = -22.0408
-offset_right = 27.1581
-offset_bottom = 27.9592
-text = "turn
-"
-
 [node name="Path2D" type="Path2D" parent="."]
 position = Vector2(-8.75555, -8.32706)
 scale = Vector2(1.02222, 1.00868)
@@ -68,4 +59,4 @@ curve = SubResource("Curve2D_3r0jk")
 
 [connection signal="camp_action" from="UI" to="." method="_on_ui_camp_action"]
 [connection signal="move_action" from="UI" to="." method="_on_ui_move_action"]
-[connection signal="button_down" from="wagonpin/turn" to="." method="_on_turn_button_down"]
+[connection signal="turn_action" from="UI" to="." method="_on_ui_turn_action"]

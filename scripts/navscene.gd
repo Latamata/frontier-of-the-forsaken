@@ -68,6 +68,8 @@ func _input(event):
 			process_rotation()
 			last_update_time = current_time
 
+	if Input.is_action_just_pressed("one_key"):
+		_on_ui_fire_action()
 	if Input.is_action_just_pressed("ui_accept") and player:
 		var current_weapon = player.get_current_weapon()
 		

@@ -2,7 +2,6 @@ extends Node2D
 
 @onready var wagonpin = $wagonpin
 @onready var ui = $UI
-@onready var turn_button = $wagonpin/turn  # Assuming TurnButton is a child of the wagonpin
 @onready var paths = [$Path2D, $Path2D2, $Path2D3]
 
 var current_path: Path2D
@@ -28,11 +27,7 @@ var path_connections = {
 }
 
 func _ready():
-	# Initialize UI and validate Globals
 	ui.hide_map_ui(true)
-	if Globals.current_line < 0 or Globals.current_line >= paths.size():
-		print("Invalid Globals.current_line. Falling back to default.")
-		Globals.current_line = 0
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
 
@@ -47,8 +42,12 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	_update_turn_button_visibility()
 
 func _update_turn_button_visibility():
-	# Check if the current point has a connection and show/hide the turn button
-	turn_button.visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
+	var turn_button = $UI.get_child(2).get_child(0)  # Ensure this is the correct path
+	var should_be_visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
+	
+	turn_button.visible = should_be_visible
+	print("Turn button visibility:", should_be_visible)
+
 
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
@@ -66,8 +65,8 @@ func _on_ui_move_action():
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 
-
 func _on_turn_button_down():
+	print('turn presesd')
 	# Manually switch paths if the turn button is clicked
 	var connection = path_connections.get(Globals.current_line, {}).get(Globals.geo_map_camp, null)
 	if connection:
@@ -84,3 +83,7 @@ func _on_ui_camp_action():
 		get_tree().change_scene_to_file("res://scenes/mountain.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/desert.tscn")
+
+
+func _on_ui_turn_action() -> void:
+	_on_turn_button_down()

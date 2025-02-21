@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 signal fire_action
+signal turn_action
 signal weapon_toggle
 signal aim_action
 signal camp_action
@@ -69,3 +70,7 @@ func _on_weapontoggle_button_down() -> void:
 
 func _on_inventory_button_button_down() -> void:
 	inventory.hideorshow()
+
+
+func _on_button_pressed() -> void:
+	emit_signal("turn_action")
