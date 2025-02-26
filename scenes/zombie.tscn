@@ -1,11 +1,23 @@
-[gd_scene load_steps=20 format=3 uid="uid://cl0vxbm3iugrg"]
+[gd_scene load_steps=23 format=3 uid="uid://cl0vxbm3iugrg"]
 
 [ext_resource type="Script" path="res://scripts/zombie.gd" id="1_th0mh"]
 [ext_resource type="Texture2D" uid="uid://40p38av5uqh0" path="res://assets/zombie.png" id="2_m4prw"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2pkqp"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gia4r"]
 atlas = ExtResource("2_m4prw")
 region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2h2vr"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q142q"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kf38n"]
+atlas = ExtResource("2_m4prw")
+region = Rect2(150, 0, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gsyhn"]
 atlas = ExtResource("2_m4prw")
@@ -59,11 +71,20 @@ region = Rect2(150, 150, 50, 50)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2pkqp")
+"texture": SubResource("AtlasTexture_gia4r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2h2vr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q142q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kf38n")
 }],
 "loop": true,
-"name": &"default",
-"speed": 5.0
+"name": &"attack",
+"speed": 3.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -137,6 +158,9 @@ script = ExtResource("1_th0mh")
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
 position = Vector2(5, -19)
 sprite_frames = SubResource("SpriteFrames_11mes")
+animation = &"attack"
+frame = 2
+frame_progress = 0.915399
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -5)

@@ -84,6 +84,5 @@ func _on_ui_camp_action():
 	else:
 		get_tree().change_scene_to_file("res://scenes/desert.tscn")
 
-
 func _on_ui_turn_action() -> void:
 	_on_turn_button_down()

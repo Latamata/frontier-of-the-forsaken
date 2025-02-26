@@ -21,7 +21,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
-	spawn_zombies(7, 7,Vector2(500,200), 100.0)
+	spawn_zombies(1, 1,Vector2(500,200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-600, -150)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -234,8 +234,14 @@ func _on_ui_weapon_toggle() -> void:
 func _on_ui_inventory_item_dropped(item: Variant) -> void:
 	var droppeditem = musketgun.instantiate()  # Create the item instance
 	droppeditem.position = player.position + Vector2(0, 40)  # Drop slightly below the player
+	
+	# Assuming 'droppeditem' is a Sprite or has a Sprite child node
+	if droppeditem is Sprite2D:
+		droppeditem.texture = item  # Assuming 'item' is a texture or image you want to apply
+	elif droppeditem.has_node("Sprite2D"):
+		var sprite = droppeditem.get_node("Sprite2D") as Sprite2D
+		sprite.texture = item  # Apply the texture to the sprite
 
-
+	
 	get_tree().current_scene.add_child(droppeditem)  # Add it to the scene
-
-	print("Item dropped:", player.position)
+	print("Item dropped at position:", droppeditem.position)

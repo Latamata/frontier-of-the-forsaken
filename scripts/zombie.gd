@@ -3,6 +3,7 @@ extends CharacterBody2D
 # Variables
 var direction = Vector2.RIGHT
 var moving = true
+var is_attacking = false
 var melee_cd = true
 var target_position: Vector2
 var HEALTH = 100
@@ -22,6 +23,7 @@ var boundary_max = Vector2(144, 144)
 @onready var meleetimer: Timer = $Meleetimer
 
 func _ready():
+	animated_sprite_2d.animation_finished.connect(_on_animation_finished)
 	update_healthbar()
 
 func _process(delta):
@@ -50,7 +52,11 @@ func _process(delta):
 	if melee_cd and overlapping_bodies.size() > 0:
 		apply_melee_damage()
 	move_and_slide()
-# Find a new target if none is assigned
+func _on_animation_finished():
+	if animated_sprite_2d.animation == "attack":
+		is_attacking = false  # Reset attack state
+		sprite_frame_direction()  # Resume movement animation
+
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()
 
@@ -71,12 +77,13 @@ func find_target():
 			target = closest_target
 
 func sprite_frame_direction():
-	if abs(direction.x) > abs(direction.y):  # Horizontal movement
-		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.flip_h = direction.x < 0  # Flip horizontally
-	elif abs(direction.y) > abs(direction.x):  # Vertical movement
-		animated_sprite_2d.animation = "walking_away" if direction.y < 0 else "walking_toward"
-	animated_sprite_2d.play()
+	if !is_attacking:
+		if abs(direction.x) > abs(direction.y):  # Horizontal movement
+			animated_sprite_2d.animation = "walking"
+			animated_sprite_2d.flip_h = direction.x < 0  # Flip horizontally
+		elif abs(direction.y) > abs(direction.x):  # Vertical movement
+			animated_sprite_2d.animation = "walking_away" if direction.y < 0 else "walking_toward"
+		animated_sprite_2d.play()
 
 func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
@@ -128,9 +135,15 @@ func _on_melee_body_exited(body: Node2D) -> void:
 func apply_melee_damage():
 	for body in overlapping_bodies:
 		if is_instance_valid(body):
+			is_attacking = true
+			animated_sprite_2d.animation = "attack"
+			animated_sprite_2d.play()
 			body.take_damage(30)  # Adjust damage amount as needed
 	melee_cd = false
 	meleetimer.start()
 
 func _on_meleetimer_timeout() -> void:
 	melee_cd = true
+	is_attacking = false  # Allow movement animations again
+	sprite_frame_direction()  # Make sure it switches back to walking
+	
