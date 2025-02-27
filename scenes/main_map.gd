@@ -13,6 +13,19 @@ var mountain_points_by_line = [
 	[6, 2, 15],   # Mountain points for Path2D2
 	[6, 2, 15]   # Mountain points for Path2D3
 ]
+
+var forest_points_by_line = [
+	[3, 9],      # Forest points for Path2D
+	[5, 11, 14], # Forest points for Path2D2
+	[4, 8]       # Forest points for Path2D3
+]
+
+var desert_points_by_line = [
+	[0, 5],     # Desert points for Path2D
+	[1, 7, 13], # Desert points for Path2D2
+	[2, 9, 12]  # Desert points for Path2D3
+]
+
 var path_connections = {
 	0: {  # Path2D
 		8: {"line": 1, "point": 0},  # Point 4 in Path2D connects to Path2D3, point 0
@@ -48,7 +61,6 @@ func _update_turn_button_visibility():
 	turn_button.visible = should_be_visible
 	print("Turn button visibility:", should_be_visible)
 
-
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
 	if current_path and current_path.curve && Globals.food > 0:
@@ -64,6 +76,7 @@ func _on_ui_move_action():
 		
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
+	print(current_path,'path <> point', Globals.geo_map_camp)
 
 func _on_turn_button_down():
 	print('turn presesd')
@@ -75,14 +88,24 @@ func _on_turn_button_down():
 		current_path = paths[Globals.current_line]
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 		_update_turn_button_visibility()
-	print(current_path, 'path<>point',Globals.geo_map_camp)
+	
+
 
 func _on_ui_camp_action():
-	# Switch to appropriate scene based on the current location
-	if current_path and Globals.geo_map_camp in mountain_points_by_line[Globals.current_line]:
+	# Switch to the appropriate scene based on the current location
+	var line = Globals.current_line
+	var point = Globals.geo_map_camp
+	print(current_path, 'path<>point',Globals.geo_map_camp)
+	if point in mountain_points_by_line[line]:
+		print('running')
 		get_tree().change_scene_to_file("res://scenes/mountain.tscn")
-	else:
+	elif point in forest_points_by_line[line]:
+		get_tree().change_scene_to_file("res://scenes/forest.tscn")
+	elif point in desert_points_by_line[line]:
 		get_tree().change_scene_to_file("res://scenes/desert.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/navscene.tscn")  # Fallback scene
+
 
 func _on_ui_turn_action() -> void:
 	_on_turn_button_down()
