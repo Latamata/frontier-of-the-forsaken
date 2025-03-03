@@ -3,7 +3,7 @@ extends Node
 var is_global_aiming = false
 
 # Properties
-var food: int =  1000 # setget add_food, get_food
+var food: int =  1200 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var current_line: int = 0

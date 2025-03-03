@@ -1,7 +1,7 @@
 extends Node2D
 
-@onready var indicaters = $INDICATER
-@onready var tile_map = $Enviorment/TileMapLayer
+@onready var indicaters = $Enviorment/INDICATER
+@onready var tile_map = $Enviorment/ground
 @onready var npcgroup = $Enviorment/sorted/NPCGROUP
 @onready var zombiegroup = $Enviorment/sorted/ZOMBIEGROUP
 @onready var player = $Enviorment/sorted/player
@@ -21,9 +21,9 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
-	spawn_zombies(8, 8,Vector2(500,200), 100.0)
+	spawn_zombies(8, 8,Vector2(500,-200), 100.0)
 	# On ready spawn npcs
-	var starting_position = Vector2(-600, -150)  # Initial position of the first musketman
+	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
 	var column_offset = Vector2(0, 50)  # Offset for moving to the next column
 	var column_height = 2  # Number of musketmen per column
@@ -67,10 +67,11 @@ func _input(event):
 		if current_time - last_update_time > update_interval:
 			process_rotation()
 			last_update_time = current_time
-
-	if Input.is_action_just_pressed("one_key"):
+		assign_npcs_to_indicators(rotation_angle)
+	if Input.is_action_just_pressed("one_key") and player:
 		_on_ui_fire_action()
-	if Input.is_action_just_pressed("ui_accept") and player:
+	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
+		print()
 		var current_weapon = player.get_current_weapon()
 		
 		if current_weapon == player.gun:  # Ensure only the gun can shoot
@@ -100,7 +101,7 @@ func process_rotation():
 		rotation_angle = (current_mouse_position - initial_click_position).angle()
 		var nearest_tile_position = get_nearest_tile(current_mouse_position)
 		spawn_double_line_at_position(nearest_tile_position, rotation_angle)
-		assign_npcs_to_indicators(rotation_angle)
+	#assign_npcs_to_indicators(rotation_angle)
 
 func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Vector2:
 	var tile_coords = tile_map.local_to_map(tile_map.to_local(selected_position))
@@ -113,9 +114,8 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 				if exclude_positions.has(check_coords):
 					continue
 				var tile_data = tile_map.get_cell_tile_data(check_coords)
-
 				
-				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)):
+				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)): 
 					return tile_map.map_to_local(check_coords)
 		search_radius += 1
 	return tile_map.map_to_local(tile_coords)
@@ -128,37 +128,35 @@ func rotate_position_around_center(unitposition: Vector2, center: Vector2, angle
 	return center + rotated_direction  # Return the new position
 
 func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle: float = 0.0):
-	# Hide all existing indicators
+	# Clear previous indicators
 	for child in indicaters.get_children():
-		child.visible = false
+		child.queue_free()
+
 	var row_spacing = 25  # Distance between the two lines
 	var indicator_spacing = 50  # Distance between indicators in each line
-	var line_offset = -((npcgroup.get_child_count() / 2.0) - 1) * indicator_spacing / 2.0  # Center both lines around start_position
+	var line_offset = -((npcgroup.get_child_count() / 2) - 1) * indicator_spacing / 2  # Center both lines around start_position
 	var placed_positions = []
-	var current_index = 0
+
 	# Spawn NPCs in the formation
 	for i in range(npcgroup.get_child_count()):
-		# Reuse an existing indicator or create a new one if needed
-		var indicator_instance: Node2D
-		if current_index < indicaters.get_child_count():
-			indicator_instance = indicaters.get_child(current_index)
-			indicator_instance.visible = true
-		else:
-			indicator_instance = IndicatorScene.instantiate()
-			indicaters.add_child(indicator_instance)
+		var indicator_instance = IndicatorScene.instantiate()
+
 		# Determine row (top or bottom) and position along the line
 		var row = i % 2
-		var position_in_line = i / 2.0
+		var position_in_line = i / 2
+
 		# Calculate position relative to the start position
 		var indicator_position = start_position
 		indicator_position.x += (row * 2 - 1) * row_spacing  # Offset for top or bottom row
 		indicator_position.y += line_offset + position_in_line * indicator_spacing
+
 		# Rotate the indicator position around the start position
 		indicator_position = rotate_position_around_center(indicator_position, start_position, unit_rotation_angle)
-		# Set position and add to placed positions
+		#print(indicator_position)
+		# Set position and add to the scene
 		indicator_instance.position = get_nearest_tile(indicator_position, placed_positions)
+		indicaters.add_child(indicator_instance)
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
-		current_index += 1
 
 func assign_npcs_to_indicators(forward_angle: float):
 	var indicators = indicaters.get_children()
@@ -229,7 +227,6 @@ func _on_plants_item_collected(item: Variant) -> void:
 func _on_ui_weapon_toggle() -> void:
 	if player != null:
 		player.switch_weapon()
-
 
 func _on_ui_inventory_item_dropped(item: Variant) -> void:
 	var droppeditem = musketgun.instantiate()  # Create the item instance

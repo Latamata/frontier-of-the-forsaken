@@ -99,6 +99,7 @@ offset_right = 453.0
 offset_bottom = 9.0
 grow_horizontal = 0
 grow_vertical = 2
+text = "turn"
 
 [node name="move" type="Button" parent="mapgeoUI"]
 layout_mode = 0
@@ -121,26 +122,35 @@ focus_mode = 0
 text = "camp
 "
 
-[node name="food" type="RichTextLabel" parent="mapgeoUI"]
-layout_mode = 0
-offset_left = 71.0
-offset_top = 171.0
-offset_right = 174.0
-offset_bottom = 194.0
+[node name="Panel" type="Panel" parent="."]
+offset_left = 444.0
+offset_top = 11.0
+offset_right = 484.0
+offset_bottom = 51.0
+scale = Vector2(5.21036, 1.91125)
 
-[node name="resourcelabel" type="RichTextLabel" parent="mapgeoUI"]
-layout_mode = 0
-offset_top = 172.0
+[node name="food" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -23.8783
+offset_top = -18.9536
+offset_right = 79.1217
+offset_bottom = 4.04643
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.244132, 1.08182)
+
+[node name="resourcelabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
 offset_right = 103.0
-offset_bottom = 281.0
+offset_bottom = 109.0
+scale = Vector2(0.389164, 0.887227)
 text = "Food:
 wood:"
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [connection signal="item_dropped" from="inventory" to="." method="_on_inventory_item_dropped"]
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]

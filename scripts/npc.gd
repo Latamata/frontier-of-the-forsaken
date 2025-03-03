@@ -140,9 +140,11 @@ func _on_takedamage_timeout():
 	take_damage(0)
 
 func move_to_position(new_target_position: Vector2):
+	#print("Moving to: ", new_target_position)  # Debug print
 	target_position = new_target_position
-	navigation_agent_2d.set_target_position(target_position)  # Set the target for navigation
+	navigation_agent_2d.set_target_position(target_position)
 	moving = true
+
 
 func _on_melee_body_entered(body: Node2D) -> void:
 	if body.is_in_group("zombie") and body not in overlapping_bodies:
