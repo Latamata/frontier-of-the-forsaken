@@ -4,6 +4,7 @@ var is_global_aiming = false
 
 # Properties
 var food: int =  1200 # setget add_food, get_food
+var wood: int =  0 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var current_line: int = 0
@@ -19,9 +20,11 @@ func set_current_line(value ) -> void:
 func add_food(value: int) -> void:
 	food += value
 	food = max(0, food)  # Ensure no negative food
+func add_wood(value: int) -> void:
+	wood += value
+	wood = max(0, wood)  # Ensure no negative food
 
-func get_food() -> int:
-	return food
+
 
 func add_geo_map_camp(value: int) -> void:
 	geo_map_camp += value

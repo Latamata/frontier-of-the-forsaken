@@ -199,7 +199,7 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float):
 func _on_ui_aim_action():
 	# Toggle the global aiming state
 	Globals.is_global_aiming = !Globals.is_global_aiming
-
+	
 	# Apply the global aiming state to all NPCs
 	for npc in npcgroup.get_children():
 		npc.is_aiming = Globals.is_global_aiming

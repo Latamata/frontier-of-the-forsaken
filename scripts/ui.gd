@@ -10,7 +10,8 @@ signal ui_interaction_started()
 signal ui_interaction_turn
 signal ui_interaction_ended()
 signal inventory_item_dropped(item)  # <-- New signal
-@onready var food: RichTextLabel = $Panel/food
+@onready var food: RichTextLabel = $resources/food
+@onready var wood: RichTextLabel = $resources/wood
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
 @onready var inventory: Control = $inventory
@@ -33,6 +34,7 @@ func hide_map_ui(hideorshow):
 		battlemap.visible = true
 func update_resources() -> void:
 	food.text = str(Globals.food)
+	wood.text = str(Globals.wood)
 
 #-----------------GEOGRAPHIC MAP UI----------------------
 func _on_camp_button_down():
