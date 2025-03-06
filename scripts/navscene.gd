@@ -21,7 +21,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
-	spawn_zombies(8, 8,Vector2(500,-200), 100.0)
+	#spawn_zombies(8, 8,Vector2(500,-200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -82,17 +82,20 @@ func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
 		return
 	
-	var entity_tile = tile_map.local_to_map(entity.global_position)
-	var tile_data = tile_map.get_cell_tile_data(0, entity_tile)
-	
-	if tile_data and tile_data.get_custom_data_by_layer_id(1):  # Check for slow effect
+	var entity_tile = tile_map.local_to_map(entity.global_position)  # Convert entity position to tile coordinates
+	var tile_data = tile_map.get_cell_tile_data(entity_tile)  # Fetch tile data
+
+	if tile_data and tile_data.get_custom_data("slow"):  # Check for custom data (adjust key as needed)
 		entity.slow_affect(true)
 	else:
 		entity.slow_affect(false)
 
+
+
+
 func update_all_speeds():
 	for entity in npcgroup.get_children() + zombiegroup.get_children() + [player]:  # Include all entities
-		#update_speed_based_on_tile(entity)
+		update_speed_based_on_tile(entity)
 		pass
 
 func process_rotation():
