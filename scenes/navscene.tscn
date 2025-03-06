@@ -1771,7 +1771,9 @@ y_sort_enabled = true
 y_sort_enabled = true
 tile_set = SubResource("TileSet_koupd")
 
-[node name="plants" parent="Enviorment/sorted" instance=ExtResource("6_hi1ot")]
+[node name="plantgroup" type="Node2D" parent="Enviorment/sorted"]
+
+[node name="plants" parent="Enviorment/sorted/plantgroup" instance=ExtResource("6_hi1ot")]
 position = Vector2(-200, 92)
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -1784,7 +1786,6 @@ position = Vector2(-698, -43)
 
 [node name="playermenu" parent="." instance=ExtResource("7_yw4ke")]
 
-[connection signal="item_collected" from="Enviorment/sorted/plants" to="." method="_on_plants_item_collected"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]
 [connection signal="inventory_item_dropped" from="UI" to="." method="_on_ui_inventory_item_dropped"]

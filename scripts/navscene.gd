@@ -68,6 +68,12 @@ func _input(event):
 			process_rotation()
 			last_update_time = current_time
 		assign_npcs_to_indicators(rotation_angle)
+	if event.is_action_pressed("collect") and is_instance_valid(player):
+		# Check if the player is near any plant
+		for area in $Enviorment/sorted/plantgroup.get_children():  # Loop through all plants in the level
+			if area is Area2D and area.has_method("try_collect") and area.player_nearby:
+				area.try_collect()  # Call the plant's try_collect method
+				ui.update_resources()
 	if Input.is_action_just_pressed("one_key") and player:
 		_on_ui_fire_action()
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
@@ -76,7 +82,6 @@ func _input(event):
 		
 		if current_weapon == player.gun:  # Ensure only the gun can shoot
 			fire_gun(player)
-
 
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
@@ -89,9 +94,6 @@ func update_speed_based_on_tile(entity):
 		entity.slow_affect(true)
 	else:
 		entity.slow_affect(false)
-
-
-
 
 func update_all_speeds():
 	for entity in npcgroup.get_children() + zombiegroup.get_children() + [player]:  # Include all entities
@@ -221,11 +223,6 @@ func _on_ui_ui_interaction_started():
 	
 func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
-
-func _on_plants_item_collected(item: Variant) -> void:
-	#print(ui.get_child(0).hideorshow())
-	print(item)
-	ui.get_child(0).add_next_slot(item)
 
 func _on_ui_weapon_toggle() -> void:
 	if player != null:
