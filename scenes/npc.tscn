@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://ds1svqdxxlh85"]
 
-[ext_resource type="Script" path="res://scripts/npc.gd" id="1_6lh2a"]
+[ext_resource type="Script" uid="uid://cw7t6pqiwxvx1" path="res://scripts/npc.gd" id="1_6lh2a"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="2_wp1fx"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="3_rsjd5"]
 

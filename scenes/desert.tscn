@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=4 uid="uid://cfnqfog4rkboc"]
+[gd_scene load_steps=3 format=4 uid="uid://cfnqfog4rkboc"]
 
 [ext_resource type="PackedScene" uid="uid://cpma71hojt8wy" path="res://scenes/navscene.tscn" id="1_ik3h7"]
+[ext_resource type="PackedScene" uid="uid://b3xf8oag4guqg" path="res://scenes/plant.tscn" id="2_fl35h"]
 
 [node name="navscene" instance=ExtResource("1_ik3h7")]
 
@@ -9,3 +10,48 @@ tile_map_data = PackedByteArray("AAA7ACAAAwAHAAIAAAA7AB8AAwAHAAEAAAA7AB4AAwAHAAE
 
 [node name="decoration" parent="Enviorment/sorted" index="3"]
 tile_map_data = PackedByteArray("AADp//z/AAADAAAAAADm//r/AQAIAAAAAADq//n/AQAKAAAAAAABABcAAQAIAAAAAAD+/xkAAQAKAAAAAAApAAcAAQAKAAAAAAAlAAkAAQAIAAAAAAApAAsAAQAIAAAAAAAlAA4AAQAKAAAAAAAnAAsAAAADAAAAAAARAAYAAQAIAAAAAAARAAsAAQAKAAAAAAATAAgAAAADAAAAAAAVAAQAAQAKAAAAAAAVAAgAAQAIAAAAAAD6//n/AQAIAAAAAAD6//7/AQAKAAAAAAD8//v/AAADAAAAAAD+//f/AQAKAAAAAAD+//v/AQAIAAAAAAD0/xYAAQAIAAAAAAD0/xsAAQAKAAAAAAD2/xgAAAADAAAAAAD4/xQAAQAKAAAAAAD4/xgAAQAIAAAAAAAbABgAAQAIAAAAAAAbAB0AAQAKAAAAAAAdABoAAAADAAAAAAAfABYAAQAKAAAAAAAfABoAAQAIAAAAAAAyAAsAAQAIAAAAAAAyABAAAQAKAAAAAAA0AA0AAAADAAAAAAA2AAkAAQAKAAAAAAA2AA0AAQAIAAAAAAAtAPn/AQAIAAAAAAAtAP7/AQAKAAAAAAAvAPv/AAADAAAAAAAxAPf/AQAKAAAAAAAxAPv/AQAIAAAAAAA=")
+
+[node name="plants2" parent="Enviorment/sorted/plantgroup" index="0" instance=ExtResource("2_fl35h")]
+position = Vector2(-374, 346)
+
+[node name="plants3" parent="Enviorment/sorted/plantgroup" index="1" instance=ExtResource("2_fl35h")]
+position = Vector2(-880, 374)
+
+[node name="plants4" parent="Enviorment/sorted/plantgroup" index="2" instance=ExtResource("2_fl35h")]
+position = Vector2(-526, -151)
+
+[node name="plants5" parent="Enviorment/sorted/plantgroup" index="3" instance=ExtResource("2_fl35h")]
+position = Vector2(-757, 63)
+
+[node name="plants6" parent="Enviorment/sorted/plantgroup" index="4" instance=ExtResource("2_fl35h")]
+position = Vector2(209, -102)
+
+[node name="plants7" parent="Enviorment/sorted/plantgroup" index="5" instance=ExtResource("2_fl35h")]
+position = Vector2(283, 343)
+
+[node name="plants8" parent="Enviorment/sorted/plantgroup" index="6" instance=ExtResource("2_fl35h")]
+position = Vector2(-98, 699)
+
+[node name="plants9" parent="Enviorment/sorted/plantgroup" index="7" instance=ExtResource("2_fl35h")]
+position = Vector2(514, 879)
+
+[node name="plants10" parent="Enviorment/sorted/plantgroup" index="8" instance=ExtResource("2_fl35h")]
+position = Vector2(-795, 860)
+
+[node name="plants11" parent="Enviorment/sorted/plantgroup" index="9" instance=ExtResource("2_fl35h")]
+position = Vector2(1269, 878)
+
+[node name="plants12" parent="Enviorment/sorted/plantgroup" index="10" instance=ExtResource("2_fl35h")]
+position = Vector2(1450, 404)
+
+[node name="plants13" parent="Enviorment/sorted/plantgroup" index="11" instance=ExtResource("2_fl35h")]
+position = Vector2(961, 293)
+
+[node name="plants14" parent="Enviorment/sorted/plantgroup" index="12" instance=ExtResource("2_fl35h")]
+position = Vector2(684, -171)
+
+[node name="plants15" parent="Enviorment/sorted/plantgroup" index="13" instance=ExtResource("2_fl35h")]
+position = Vector2(1311, -60)
+
+[node name="plants16" parent="Enviorment/sorted/plantgroup" index="14" instance=ExtResource("2_fl35h")]
+position = Vector2(1754, -254)

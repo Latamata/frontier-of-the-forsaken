@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://cl0vxbm3iugrg"]
 
-[ext_resource type="Script" path="res://scripts/zombie.gd" id="1_th0mh"]
+[ext_resource type="Script" uid="uid://bb1vvom1v64vo" path="res://scripts/zombie.gd" id="1_th0mh"]
 [ext_resource type="Texture2D" uid="uid://40p38av5uqh0" path="res://assets/zombie.png" id="2_m4prw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gia4r"]

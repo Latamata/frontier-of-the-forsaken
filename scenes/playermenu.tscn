@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://txoibxtqogig"]
 
-[ext_resource type="Script" path="res://gamemenu.gd" id="1_3ipoq"]
+[ext_resource type="Script" uid="uid://dl328cockl047" path="res://gamemenu.gd" id="1_3ipoq"]
 
 [node name="playermenu" type="CanvasLayer"]
 process_mode = 3

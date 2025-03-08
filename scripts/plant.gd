@@ -1,7 +1,7 @@
 extends Area2D
 
 
-@onready var pickup_indicator: RichTextLabel = $pickupindicator
+@onready var pickup_indicator:  = $ColorRect
 var player: Node2D = null  # Store reference to the player
 var player_nearby: bool = false  # Flag to track if player is nearby
 

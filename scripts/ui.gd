@@ -7,7 +7,7 @@ signal aim_action
 signal camp_action
 signal move_action
 signal ui_interaction_started()
-signal ui_interaction_turn
+
 signal ui_interaction_ended()
 signal inventory_item_dropped(item)  # <-- New signal
 @onready var food: RichTextLabel = $resources/food

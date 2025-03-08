@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b3xf8oag4guqg"]
 
-[ext_resource type="Script" path="res://scripts/plant.gd" id="1_hclp6"]
+[ext_resource type="Script" uid="uid://wjf8hih4d4am" path="res://scripts/plant.gd" id="1_hclp6"]
 [ext_resource type="Texture2D" uid="uid://bprs5wk8f2qia" path="res://assets/TilesetFloor.png" id="2_k7nxf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gc171"]
@@ -17,6 +17,22 @@ collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_hclp6")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -16.0
+offset_top = -77.0
+offset_right = 24.0
+offset_bottom = -37.0
+scale = Vector2(0.6442, 0.542595)
+color = Color(0.837927, 0.297891, 0.390057, 1)
+
+[node name="pickupindicator" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 0
+offset_right = 29.0
+offset_bottom = 31.0
+scale = Vector2(2.25821, 1.68709)
+text = "'e'"
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12)
 shape = SubResource("CircleShape2D_gc171")
@@ -24,16 +40,6 @@ shape = SubResource("CircleShape2D_gc171")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1, -16)
 texture = SubResource("AtlasTexture_ahdhe")
-
-[node name="pickupindicator" type="RichTextLabel" parent="."]
-visible = false
-modulate = Color(0.670588, 0.0156863, 1, 1)
-offset_left = -16.0
-offset_top = -77.0
-offset_right = 13.0
-offset_bottom = -46.0
-theme_override_font_sizes/normal_font_size = 21
-text = "'e'"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -1,6 +1,6 @@
-[gd_scene load_steps=47 format=4 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=46 format=4 uid="uid://cpma71hojt8wy"]
 
-[ext_resource type="Script" path="res://scripts/navscene.gd" id="1_fg51v"]
+[ext_resource type="Script" uid="uid://fgxtjtaduhe4" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Texture2D" uid="uid://cy01i81rii7b0" path="res://assets/survivalgame-terrian-water-32x32.png" id="2_xp418"]
 [ext_resource type="Texture2D" uid="uid://c5ak1mmopr0jw" path="res://assets/trees.png" id="3_7y1ne"]
 [ext_resource type="Texture2D" uid="uid://bm1n0js5cyey4" path="res://assets/Tilemap_Flat_32.png" id="3_x4cqo"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://c204qwyr1kb60" path="res://assets/Tilemap_Elevation_Desert.png" id="4_coecn"]
 [ext_resource type="PackedScene" uid="uid://dit4wkbv0e3nr" path="res://scenes/player.tscn" id="5_bbw0p"]
 [ext_resource type="PackedScene" uid="uid://d11nep0qfx3xu" path="res://scenes/ui.tscn" id="5_qn5ki"]
-[ext_resource type="PackedScene" uid="uid://b3xf8oag4guqg" path="res://scenes/plant.tscn" id="6_hi1ot"]
 [ext_resource type="PackedScene" uid="uid://txoibxtqogig" path="res://scenes/playermenu.tscn" id="7_yw4ke"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_vkjep"]
@@ -1772,9 +1771,6 @@ y_sort_enabled = true
 tile_set = SubResource("TileSet_koupd")
 
 [node name="plantgroup" type="Node2D" parent="Enviorment/sorted"]
-
-[node name="plants" parent="Enviorment/sorted/plantgroup" instance=ExtResource("6_hi1ot")]
-position = Vector2(-200, 92)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-321, 47)

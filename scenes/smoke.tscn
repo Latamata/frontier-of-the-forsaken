@@ -1,3 +1,18 @@
-[gd_scene format=3 uid="uid://ubexs584lf41"]
+[gd_scene load_steps=3 format=3 uid="uid://ubexs584lf41"]
 
-[node name="CPUParticles2D" type="CPUParticles2D"]
+[ext_resource type="Texture2D" uid="uid://c3kydoxui2twm" path="res://assets/smoke.png" id="1_jmgx2"]
+
+[sub_resource type="Curve" id="Curve_dexii"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.89011), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="GPUParticles2D" type="CPUParticles2D"]
+emitting = false
+amount = 1
+texture = ExtResource("1_jmgx2")
+one_shot = true
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.2
+initial_velocity_max = 224.49
+scale_amount_curve = SubResource("Curve_dexii")
