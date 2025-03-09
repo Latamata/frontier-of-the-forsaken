@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var indicaters = $Enviorment/INDICATER
+@onready var indicaters = $Enviorment/indicators
 @onready var tile_map = $Enviorment/ground
 @onready var npcgroup = $Enviorment/sorted/NPCGROUP
 @onready var zombiegroup = $Enviorment/sorted/ZOMBIEGROUP
@@ -14,6 +14,7 @@ var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
 var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
 var ZOMBIE: PackedScene = preload("res://scenes/zombie.tscn")
 
+var line_infantry_reloaded = true  
 #var circleselected = false
 var is_ui_interacting = false  # To track if the mouse button is being held
 var is_rotating = false  # To track if the mouse button is being held
@@ -21,6 +22,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	
 	spawn_zombies(8, 8,Vector2(500,-200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
@@ -40,6 +42,7 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	update_all_speeds()
+	ui.get_child(1).get_child(5).value = $gunreloadtimer.time_left
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -70,7 +73,7 @@ func _input(event):
 		assign_npcs_to_indicators(rotation_angle)
 	if event.is_action_pressed("collect") and is_instance_valid(player):
 		# Check if the player is near any plant
-		for area in $Enviorment/sorted/plantgroup.get_children():  # Loop through all plants in the level
+		for area in $Enviorment/plantgroup.get_children():  # Loop through all plants in the level
 			if area is Area2D and area.has_method("try_collect") and area.player_nearby:
 				area.try_collect()  # Call the plant's try_collect method
 				ui.update_resources()
@@ -194,7 +197,7 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float):
 	for _row in range(rows):
 		for _col in range(cols):
 			var zombie = ZOMBIE.instantiate()
-			zombie.target = $initialtarget
+			zombie.target = $waypoint1
 			# Spawn randomly within a circle around the center
 			var angle = randf() * TAU
 			var distance = randf_range(0, radius)
@@ -210,11 +213,12 @@ func _on_ui_aim_action():
 		npc.is_aiming = Globals.is_global_aiming
 
 func _on_ui_fire_action():
-	for npc in npcgroup.get_children():
-		if is_instance_valid(npc):
-			if npc.reloaded:
+	if line_infantry_reloaded:
+		for npc in npcgroup.get_children():
+			if is_instance_valid(npc):
 				fire_gun(npc)
-				npc.fire_gun()
+		line_infantry_reloaded = false
+		$gunreloadtimer.start()
 
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
@@ -240,3 +244,28 @@ func _on_ui_inventory_item_dropped(item: Variant) -> void:
 		sprite.texture = item  # Apply the texture to the sprite
 	get_tree().current_scene.add_child(droppeditem)  # Add it to the scene
 	print("Item dropped at position:", droppeditem.position)
+
+func _on_gunreloadtimer_timeout() -> void:
+	line_infantry_reloaded = true
+	print('running')
+
+func _on_waypoint_body_entered(body: Node2D) -> void:
+		if body.is_in_group('zombie'):
+			for entity in zombiegroup.get_children():
+				entity.target = $waypoint2
+func _on_waypoint_2_body_entered(body: Node2D) -> void:
+		if body.is_in_group('zombie'):
+			for entity in zombiegroup.get_children():
+				entity.target = $waypoint3
+
+
+func _on_waypoint_3_body_entered(body: Node2D) -> void:
+		if body.is_in_group('zombie'):
+			for entity in zombiegroup.get_children():
+				entity.target = $waypoint4
+
+
+func _on_waypoint_4_body_entered(body: Node2D) -> void:
+		if body.is_in_group('zombie'):
+			for entity in zombiegroup.get_children():
+				entity.target = $waypoint1

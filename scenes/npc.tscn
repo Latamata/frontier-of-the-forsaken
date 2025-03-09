@@ -138,9 +138,6 @@ position = Vector2(0, -24)
 position = Vector2(4.90725, -6.13553)
 shape = SubResource("CircleShape2D_gqid2")
 
-[node name="gunreloadtimer" type="Timer" parent="."]
-wait_time = 5.0
-
 [node name="takedamage" type="Timer" parent="."]
 wait_time = 2.0
 
@@ -177,6 +174,5 @@ metadata/_edit_use_anchors_ = true
 path_postprocessing = 1
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
-[connection signal="timeout" from="gunreloadtimer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="takedamage" to="." method="_on_takedamage_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

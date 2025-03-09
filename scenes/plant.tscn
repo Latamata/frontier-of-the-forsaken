@@ -1,14 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3xf8oag4guqg"]
+[gd_scene load_steps=4 format=3 uid="uid://b3xf8oag4guqg"]
 
 [ext_resource type="Script" uid="uid://wjf8hih4d4am" path="res://scripts/plant.gd" id="1_hclp6"]
-[ext_resource type="Texture2D" uid="uid://bprs5wk8f2qia" path="res://assets/TilesetFloor.png" id="2_k7nxf"]
+[ext_resource type="Texture2D" uid="uid://byxck3g15ku77" path="res://assets/food.png" id="2_odjdt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gc171"]
 radius = 26.5424
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ahdhe"]
-atlas = ExtResource("2_k7nxf")
-region = Rect2(97.2416, 95.4693, 31.4272, 34.9334)
 
 [node name="plants" type="Area2D" groups=["plant"]]
 z_as_relative = false
@@ -39,7 +35,7 @@ shape = SubResource("CircleShape2D_gc171")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1, -16)
-texture = SubResource("AtlasTexture_ahdhe")
+texture = ExtResource("2_odjdt")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

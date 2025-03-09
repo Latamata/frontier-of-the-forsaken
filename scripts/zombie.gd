@@ -8,7 +8,7 @@ var melee_cd = true
 var target_position: Vector2
 var HEALTH = 100
 var target = null
-var SPEED = 0.10  # Base speed
+var SPEED = 100.10  # Base speed
 var time_since_last_path_update = 0.0
 var path_update_interval = 0.1  # Pathfinding update interval
 var overlapping_bodies = []  # Bodies in melee range
@@ -31,8 +31,7 @@ func _process(delta):
 	if not navigation_agent_2d.is_navigation_finished():
 		#print("runninh")
 		direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
-		velocity = direction * SPEED * delta
-		
+		velocity = direction * SPEED
 	else:
 		#moving = false
 		animated_sprite_2d.stop()
@@ -51,7 +50,8 @@ func _process(delta):
 	sprite_frame_direction()
 	if melee_cd and overlapping_bodies.size() > 0:
 		apply_melee_damage()
-	move_and_collide(velocity)
+	move_and_collide(velocity * delta)
+	#move_and_slide()
 func _on_animation_finished():
 	if animated_sprite_2d.animation == "attack":
 		is_attacking = false  # Reset attack state
@@ -146,4 +146,3 @@ func _on_meleetimer_timeout() -> void:
 	melee_cd = true
 	is_attacking = false  # Allow movement animations again
 	sprite_frame_direction()  # Make sure it switches back to walking
-	

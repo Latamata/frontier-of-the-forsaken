@@ -128,13 +128,7 @@ func slow_affect(activate):
 	else:
 		speed = 30.0
 
-func fire_gun():
-	if reloaded:
-		reloaded = false
-		$gunreloadtimer.start()
 
-func _on_timer_timeout():
-	reloaded = true
 
 func _on_takedamage_timeout():
 	take_damage(0)

@@ -72,6 +72,15 @@ offset_bottom = 38.0
 focus_mode = 0
 text = "weapon"
 
+[node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 816.0
+offset_top = 55.0
+offset_right = 976.0
+offset_bottom = 82.0
+max_value = 5.0
+show_percentage = false
+
 [node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1
 anchors_preset = 4
@@ -124,8 +133,8 @@ text = "camp
 [node name="resources" type="Panel" parent="."]
 offset_left = 444.0
 offset_top = 11.0
-offset_right = 484.0
-offset_bottom = 51.0
+offset_right = 513.0
+offset_bottom = 33.0
 scale = Vector2(5.21036, 1.91125)
 
 [node name="food" type="RichTextLabel" parent="resources"]
@@ -135,10 +144,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -23.8783
-offset_top = -18.9536
-offset_right = 79.1217
-offset_bottom = 4.04643
+offset_left = -52.4944
+offset_top = -9.95356
+offset_right = 50.5056
+offset_bottom = 13.0465
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
@@ -150,21 +159,21 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -22.3429
-offset_top = 1.97515
-offset_right = 80.6571
-offset_bottom = 24.9752
+offset_left = -16.0286
+offset_top = -9.43035
+offset_right = 54.9714
+offset_bottom = 13.5697
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
 
 [node name="resourcelabel" type="RichTextLabel" parent="resources"]
 layout_mode = 1
-offset_right = 103.0
-offset_bottom = 109.0
+offset_right = 190.0
+offset_bottom = 27.0
 scale = Vector2(0.389164, 0.887227)
-text = "Food:
-wood:"
+text = "Food:           wood:
+"
 
 [connection signal="item_dropped" from="inventory" to="." method="_on_inventory_item_dropped"]
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]

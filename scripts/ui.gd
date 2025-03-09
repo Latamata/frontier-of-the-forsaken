@@ -72,6 +72,5 @@ func _on_weapontoggle_button_down() -> void:
 func _on_inventory_button_button_down() -> void:
 	inventory.hideorshow()
 
-
 func _on_button_pressed() -> void:
 	emit_signal("turn_action")

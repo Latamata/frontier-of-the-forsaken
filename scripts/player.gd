@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var HEALTH = 100
-var SPEED = 60.0
+var SPEED = 0.10
 var reloaded = true
 var gather = false
 var direction
@@ -29,15 +29,13 @@ func _process(delta):
 	if direction != Vector2.ZERO:
 		camera_2d.global_position = global_position
 		sprite_frame_direction()
-		velocity = direction * SPEED * delta
-		move_and_collide(velocity)
+		velocity = direction * SPEED
+		move_and_collide(velocity * delta)
+
 	else:
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
 
-	# Switch weapons using number keys or a cycle button
-	#if Input.is_action_just_pressed("switch_weapon"):  # Define in InputMap
-		#switch_weapon()
 
 func _input(event):
 	if event is InputEventMouseMotion:
