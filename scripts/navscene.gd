@@ -23,7 +23,7 @@ var rotation_angle: float
 
 func _ready():
 	
-	spawn_zombies(8, 8,Vector2(500,-200), 100.0)
+	#spawn_zombies(8, 8,Vector2(500,-200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -115,18 +115,30 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 	var tile_coords = tile_map.local_to_map(tile_map.to_local(selected_position))
 	var search_radius = 1
 
-	while search_radius < 15:
+	while search_radius < 10:
 		for x_offset in range(-search_radius, search_radius + 1):
 			for y_offset in range(-search_radius, search_radius + 1):
 				var check_coords = tile_coords + Vector2i(x_offset, y_offset)
 				if exclude_positions.has(check_coords):
 					continue
-				var tile_data = tile_map.get_cell_tile_data(check_coords)
+				var tile_data = tile_map.get_cell_tile_data(check_coords) 
 				
 				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)): 
-					return tile_map.map_to_local(check_coords)
+					var adjusted_position = tile_map.map_to_local(check_coords) + Vector2(tile_map.tile_set.tile_size) / 2
+					
+					# Align more closely to the mouse position
+					adjusted_position.x = selected_position.x  # Align horizontally
+					# adjusted_position.y = selected_position.y  # Uncomment if aligning vertically instead
+					
+					return adjusted_position  
 		search_radius += 1
-	return tile_map.map_to_local(tile_coords)
+
+	# Default return if no valid tile is found
+	var fallback_position = tile_map.map_to_local(tile_coords) + Vector2(tile_map.tile_set.tile_size) / 2
+	fallback_position.x = selected_position.x  # Align to mouse position if needed
+	return fallback_position
+
+
 
 # Function to rotate a position around a point by a given angle
 func rotate_position_around_center(unitposition: Vector2, center: Vector2, angle: float) -> Vector2:

@@ -8,7 +8,7 @@ var wood: int =  0 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var current_line: int = 0
-var soldier_count: int = 0 # setget add_soldier_count, get_soldier_count
+var soldier_count: int = 10 # setget add_soldier_count, get_soldier_count
 var wagon_speed: int = 1 # setget add_wagon_speed, get_wagon_speed
 
 # Optional: Setter/Getter for geo_map_camp if needed
