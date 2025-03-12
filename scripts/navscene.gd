@@ -23,7 +23,7 @@ var rotation_angle: float
 
 func _ready():
 	
-	#spawn_zombies(8, 8,Vector2(500,-200), 100.0)
+	spawn_zombies(2, 2,Vector2(500,-200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -72,6 +72,7 @@ func _input(event):
 			last_update_time = current_time
 		assign_npcs_to_indicators(rotation_angle)
 	if event.is_action_pressed("collect") and is_instance_valid(player):
+		
 		# Check if the player is near any plant
 		for area in $Enviorment/plantgroup.get_children():  # Loop through all plants in the level
 			if area is Area2D and area.has_method("try_collect") and area.player_nearby:
@@ -259,7 +260,7 @@ func _on_ui_inventory_item_dropped(item: Variant) -> void:
 
 func _on_gunreloadtimer_timeout() -> void:
 	line_infantry_reloaded = true
-	print('running')
+	#print('running')
 
 func _on_waypoint_body_entered(body: Node2D) -> void:
 		if body.is_in_group('zombie'):

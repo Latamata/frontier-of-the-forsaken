@@ -130,6 +130,14 @@ focus_mode = 0
 text = "camp
 "
 
+[node name="buysoldlier" type="Button" parent="mapgeoUI"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 222.0
+offset_right = 138.0
+offset_bottom = 253.0
+text = "buysoldlier"
+
 [node name="resources" type="Panel" parent="."]
 offset_left = 444.0
 offset_top = 11.0
@@ -152,7 +160,7 @@ grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
 
-[node name="wood" type="RichTextLabel" parent="resources"]
+[node name="gold" type="RichTextLabel" parent="resources"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -169,10 +177,10 @@ scale = Vector2(0.244132, 0.809747)
 
 [node name="resourcelabel" type="RichTextLabel" parent="resources"]
 layout_mode = 1
-offset_right = 190.0
-offset_bottom = 27.0
+offset_right = 179.0
+offset_bottom = 25.0
 scale = Vector2(0.389164, 0.887227)
-text = "Food:           wood:
+text = "Food:           Gold:
 "
 
 [connection signal="item_dropped" from="inventory" to="." method="_on_inventory_item_dropped"]
@@ -188,3 +196,4 @@ text = "Food:           wood:
 [connection signal="pressed" from="mapgeoUI/turn" to="." method="_on_button_pressed"]
 [connection signal="button_down" from="mapgeoUI/move" to="." method="_on_move_button_down"]
 [connection signal="button_down" from="mapgeoUI/camp" to="." method="_on_camp_button_down"]
+[connection signal="button_down" from="mapgeoUI/buysoldlier" to="." method="_on_buysoldlier_button_down"]

@@ -14,7 +14,7 @@ var path_update_interval = 0.1  # Pathfinding update interval
 var overlapping_bodies = []  # Bodies in melee range
 var boundary_min = Vector2(0, 0)  # Example: Bottom-left corner of the area
 var boundary_max = Vector2(144, 144)
-
+var gold_coin: PackedScene = preload("res://scenes/gold.tscn")
 # Nodes
 @onready var animated_sprite_2d = $Spritesheet
 @onready var navigation_agent_2d = $NavigationAgent2D
@@ -106,15 +106,26 @@ func take_damage(amount: int):
 		die()
 
 func die():
+	var coins = gold_coin.instantiate()  # Instantiate the coin
+	coins.position = global_position  
+	coins.resource_type = 'gold'
+
+	# Find the plantgroup node dynamically
+	var plantgroup = get_tree().get_root().find_child("plantgroup", true, false)
+	if plantgroup:
+		plantgroup.add_child(coins)
+	else:
+		print("Error: 'plantgroup' node not found!")
+
 	animated_sprite_2d.stop()  # Stop movement animation
 	set_physics_process(false)  # Disable further movement
 	set_process(false)
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
-	#this caueses debuuger message
-	#tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
 	tween.tween_callback(queue_free)  # Remove after animation
+
+
 
 func slow_affect(activate):
 	SPEED = 15.0 if activate else 30.0

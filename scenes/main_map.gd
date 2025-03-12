@@ -76,6 +76,7 @@ func _on_ui_move_action():
 		
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
+		_check_for_events()
 
 func _on_turn_button_down():
 	# Manually switch paths if the turn button is clicked
@@ -104,3 +105,18 @@ func _on_ui_camp_action():
 
 func _on_ui_turn_action() -> void:
 	_on_turn_button_down()
+
+func _check_for_events():
+	var rng = randi() % 100  # Random chance (0-99)
+	
+	if rng < 10:  # 10% chance of a bandit attack
+		print("Bandits attack! Lose some gold.")
+		Globals.add_gold(-10)
+	elif rng < 20:  # 10% chance of finding supplies
+		print("You found food supplies!")
+		Globals.add_food(30)
+	elif rng < 25:  # 5% chance of wagon breaking down
+		print("Wagon wheel broke! You lose a turn.")
+		await get_tree().create_timer(1.5).timeout  # Simulate delay before continuing
+
+	$UI.update_resources()
