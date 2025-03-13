@@ -81,6 +81,14 @@ offset_bottom = 82.0
 max_value = 5.0
 show_percentage = false
 
+[node name="auto_shoot" type="Button" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 540.0
+offset_top = 37.0
+offset_right = 632.0
+offset_bottom = 68.0
+text = "auto shoot"
+
 [node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1
 anchors_preset = 4
@@ -191,6 +199,7 @@ text = "Food:           Gold:
 [connection signal="button_down" from="battlemapUI/Fire" to="." method="_on_fire_button_down"]
 [connection signal="button_down" from="battlemapUI/inventory_button" to="." method="_on_inventory_button_button_down"]
 [connection signal="button_down" from="battlemapUI/weapontoggle" to="." method="_on_weapontoggle_button_down"]
+[connection signal="button_down" from="battlemapUI/auto_shoot" to="." method="_on_auto_shoot_button_down"]
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="pressed" from="mapgeoUI/turn" to="." method="_on_button_pressed"]

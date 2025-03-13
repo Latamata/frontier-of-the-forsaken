@@ -1968,9 +1968,9 @@ wait_time = 5.0
 one_shot = true
 
 [node name="auto_shoot_timer" type="Timer" parent="."]
-autostart = true
 
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
+[connection signal="auto_shoot_action" from="UI" to="." method="_on_ui_auto_shoot_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]
 [connection signal="inventory_item_dropped" from="UI" to="." method="_on_ui_inventory_item_dropped"]
 [connection signal="ui_interaction_ended" from="UI" to="." method="_on_ui_ui_interaction_ended"]

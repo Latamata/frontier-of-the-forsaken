@@ -283,9 +283,13 @@ func _on_waypoint_4_body_entered(body: Node2D) -> void:
 
 func auto_shoot():
 	for entity in npcgroup.get_children():  # Include all entities
-		if entity.target != null && entity.reloaded:
+		if  entity.reloaded:
 			entity.fire_gun()
 			fire_gun(entity)
 
 func _on_auto_shoot_timer_timeout() -> void:
 	auto_shoot()
+
+
+func _on_ui_auto_shoot_action() -> void:
+	$auto_shoot_timer.start()

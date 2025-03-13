@@ -4,6 +4,7 @@ signal fire_action
 signal turn_action
 signal weapon_toggle
 signal aim_action
+signal auto_shoot_action
 signal camp_action
 signal move_action
 signal ui_interaction_started()
@@ -81,3 +82,7 @@ func _on_buysoldlier_button_down() -> void:
 		Globals.soldier_count += 1 
 		Globals.gold -= 25
 		update_resources() 
+
+
+func _on_auto_shoot_button_down() -> void:
+	emit_signal("auto_shoot_action")
