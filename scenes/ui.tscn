@@ -87,6 +87,7 @@ offset_left = 540.0
 offset_top = 37.0
 offset_right = 632.0
 offset_bottom = 68.0
+focus_mode = 0
 text = "auto shoot"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]

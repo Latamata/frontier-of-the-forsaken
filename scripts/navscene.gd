@@ -291,5 +291,11 @@ func _on_auto_shoot_timer_timeout() -> void:
 	auto_shoot()
 
 
+var is_auto_shooting_enabled = false  # To track if auto shooting is on or off
+
 func _on_ui_auto_shoot_action() -> void:
-	$auto_shoot_timer.start()
+	if is_auto_shooting_enabled:
+		$auto_shoot_timer.stop()  # Stop the timer if auto-shooting is already enabled
+	else:
+		$auto_shoot_timer.start()  # Start the timer if auto-shooting is off
+	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
