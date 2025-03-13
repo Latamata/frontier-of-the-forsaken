@@ -108,7 +108,6 @@ func _on_ui_turn_action() -> void:
 
 func _check_for_events():
 	var rng = randi() % 100  # Random chance (0-99)
-	
 	if rng < 10:  # 10% chance of a bandit attack
 		print("Bandits attack! Lose some gold.")
 		Globals.add_gold(-10)

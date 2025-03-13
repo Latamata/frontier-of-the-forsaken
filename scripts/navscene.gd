@@ -23,7 +23,7 @@ var rotation_angle: float
 
 func _ready():
 	
-	spawn_zombies(2, 2,Vector2(500,-200), 100.0)
+	spawn_zombies(5, 5,Vector2(500,-200), 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -128,7 +128,7 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 					var adjusted_position = tile_map.map_to_local(check_coords) + Vector2(tile_map.tile_set.tile_size) / 2
 					
 					# Align more closely to the mouse position
-					adjusted_position.x = selected_position.x  # Align horizontally
+					#adjusted_position.x = selected_position.x  # Align horizontally
 					# adjusted_position.y = selected_position.y  # Uncomment if aligning vertically instead
 					
 					return adjusted_position  
@@ -271,14 +271,21 @@ func _on_waypoint_2_body_entered(body: Node2D) -> void:
 			for entity in zombiegroup.get_children():
 				entity.target = $waypoint3
 
-
 func _on_waypoint_3_body_entered(body: Node2D) -> void:
 		if body.is_in_group('zombie'):
 			for entity in zombiegroup.get_children():
 				entity.target = $waypoint4
 
-
 func _on_waypoint_4_body_entered(body: Node2D) -> void:
 		if body.is_in_group('zombie'):
 			for entity in zombiegroup.get_children():
 				entity.target = $waypoint1
+
+func auto_shoot():
+	for entity in npcgroup.get_children():  # Include all entities
+		if entity.target != null && entity.reloaded:
+			entity.fire_gun()
+			fire_gun(entity)
+
+func _on_auto_shoot_timer_timeout() -> void:
+	auto_shoot()

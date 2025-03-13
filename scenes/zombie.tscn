@@ -176,7 +176,6 @@ shape = SubResource("CircleShape2D_74v56")
 path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 1.111
-radius = 55.45
 
 [node name="Melee" type="Area2D" parent="."]
 position = Vector2(2, -11)

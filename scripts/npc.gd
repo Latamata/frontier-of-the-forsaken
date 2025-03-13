@@ -19,7 +19,7 @@ var HEALTH = 100  # NPC's starting health
 #@onready var navigation_agent_2d = $NavigationAgent2D
 @onready var targeting = $targeting
 @onready var healthbar: ProgressBar = $Healthbar
-@onready var meleetimer: Timer = $Meleetimer
+#@onready var meleetimer: Timer = $Meleetimer
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 
 var overlapping_bodies = []  # List of bodies in melee range
@@ -128,39 +128,16 @@ func slow_affect(activate):
 	else:
 		speed = 30.0
 
-
-
-func _on_takedamage_timeout():
-	take_damage(0)
-
 func move_to_position(new_target_position: Vector2):
 	#print("Moving to: ", new_target_position)  # Debug print
 	target_position = new_target_position
 	navigation_agent_2d.set_target_position(target_position)
 	moving = true
 
+func fire_gun():
+	if reloaded:
+		reloaded = false
+		$gunreload.start()
 
-func _on_melee_body_entered(body: Node2D) -> void:
-	if body.is_in_group("zombie") and body not in overlapping_bodies:
-		overlapping_bodies.append(body)
-
-func _on_melee_body_exited(body: Node2D) -> void:
-	if body in overlapping_bodies:
-		overlapping_bodies.erase(body)
-
-func _on_meleetimer_timeout():
-	melee_cd = true
-	$Melee.disabled = false  # Enable melee collision when cooldown is over
-
-func apply_melee_damage():
-	if melee_cd:
-		return  # Don't apply damage if in cooldown
-
-	if overlapping_bodies.size() > 0:
-		for body in overlapping_bodies:
-			if is_instance_valid(body):
-				body.take_damage(30)
-		
-		melee_cd = false  # Disable melee until cooldown ends
-		$Melee.disabled = true  # Disable melee collision during cooldown
-		meleetimer.start()  # Start the cooldown timer
+func _on_gunreload_timeout() -> void:
+	reloaded = true
