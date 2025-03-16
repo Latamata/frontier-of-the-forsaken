@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bwmplcmchqacf" path="res://scripts/waypoint.gd" id="1_omn23"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u8y0o"]
-radius = 26.0768
+radius = 34.0147
 
 [node name="Area2D" type="Area2D"]
 script = ExtResource("1_omn23")

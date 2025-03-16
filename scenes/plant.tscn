@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://byxck3g15ku77" path="res://assets/food.png" id="2_odjdt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gc171"]
-radius = 26.5424
+radius = 31.5357
 
 [node name="plants" type="Area2D" groups=["plant"]]
 z_as_relative = false
@@ -30,11 +30,9 @@ scale = Vector2(2.25821, 1.68709)
 text = "'e'"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -12)
 shape = SubResource("CircleShape2D_gc171")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1, -16)
 texture = ExtResource("2_odjdt")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://wjf8hih4d4am" path="res://scripts/plant.gd" id="1_yna14"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yna14"]
-radius = 12.0416
+radius = 21.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yna14"]
 atlas = ExtResource("1_ls0pt")

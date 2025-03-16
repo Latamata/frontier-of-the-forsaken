@@ -10,7 +10,8 @@ var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 var current_line: int = 0
 var soldier_count: int = 12 # setget add_soldier_count, get_soldier_count
 var wagon_speed: int = 1 # setget add_wagon_speed, get_wagon_speed
-
+var bullet_type = "lead"
+var bullets_unlocked = false
 # Optional: Setter/Getter for geo_map_camp if needed
 func set_current_line(value ) -> void:
 	current_line = value

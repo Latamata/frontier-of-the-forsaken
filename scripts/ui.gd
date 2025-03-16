@@ -83,6 +83,12 @@ func _on_buysoldlier_button_down() -> void:
 		Globals.gold -= 25
 		update_resources() 
 
-
 func _on_auto_shoot_button_down() -> void:
 	emit_signal("auto_shoot_action")
+
+func _on_button_button_down() -> void:
+	$mapgeoUI/shop.visible = !$mapgeoUI/shop.visible
+
+func _on_shop_bought_something() -> void:
+	update_resources() 
+	print('rinngs')

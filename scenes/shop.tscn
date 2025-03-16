@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=3 uid="uid://cjjx5rvo3h83d"]
+
+[ext_resource type="Texture2D" uid="uid://p17chejyji5x" path="res://assets/shopicons.png" id="1_lx5au"]
+[ext_resource type="Script" uid="uid://dhc7bwuobf4cg" path="res://scenes/shop.gd" id="1_xfvoa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xfvoa"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(13.5, 19, 117, 108)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1l46r"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(153.5, 22, 102, 113)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_032fp"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(308.5, 43, 102, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2fc2m"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(18.5, 155, 92, 89)
+
+[node name="shop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xfvoa")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 682.0
+offset_bottom = 335.0
+
+[node name="buy_soldier" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 35.0
+offset_right = 201.0
+offset_bottom = 151.0
+focus_mode = 0
+icon = SubResource("AtlasTexture_xfvoa")
+
+[node name="buy_food" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 164.0
+offset_right = 203.0
+offset_bottom = 285.0
+focus_mode = 0
+icon = SubResource("AtlasTexture_1l46r")
+
+[node name="buy_bullet" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 267.0
+offset_top = 36.0
+offset_right = 377.0
+offset_bottom = 130.0
+focus_mode = 0
+icon = SubResource("AtlasTexture_032fp")
+
+[node name="buy_bullet_steel" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 268.0
+offset_top = 180.0
+offset_right = 378.0
+offset_bottom = 282.0
+focus_mode = 0
+icon = SubResource("AtlasTexture_2fc2m")
+
+[node name="Info" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 452.0
+offset_top = 34.0
+offset_right = 634.0
+offset_bottom = 294.0
+bbcode_enabled = true
+text = "Item:
+Cost: 15g
+damage"
+
+[connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]
+[connection signal="mouse_entered" from="Panel/buy_soldier" to="." method="_on_buy_soldier_mouse_entered"]
+[connection signal="button_down" from="Panel/buy_food" to="." method="_on_buy_food_button_down"]
+[connection signal="mouse_entered" from="Panel/buy_food" to="." method="_on_buy_food_mouse_entered"]
+[connection signal="button_down" from="Panel/buy_bullet" to="." method="_on_buy_bullet_button_down"]
+[connection signal="mouse_entered" from="Panel/buy_bullet" to="." method="_on_buy_bullet_mouse_entered"]
+[connection signal="button_down" from="Panel/buy_bullet_steel" to="." method="_on_buy_bullet_steel_button_down"]
+[connection signal="mouse_entered" from="Panel/buy_bullet_steel" to="." method="_on_buy_bullet_steel_mouse_entered"]
