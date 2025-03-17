@@ -7,6 +7,7 @@ extends Node2D
 @onready var player = $Enviorment/sorted/player
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
+@onready var wave_timer: Timer = $wave_timer
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
 var musketgun: PackedScene = preload("res://scenes/items.tscn")
@@ -22,8 +23,8 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
-	
-	spawn_zombies(5, 5,Vector2(500,-200), 100.0)
+	#$wave_timer.start()
+	#spawn_zombies(5, 5, $waypoint2.position, 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -43,6 +44,10 @@ func _ready():
 func _process(_delta: float) -> void:
 	update_all_speeds()
 	ui.get_child(1).get_child(5).value = $gunreloadtimer.time_left
+
+	if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
+		print("All zombies are dead! Starting next wave...")
+		$wave_timer.start()
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -299,3 +304,28 @@ func _on_ui_auto_shoot_action() -> void:
 	else:
 		$auto_shoot_timer.start()  # Start the timer if auto-shooting is off
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
+
+var wave_count = 1
+var max_zombies = 64
+
+func _on_wave_timer_timeout() -> void:
+	#print('running')
+	var spawn_amount = min(8 + (wave_count * 2), max_zombies)  # Increases by 2 per wave
+	var spawn_x = ceil(sqrt(spawn_amount))  # Distribute evenly
+	var spawn_y = ceil(spawn_amount / spawn_x)
+
+	# Define an array of waypoints
+	var waypoints = [
+		$waypoint1,
+		$waypoint2,
+		$waypoint3,
+		$waypoint4  # Add more as needed
+	]
+
+	# Pick a random waypoint
+	var random_waypoint = waypoints[randi() % waypoints.size()]
+
+	# Spawn zombies at the random waypoint
+	spawn_zombies(spawn_x, spawn_y, random_waypoint.position, 100.0)
+	
+	wave_count += 1
