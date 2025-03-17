@@ -56,7 +56,7 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	_update_turn_button_visibility()
 
 func _update_turn_button_visibility():
-	var turn_button = $UI.get_child(2).get_child(0)  # Ensure this is the correct path
+	var turn_button = $UI.get_node("mapgeoUI/turn")
 	var should_be_visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
 	
 	turn_button.visible = should_be_visible

@@ -1,20 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://d11nep0qfx3xu"]
+[gd_scene load_steps=3 format=3 uid="uid://d11nep0qfx3xu"]
 
 [ext_resource type="Script" uid="uid://okmy7btlpgbo" path="res://scripts/ui.gd" id="1_eji1r"]
-[ext_resource type="PackedScene" uid="uid://c7fy6vj4kxy1u" path="res://scenes/inventory.tscn" id="2_ca7nl"]
 [ext_resource type="PackedScene" uid="uid://cjjx5rvo3h83d" path="res://scenes/shop.tscn" id="3_yev5y"]
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_eji1r")
-
-[node name="inventory" parent="." instance=ExtResource("2_ca7nl")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-size_flags_horizontal = 4
 
 [node name="battlemapUI" type="ColorRect" parent="."]
 layout_direction = 1
@@ -176,21 +167,6 @@ offset_right = 513.0
 offset_bottom = 33.0
 scale = Vector2(5.21036, 1.91125)
 
-[node name="food" type="RichTextLabel" parent="resources"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -52.4944
-offset_top = -9.95356
-offset_right = 50.5056
-offset_bottom = 13.0465
-grow_horizontal = 0
-grow_vertical = 2
-scale = Vector2(0.244132, 0.809747)
-
 [node name="gold" type="RichTextLabel" parent="resources"]
 layout_mode = 1
 anchors_preset = 6
@@ -205,6 +181,23 @@ offset_bottom = 13.5697
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
+text = "asd"
+
+[node name="food" type="RichTextLabel" parent="resources"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -52.6864
+offset_top = -9.95356
+offset_right = 18.3136
+offset_bottom = 13.0465
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.244132, 0.809747)
+text = "asd"
 
 [node name="resourcelabel" type="RichTextLabel" parent="resources"]
 layout_mode = 1
@@ -214,7 +207,6 @@ scale = Vector2(0.389164, 0.887227)
 text = "Food:           Gold:
 "
 
-[connection signal="item_dropped" from="inventory" to="." method="_on_inventory_item_dropped"]
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="battlemapUI/aim" to="." method="_on_aim_button_down"]

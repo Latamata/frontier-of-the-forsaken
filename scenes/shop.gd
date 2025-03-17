@@ -93,7 +93,6 @@ func _on_buy_bullet_steel_button_down() -> void:
 		Globals.gold -= 15
 		Globals.bullets_unlocked = true
 		Globals.bullet_type = 'steel'
-		print(Globals.bullet_type)
 		emit_signal("bought_something")
 	if Globals.bullet_type == 'steel':
 		info.text += "\n[color=green]Selected[/color]"

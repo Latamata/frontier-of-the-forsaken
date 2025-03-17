@@ -10,21 +10,20 @@ signal move_action
 signal ui_interaction_started()
 
 signal ui_interaction_ended()
-signal inventory_item_dropped(item)  # <-- New signal
-@onready var food: RichTextLabel = $resources/food
+#@onready var food: RichTextLabel = $resources/food
+
 @onready var gold: RichTextLabel = $resources/gold
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
-@onready var inventory: Control = $inventory
+#@onready var inventory: Control = $inventory
 
 
 
 func _ready() -> void:
 	update_resources()
-	inventory.connect("item_dropped", Callable(self, "_on_inventory_signal"))
+	#pass
+	#inventory.connect("item_dropped", Callable(self, "_on_inventory_signal"))
 
-func _on_inventory_item_dropped(item):
-	emit_signal("inventory_item_dropped", item)  # <-- Re-emitting the signal
 
 func hide_map_ui(hideorshow):
 	if hideorshow:
@@ -34,9 +33,10 @@ func hide_map_ui(hideorshow):
 		mapgeo.visible = false
 		battlemap.visible = true
 func update_resources() -> void:
-	food.text = str(Globals.food)
-	gold.text = str(Globals.gold)
-
+	#print(Globals.food)
+	
+	$resources/food.text = str(Globals.food)
+	$resources/gold.text = str(Globals.gold)
 #-----------------GEOGRAPHIC MAP UI----------------------
 func _on_camp_button_down():
 	emit_signal("camp_action")
@@ -44,7 +44,7 @@ func _on_camp_button_down():
 
 func _on_move_button_down():
 	#print(Globals.food)
-	food.text = str(Globals.food)
+	$resources/food.text = str(Globals.food)
 	emit_signal("move_action")
 
 #-----------------BATTLE MAP UI----------------------
@@ -70,18 +70,18 @@ func _on_geomap_button_down() -> void:
 func _on_weapontoggle_button_down() -> void:
 	emit_signal("weapon_toggle") 
 
-func _on_inventory_button_button_down() -> void:
-	inventory.hideorshow()
+#func _on_inventory_button_button_down() -> void:
+	#inventory.hideorshow()
 
 func _on_button_pressed() -> void:
 	emit_signal("turn_action")
 
 
-func _on_buysoldlier_button_down() -> void:
-	if Globals.gold >= 25:
-		Globals.soldier_count += 1 
-		Globals.gold -= 25
-		update_resources() 
+#func _on_buysoldlier_button_down() -> void:
+	#if Globals.gold >= 25:
+		#Globals.soldier_count += 1 
+		#Globals.gold -= 25
+		#update_resources() 
 
 func _on_auto_shoot_button_down() -> void:
 	emit_signal("auto_shoot_action")
@@ -91,4 +91,4 @@ func _on_button_button_down() -> void:
 
 func _on_shop_bought_something() -> void:
 	update_resources() 
-	print('rinngs')
+	#print('rinngs')
