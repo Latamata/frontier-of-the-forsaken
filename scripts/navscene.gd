@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var indicaters = $Enviorment/indicators
+@onready var indicators = $Enviorment/indicators
 @onready var tile_map = $Enviorment/ground
 @onready var npcgroup = $Enviorment/sorted/NPCGROUP
 @onready var zombiegroup = $Enviorment/sorted/ZOMBIEGROUP
@@ -91,7 +91,9 @@ func _input(event):
 		
 		if current_weapon == player.gun:  # Ensure only the gun can shoot
 			fire_gun(player)
-
+			player.player_shoot()
+		else:
+			player.sword_attack()
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
 		return
@@ -144,8 +146,6 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 	fallback_position.x = selected_position.x  # Align to mouse position if needed
 	return fallback_position
 
-
-
 # Function to rotate a position around a point by a given angle
 func rotate_position_around_center(unitposition: Vector2, center: Vector2, angle: float) -> Vector2:
 	var direction = unitposition - center  # Vector from center to the position
@@ -155,7 +155,7 @@ func rotate_position_around_center(unitposition: Vector2, center: Vector2, angle
 
 func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle: float = 0.0):
 	# Clear previous indicators
-	for child in indicaters.get_children():
+	for child in indicators.get_children():
 		child.queue_free()
 
 	var row_spacing = 25  # Distance between the two lines
@@ -181,11 +181,11 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 		#print(indicator_position)
 		# Set position and add to the scene
 		indicator_instance.position = get_nearest_tile(indicator_position, placed_positions)
-		indicaters.add_child(indicator_instance)
+		indicators.add_child(indicator_instance)
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
 
 func assign_npcs_to_indicators(forward_angle: float):
-	var indicators = indicaters.get_children()
+	var indicators = indicators.get_children()
 	for i in range(min(npcgroup.get_child_count(), indicators.size())):
 		var npc = npcgroup.get_child(i)
 		var indicator = indicators[i]
@@ -294,7 +294,6 @@ func auto_shoot():
 
 func _on_auto_shoot_timer_timeout() -> void:
 	auto_shoot()
-
 
 var is_auto_shooting_enabled = false  # To track if auto shooting is on or off
 

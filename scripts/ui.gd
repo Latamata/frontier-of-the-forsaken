@@ -76,13 +76,6 @@ func _on_weapontoggle_button_down() -> void:
 func _on_button_pressed() -> void:
 	emit_signal("turn_action")
 
-
-#func _on_buysoldlier_button_down() -> void:
-	#if Globals.gold >= 25:
-		#Globals.soldier_count += 1 
-		#Globals.gold -= 25
-		#update_resources() 
-
 func _on_auto_shoot_button_down() -> void:
 	emit_signal("auto_shoot_action")
 

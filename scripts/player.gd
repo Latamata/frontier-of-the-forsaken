@@ -118,7 +118,7 @@ func rotate_weapon(current_weapon):
 	var angle = direction_to_mouse.angle()
 
 	current_weapon.rotation = angle
-	var weapon_radius = 25.0  
+	var weapon_radius = 5.0  
 	current_weapon.position = Vector2(cos(angle), sin(angle)) * weapon_radius + Vector2(0, -25)
 	if angle > PI / 2 or angle < -PI / 2:
 		current_weapon.flip_v = true
@@ -128,30 +128,25 @@ func rotate_weapon(current_weapon):
 		current_weapon.z_index = 0
 	else:
 		current_weapon.z_index = 1
-func weapon_hitbox():
-	if reloaded:
-		var hitbox_area = weapons[current_weapon_index]  # Get current weapon
 
-		var overlapping_bodies = hitbox_area.get_overlapping_bodies()
-		for body in overlapping_bodies:
-			if body.is_in_group("zombie"):
-				body.take_damage(50)
-				print("Hit zombie: ", body.name)
+var original_sabre_rotation = 0.0  # Store original rotation before swinging
 
-		var overlapping_areas = hitbox_area.get_overlapping_areas()
-		for area in overlapping_areas:
-			if area.is_in_group("plant"):	
-				area.chopped_down()
+func sword_attack():
+	original_sabre_rotation = sabre.rotation  # Save rotation before swinging
+	sabre.rotation = (get_global_mouse_position() - global_position).normalized().angle() + deg_to_rad(45)
+	$attackanimation.rotation = sabre.rotation
+	$attackanimation.global_position = sabre.global_position 
+	$Meleetimer.start()
+	$attackanimation.play('default')
 
-		reloaded = false
-		$Meleetimer.start()
-
-func _on_meleetimer_timeout() -> void:
-	reloaded = true
+func _on_meleetimer_timeout():
+	sabre.rotation = original_sabre_rotation  # Reset to saved rotation
+	#$sabre/attackanimation.visible = false
 
 func _on_reload_timeout():
 	reloaded = true
 
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.is_in_group('plant') && get_current_weapon().name == 'sabre':
-		area.chopped_down()
+func player_shoot():
+	$attackanimation.rotation = gun.rotation
+	$attackanimation.global_position = $Musket/Marker2D.global_position 
+	$attackanimation.play('smoke')

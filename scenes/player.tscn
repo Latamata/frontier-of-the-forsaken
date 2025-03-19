@@ -1,8 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://dit4wkbv0e3nr"]
+[gd_scene load_steps=32 format=3 uid="uid://dit4wkbv0e3nr"]
 
 [ext_resource type="Script" uid="uid://cwv7rykqxjlnu" path="res://scripts/player.gd" id="1_y03rj"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="3_vos4w"]
 [ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="4_cqufx"]
+[ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="5_v052w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lcexw"]
@@ -129,8 +130,83 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf6aj"]
 size = Vector2(18, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t31gg"]
-size = Vector2(38, 10)
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4r1p"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d2wvv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4r1p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjrip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smehm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur7pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2wvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v2ag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}],
+"loop": false,
+"name": &"smoke",
+"speed": 5.0
+}]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_dqkch"]
+points = PackedVector2Array(0, 0, 37, 17, 37, -15)
 
 [node name="player" type="CharacterBody2D"]
 z_as_relative = false
@@ -145,12 +221,12 @@ platform_floor_layers = 4294967040
 script = ExtResource("1_y03rj")
 
 [node name="Musket" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(24, -35)
 texture = ExtResource("3_vos4w")
+centered = false
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]
-position = Vector2(28.0534, -1.00281)
+position = Vector2(56, 5)
 
 [node name="reload" type="Timer" parent="."]
 wait_time = 10.0
@@ -178,16 +254,23 @@ offset_right = 48.0
 offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
+[node name="attackanimation" type="AnimatedSprite2D" parent="."]
+position = Vector2(80, -30)
+sprite_frames = SubResource("SpriteFrames_d2wvv")
+offset = Vector2(10, 0)
+
 [node name="sabre" type="Sprite2D" parent="."]
+position = Vector2(-12, -6)
 texture = ExtResource("4_cqufx")
+centered = false
 
 [node name="Area2D" type="Area2D" parent="sabre"]
 collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sabre/Area2D"]
-position = Vector2(6, 0)
-shape = SubResource("RectangleShape2D_t31gg")
+position = Vector2(14, 5)
+shape = SubResource("ConvexPolygonShape2D_dqkch")
 
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
