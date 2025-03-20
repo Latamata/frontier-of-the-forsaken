@@ -144,7 +144,7 @@ animations = [{
 radius = 218.449
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
-radius = 31.0161
+radius = 27.0185
 
 [node name="zombie" type="CharacterBody2D" groups=["zombie"]]
 slide_on_ceiling = false
@@ -181,6 +181,7 @@ simplify_epsilon = 1.111
 position = Vector2(2, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
+position = Vector2(-3, -2)
 shape = SubResource("CircleShape2D_axwvo")
 
 [node name="Meleetimer" type="Timer" parent="."]

@@ -89,10 +89,10 @@ func _input(event):
 		print()
 		var current_weapon = player.get_current_weapon()
 		
-		if current_weapon == player.gun:  # Ensure only the gun can shoot
+		if current_weapon == player.gun && player.reloaded:  # Ensure only the gun can shoot
 			fire_gun(player)
 			player.player_shoot()
-		else:
+		elif current_weapon == player.sabre :
 			player.sword_attack()
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
@@ -185,13 +185,14 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
 
 func assign_npcs_to_indicators(forward_angle: float):
-	var indicators = indicators.get_children()
-	for i in range(min(npcgroup.get_child_count(), indicators.size())):
+	var indicator_group = indicators.get_children()  # Get all children (indicators) of the 'indicators' node
+	for i in range(min(npcgroup.get_child_count(), indicator_group.size())):  # Use .size() for the list of children
 		var npc = npcgroup.get_child(i)
-		var indicator = indicators[i]
+		var indicator = indicator_group[i]
 		#print(npc.is_aiming)
 		npc.forward_angle = forward_angle
 		npc.move_to_position(indicator.position)
+
 
 func fire_gun(firing_entity: Node2D):
 	if not is_instance_valid(firing_entity) or not firing_entity.has_node("Musket/Marker2D"):
@@ -235,6 +236,7 @@ func _on_ui_fire_action():
 		for npc in npcgroup.get_children():
 			if is_instance_valid(npc):
 				fire_gun(npc)
+				npc.fire_gun()
 		line_infantry_reloaded = false
 		$gunreloadtimer.start()
 
@@ -288,7 +290,7 @@ func _on_waypoint_4_body_entered(body: Node2D) -> void:
 
 func auto_shoot():
 	for entity in npcgroup.get_children():  # Include all entities
-		if  entity.reloaded:
+		if  entity.reloaded && entity.target != null:
 			entity.fire_gun()
 			fire_gun(entity)
 

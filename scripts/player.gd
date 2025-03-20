@@ -132,12 +132,23 @@ func rotate_weapon(current_weapon):
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
 
 func sword_attack():
-	original_sabre_rotation = sabre.rotation  # Save rotation before swinging
-	sabre.rotation = (get_global_mouse_position() - global_position).normalized().angle() + deg_to_rad(45)
+	original_sabre_rotation = sabre.rotation  # Save initial rotation
+	var attack_angle = (get_global_mouse_position() - global_position).normalized().angle()
+	var final_rotation = attack_angle + deg_to_rad(45)  # Define target rotation
+	
+	# Create a tween for smooth rotation over time
+	var tween = get_tree().create_tween()
+	tween.tween_property(sabre, "rotation", final_rotation, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)  # Smooth transition
+	tween.tween_property(sabre, "rotation", original_sabre_rotation, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)  # Swing back
+
+	# Play attack animation at correct position
 	$attackanimation.rotation = sabre.rotation
-	$attackanimation.global_position = sabre.global_position 
-	$Meleetimer.start()
+	$attackanimation.global_position = $sabre/Marker2D.global_position
 	$attackanimation.play('default')
+	for entitity in $sabre/Area2D.get_overlapping_bodies():
+		print(entitity)
+		if entitity.is_in_group('zombie'):
+			entitity.take_damage(20)
 
 func _on_meleetimer_timeout():
 	sabre.rotation = original_sabre_rotation  # Reset to saved rotation
@@ -147,6 +158,7 @@ func _on_reload_timeout():
 	reloaded = true
 
 func player_shoot():
+	reloaded = false
 	$attackanimation.rotation = gun.rotation
 	$attackanimation.global_position = $Musket/Marker2D.global_position 
 	$attackanimation.play('smoke')

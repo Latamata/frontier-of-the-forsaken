@@ -1,7 +1,7 @@
 extends Area2D
 
 var resource_type = ''
-
+#getting file changed ouside editor message for this file
 func collected():
 	queue_free()
 	if resource_type == 'gold':
