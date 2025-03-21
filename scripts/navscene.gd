@@ -43,7 +43,8 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	update_all_speeds()
-	#ui.get_child(1).get_child(5).value = $gunreloadtimer.time_left
+	if player:
+		ui.get_child(0).get_node("reloadtimer").value = player.reload_timer.time_left
 
 	if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
 		print("All zombies are dead! Starting next wave...")
@@ -330,3 +331,6 @@ func _on_wave_timer_timeout() -> void:
 	spawn_zombies(spawn_x, spawn_y, random_waypoint.position, 100.0)
 	
 	wave_count += 1
+
+func _on_player_collect_item() -> void:
+	ui.update_resources()

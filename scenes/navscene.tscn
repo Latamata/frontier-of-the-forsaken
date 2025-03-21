@@ -1968,6 +1968,7 @@ one_shot = true
 wait_time = 10.0
 one_shot = true
 
+[connection signal="collect_item" from="Enviorment/sorted/player" to="." method="_on_player_collect_item"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="auto_shoot_action" from="UI" to="." method="_on_ui_auto_shoot_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]

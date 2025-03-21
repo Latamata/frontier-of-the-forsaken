@@ -1,4 +1,5 @@
 extends Control
+
 @onready var info: RichTextLabel = $Panel/Info
 
 signal bought_something

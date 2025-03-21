@@ -4,13 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://byxck3g15ku77" path="res://assets/food.png" id="2_odjdt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gc171"]
-radius = 41.0122
+radius = 27.1662
 
 [node name="plants" type="Area2D" groups=["plant"]]
 z_as_relative = false
 y_sort_enabled = true
-collision_layer = 3
-collision_mask = 3
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_hclp6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -18,5 +18,3 @@ shape = SubResource("CircleShape2D_gc171")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_odjdt")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

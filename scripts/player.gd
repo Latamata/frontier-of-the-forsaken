@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal collect_item()  # Define signal with a parameter
+
 var HEALTH = 100
 var SPEED = 0.10
 var reloaded = true
@@ -12,6 +14,7 @@ var targetResource
 @onready var sabre = $sabre
 @onready var healthbar: ProgressBar = $Healthbar
 @onready var camera_2d = $"../../../Camera2D"
+@onready var reload_timer = $reload
 
 var weapons = []  # List to hold weapons
 var current_weapon_index = 0  # Index for switching
@@ -156,9 +159,16 @@ func _on_meleetimer_timeout():
 
 func _on_reload_timeout():
 	reloaded = true
-
+	
 func player_shoot():
+	reload_timer.start()
 	reloaded = false
 	$attackanimation.rotation = gun.rotation
 	$attackanimation.global_position = $Musket/Marker2D.global_position 
 	$attackanimation.play('smoke')
+
+
+
+func _on_collection_area_area_entered(area: Area2D) -> void:
+	area.collected()
+	emit_signal("collect_item")  # Pass the collected item as an argument

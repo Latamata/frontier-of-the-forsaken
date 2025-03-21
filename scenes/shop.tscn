@@ -80,6 +80,7 @@ text = "Item:
 Cost: 15g
 damage"
 
+[connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]
 [connection signal="mouse_entered" from="Panel/buy_soldier" to="." method="_on_buy_soldier_mouse_entered"]
 [connection signal="button_down" from="Panel/buy_food" to="." method="_on_buy_food_button_down"]
 [connection signal="mouse_entered" from="Panel/buy_food" to="." method="_on_buy_food_mouse_entered"]
