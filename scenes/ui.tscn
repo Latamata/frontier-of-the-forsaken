@@ -12,7 +12,7 @@ layout_direction = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -125.0
+offset_top = -93.0
 offset_right = 1153.0
 grow_vertical = 0
 color = Color(0.647059, 0.427451, 0.290196, 0.788235)
@@ -20,9 +20,9 @@ color = Color(0.647059, 0.427451, 0.290196, 0.788235)
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 644.0
-offset_top = 38.0
+offset_top = 23.0
 offset_right = 715.0
-offset_bottom = 94.0
+offset_bottom = 79.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 text = "Aim"
@@ -30,18 +30,18 @@ text = "Aim"
 [node name="geomap" type="Button" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 1036.0
-offset_top = 25.0
+offset_top = 10.0
 offset_right = 1141.0
-offset_bottom = 100.0
+offset_bottom = 85.0
 focus_mode = 0
 text = "To the road"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 735.0
-offset_top = 38.0
+offset_top = 23.0
 offset_right = 806.0
-offset_bottom = 94.0
+offset_bottom = 79.0
 focus_mode = 0
 mouse_filter = 1
 text = "Fire/'1'"
@@ -58,9 +58,9 @@ text = "weapon"
 [node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 816.0
-offset_top = 55.0
+offset_top = 50.0
 offset_right = 976.0
-offset_bottom = 82.0
+offset_bottom = 77.0
 max_value = 6.0
 show_percentage = false
 
@@ -72,6 +72,14 @@ offset_right = 632.0
 offset_bottom = 68.0
 focus_mode = 0
 text = "auto shoot"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 819.0
+offset_top = 22.0
+offset_right = 901.0
+offset_bottom = 46.0
+text = "Reload"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1

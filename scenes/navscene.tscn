@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=53 format=4 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" uid="uid://fgxtjtaduhe4" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Texture2D" uid="uid://cy01i81rii7b0" path="res://assets/survivalgame-terrian-water-32x32.png" id="2_xp418"]
@@ -11,6 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://d11nep0qfx3xu" path="res://scenes/ui.tscn" id="5_qn5ki"]
 [ext_resource type="PackedScene" uid="uid://txoibxtqogig" path="res://scenes/playermenu.tscn" id="7_yw4ke"]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_8g735"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_vkjep"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
@@ -18,6 +24,12 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 
 agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_luvax"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_kthex"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
@@ -47,7 +59,31 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
 agent_radius = 0.0
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_mnb8n"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_lg5u3"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ql54t"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_uigwm"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_a6efp"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
@@ -796,6 +832,8 @@ texture_region_size = Vector2i(32, 32)
 13:5/0/terrain_set = 0
 13:4/0 = 0
 13:4/0/terrain_set = 0
+13:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_mnb8n")
+13:4/0/custom_data_0 = true
 13:3/0 = 0
 13:3/0/terrain_set = 0
 14:5/0 = 0
@@ -817,12 +855,14 @@ texture_region_size = Vector2i(32, 32)
 15:5/0/terrain = 4
 15:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_lg5u3")
 15:5/0/custom_data_0 = true
+15:5/0/custom_data_1 = true
 16:5/0 = 0
 16:5/0/terrain_set = 0
 16:5/0/terrain = 4
 16:5/0/terrains_peering_bit/right_side = 4
 16:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_lg5u3")
 16:5/0/custom_data_0 = true
+16:5/0/custom_data_1 = true
 17:5/0 = 0
 17:5/0/terrain_set = 0
 17:5/0/terrain = 4
@@ -830,12 +870,14 @@ texture_region_size = Vector2i(32, 32)
 17:5/0/terrains_peering_bit/left_side = 4
 17:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_lg5u3")
 17:5/0/custom_data_0 = true
+17:5/0/custom_data_1 = true
 18:5/0 = 0
 18:5/0/terrain_set = 0
 18:5/0/terrain = 4
 18:5/0/terrains_peering_bit/left_side = 4
 18:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_lg5u3")
 18:5/0/custom_data_0 = true
+18:5/0/custom_data_1 = true
 0:6/0 = 0
 0:6/0/terrain_set = 0
 0:6/0/terrain = 5
@@ -1174,23 +1216,31 @@ texture_region_size = Vector2i(32, 32)
 15:8/0 = 0
 15:8/0/terrain_set = 0
 15:8/0/terrain = 5
+15:8/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ql54t")
 15:8/0/custom_data_0 = true
+15:8/0/custom_data_1 = true
 16:8/0 = 0
 16:8/0/terrain_set = 0
 16:8/0/terrain = 5
 16:8/0/terrains_peering_bit/right_side = 5
+16:8/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ql54t")
 16:8/0/custom_data_0 = true
+16:8/0/custom_data_1 = true
 17:8/0 = 0
 17:8/0/terrain_set = 0
 17:8/0/terrain = 5
 17:8/0/terrains_peering_bit/right_side = 5
 17:8/0/terrains_peering_bit/left_side = 5
+17:8/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ql54t")
 17:8/0/custom_data_0 = true
+17:8/0/custom_data_1 = true
 18:8/0 = 0
 18:8/0/terrain_set = 0
 18:8/0/terrain = 5
 18:8/0/terrains_peering_bit/left_side = 5
+18:8/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_a6efp")
 18:8/0/custom_data_0 = true
+18:8/0/custom_data_1 = true
 8:7/0 = 0
 8:7/0/terrain_set = 0
 8:7/0/terrain = 5
@@ -1205,6 +1255,149 @@ texture_region_size = Vector2i(32, 32)
 8:7/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_hts07")
 8:7/0/custom_data_0 = true
 8:7/0/custom_data_1 = true
+0:9/0 = 0
+0:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+0:9/0/custom_data_0 = true
+0:9/0/custom_data_1 = true
+0:10/0 = 0
+0:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_8g735")
+0:10/0/custom_data_0 = true
+0:10/0/custom_data_1 = true
+0:11/0 = 0
+0:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_8g735")
+0:11/0/custom_data_0 = true
+0:11/0/custom_data_1 = true
+1:10/0 = 0
+1:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+1:10/0/custom_data_0 = true
+1:10/0/custom_data_1 = true
+1:11/0 = 0
+1:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+1:11/0/custom_data_0 = true
+1:11/0/custom_data_1 = true
+2:10/0 = 0
+2:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+2:10/0/custom_data_0 = true
+2:10/0/custom_data_1 = true
+2:11/0 = 0
+2:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+2:11/0/custom_data_0 = true
+2:11/0/custom_data_1 = true
+3:10/0 = 0
+3:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+3:10/0/custom_data_0 = true
+3:10/0/custom_data_1 = true
+3:11/0 = 0
+3:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+3:11/0/custom_data_0 = true
+3:11/0/custom_data_1 = true
+1:9/0 = 0
+1:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+1:9/0/custom_data_0 = true
+1:9/0/custom_data_1 = true
+2:9/0 = 0
+2:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+2:9/0/custom_data_0 = true
+2:9/0/custom_data_1 = true
+3:9/0 = 0
+3:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+3:9/0/custom_data_0 = true
+3:9/0/custom_data_1 = true
+5:9/0 = 0
+5:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+5:9/0/custom_data_0 = true
+5:9/0/custom_data_1 = true
+5:10/0 = 0
+5:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+5:10/0/custom_data_0 = true
+5:10/0/custom_data_1 = true
+5:11/0 = 0
+5:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+5:11/0/custom_data_0 = true
+5:11/0/custom_data_1 = true
+4:10/0 = 0
+4:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+4:10/0/custom_data_0 = true
+4:10/0/custom_data_1 = true
+6:10/0 = 0
+6:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+6:10/0/custom_data_0 = true
+6:10/0/custom_data_1 = true
+7:9/0 = 0
+7:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+7:9/0/custom_data_0 = true
+7:9/0/custom_data_1 = true
+7:10/0 = 0
+7:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+7:10/0/custom_data_0 = true
+7:10/0/custom_data_1 = true
+8:11/0 = 0
+8:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+8:11/0/custom_data_0 = true
+8:11/0/custom_data_1 = true
+8:9/0 = 0
+8:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+8:9/0/custom_data_0 = true
+8:9/0/custom_data_1 = true
+8:10/0 = 0
+8:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+8:10/0/custom_data_0 = true
+8:10/0/custom_data_1 = true
+7:11/0 = 0
+7:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+7:11/0/custom_data_0 = true
+7:11/0/custom_data_1 = true
+9:9/0 = 0
+9:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+9:9/0/custom_data_0 = true
+9:9/0/custom_data_1 = true
+9:10/0 = 0
+9:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+9:10/0/custom_data_0 = true
+9:10/0/custom_data_1 = true
+9:11/0 = 0
+9:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+9:11/0/custom_data_0 = true
+9:11/0/custom_data_1 = true
+10:9/0 = 0
+10:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+10:9/0/custom_data_0 = true
+10:9/0/custom_data_1 = true
+10:10/0 = 0
+10:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+10:10/0/custom_data_0 = true
+10:10/0/custom_data_1 = true
+10:11/0 = 0
+10:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+10:11/0/custom_data_0 = true
+10:11/0/custom_data_1 = true
+11:9/0 = 0
+11:9/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+11:9/0/custom_data_0 = true
+11:9/0/custom_data_1 = true
+11:10/0 = 0
+11:10/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+11:10/0/custom_data_0 = true
+11:10/0/custom_data_1 = true
+11:11/0 = 0
+11:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kthex")
+11:11/0/custom_data_0 = true
+11:11/0/custom_data_1 = true
+15:11/0 = 0
+15:11/0/custom_data_0 = true
+15:11/0/custom_data_1 = true
+16:11/0 = 0
+16:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uigwm")
+16:11/0/custom_data_0 = true
+16:11/0/custom_data_1 = true
+17:11/0 = 0
+17:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uigwm")
+17:11/0/custom_data_0 = true
+17:11/0/custom_data_1 = true
+18:11/0 = 0
+18:11/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uigwm")
+18:11/0/custom_data_0 = true
+18:11/0/custom_data_1 = true
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ru3ej"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)

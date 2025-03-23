@@ -170,5 +170,15 @@ func player_shoot():
 
 
 func _on_collection_area_area_entered(area: Area2D) -> void:
-	area.collected()
+	
+	if area.resource_type == 'health' && HEALTH < 100:
+		area.collected()
+		HEALTH += 15
+		update_healthbar()
+	elif area.resource_type == 'gold':
+		area.collected()
+		Globals.add_gold(20)
+	elif area.resource_type == 'food':
+		area.collected()
+		Globals.add_food(20)
 	emit_signal("collect_item")  # Pass the collected item as an argument

@@ -24,7 +24,7 @@ var rotation_angle: float
 
 func _ready():
 	#$wave_timer.start()
-	#spawn_zombies(5, 5, $waypoint2.position, 100.0)
+	spawn_zombies(2, 2, $waypoint1.position, 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 
 	if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
 		print("All zombies are dead! Starting next wave...")
-		$wave_timer.start()
+		#$wave_timer.start()
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -307,7 +307,7 @@ func _on_ui_auto_shoot_action() -> void:
 		$auto_shoot_timer.start()  # Start the timer if auto-shooting is off
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
 
-var wave_count = 16
+var wave_count = 1
 var max_zombies = 64
 
 func _on_wave_timer_timeout() -> void:

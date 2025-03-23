@@ -18,6 +18,7 @@ func _on_save_pressed() -> void:
 	var save_data = {
 		"geo_map_camp": Globals.geo_map_camp,
 		"food": Globals.food,
+		"gold": Globals.gold,
 		"current_line": Globals.current_line,
 		"soldier_count": Globals.soldier_count
 	}
@@ -42,6 +43,7 @@ func _on_load_pressed() -> void:
 		if save_data is Dictionary:
 			Globals.geo_map_camp = save_data.get("geo_map_camp", Globals.geo_map_camp)
 			Globals.food = save_data.get("food", Globals.food)
+			Globals.gold = save_data.get("gold", Globals.gold)
 			Globals.current_line = save_data.get("current_line", Globals.current_line)
 			Globals.soldier_count = save_data.get("soldier_count", Globals.soldier_count)
 			print("Game Loaded!")

@@ -14,7 +14,7 @@ var path_update_interval = 0.1  # Pathfinding update interval
 var overlapping_bodies = []  # Bodies in melee range
 var boundary_min = Vector2(0, 0)  # Example: Bottom-left corner of the area
 var boundary_max = Vector2(144, 144)
-var gold_coin: PackedScene = preload("res://scenes/gold.tscn")
+var gold_coin: PackedScene = preload("res://scenes/item_drop.tscn")
 # Nodes
 @onready var animated_sprite_2d = $Spritesheet
 @onready var navigation_agent_2d = $NavigationAgent2D
@@ -108,7 +108,7 @@ func take_damage(amount: int):
 func die():
 	var coins = gold_coin.instantiate()  # Instantiate the coin
 	coins.position = global_position  
-	coins.resource_type = 'gold'
+	#coins.resource_type = 'gold'
 
 	# Find the plantgroup node dynamically
 	var plantgroup = get_tree().get_root().find_child("plantgroup", true, false)

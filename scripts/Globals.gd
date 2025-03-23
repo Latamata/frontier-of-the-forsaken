@@ -9,7 +9,6 @@ var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var current_line: int = 0
 var soldier_count: int = 10 # setget add_soldier_count, get_soldier_count
-var wagon_speed: int = 2 # setget add_wagon_speed, get_wagon_speed
 var bullet_type = "lead"
 var bullets_unlocked = false
 # Optional: Setter/Getter for geo_map_camp if needed
@@ -35,10 +34,3 @@ func add_soldier_count(value: int) -> void:
 
 func get_soldier_count() -> int:
 	return soldier_count
-
-func add_wagon_speed(value: int) -> void:
-	wagon_speed += value
-	wagon_speed = max(0, wagon_speed)  # Ensure speed can't be negative
-
-func get_wagon_speed() -> int:
-	return wagon_speed
