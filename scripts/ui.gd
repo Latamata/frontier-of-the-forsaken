@@ -25,6 +25,9 @@ func _ready() -> void:
 	#inventory.connect("item_dropped", Callable(self, "_on_inventory_signal"))
 
 
+func _process(delta: float) -> void:
+	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
+
 func hide_map_ui(hideorshow):
 	if hideorshow:
 		mapgeo.visible = true
@@ -65,13 +68,11 @@ func _on_battlemap_ui_mouse_exited():
 	#print("mouse exited the ui thing")
 
 func _on_geomap_button_down() -> void:
-	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )
+	$battlemapUI/campaign_map_timer.start()
+	$battlemapUI/RichTextLabel.visible = true
 
 func _on_weapontoggle_button_down() -> void:
 	emit_signal("weapon_toggle") 
-
-#func _on_inventory_button_button_down() -> void:
-	#inventory.hideorshow()
 
 func _on_button_pressed() -> void:
 	emit_signal("turn_action")
@@ -87,3 +88,7 @@ func _on_shop_bought_something() -> void:
 	#print('rinngs')
 func update_wave(wave_number):
 	$battlemapUI/wave.text = "Wave: " + str(wave_number)
+
+
+func _on_campaign_map_timer_timeout() -> void:
+	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )

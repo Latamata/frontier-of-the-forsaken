@@ -285,5 +285,4 @@ position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_qlg0r")
 
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
-[connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
 [connection signal="area_entered" from="collection_area" to="." method="_on_collection_area_area_entered"]

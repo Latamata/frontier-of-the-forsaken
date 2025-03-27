@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal collect_item()  # Define signal with a parameter
+signal heal_npc
 
 var HEALTH = 100
 var SPEED = 0.10
@@ -158,9 +159,9 @@ func sword_attack():
 		if entitity.is_in_group('zombie'):
 			entitity.take_damage(20)
 
-func _on_meleetimer_timeout():
-	sabre.rotation = original_sabre_rotation  # Reset to saved rotation
-	#$sabre/attackanimation.visible = false
+#func _on_meleetimer_timeout():
+	#sabre.rotation = original_sabre_rotation  # Reset to saved rotation
+	##$sabre/attackanimation.visible = false
 
 func player_shoot():
 	reload_timer.start()
@@ -174,11 +175,15 @@ func _on_reload_timeout():
 
 func _on_collection_area_area_entered(area: Area2D) -> void:
 	
-	if area.resource_type == 'health' && HEALTH < 100:
-		area.collected()
-		HEALTH += 1
-		update_healthbar()
-	elif area.resource_type == 'gold':
+	if area.resource_type == 'health' :
+		if  HEALTH < 100:
+			area.collected()
+			HEALTH += 1
+			update_healthbar()
+		else:
+			emit_signal('heal_npc')
+			area.collected()
+	if area.resource_type == 'gold':
 		area.collected()
 		Globals.add_gold(1)
 	elif area.resource_type == 'food':

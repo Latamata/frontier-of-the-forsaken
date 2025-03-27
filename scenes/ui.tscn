@@ -88,6 +88,21 @@ offset_top = -538.0
 offset_right = 968.0
 offset_bottom = -498.0
 
+[node name="RichTextLabel" type="RichTextLabel" parent="battlemapUI"]
+visible = false
+layout_mode = 0
+offset_left = 550.0
+offset_top = -316.0
+offset_right = 610.0
+offset_bottom = -266.0
+scale = Vector2(3.10101, 2.07037)
+theme_override_font_sizes/normal_font_size = 30
+text = "test"
+
+[node name="campaign_map_timer" type="Timer" parent="battlemapUI"]
+wait_time = 10.0
+one_shot = true
+
 [node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1
 anchors_preset = 4
@@ -212,6 +227,7 @@ text = "Food:           Gold:
 [connection signal="button_down" from="battlemapUI/Fire" to="." method="_on_fire_button_down"]
 [connection signal="button_down" from="battlemapUI/weapontoggle" to="." method="_on_weapontoggle_button_down"]
 [connection signal="button_down" from="battlemapUI/auto_shoot" to="." method="_on_auto_shoot_button_down"]
+[connection signal="timeout" from="battlemapUI/campaign_map_timer" to="." method="_on_campaign_map_timer_timeout"]
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="pressed" from="mapgeoUI/turn" to="." method="_on_button_pressed"]

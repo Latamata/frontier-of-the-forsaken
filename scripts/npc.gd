@@ -201,17 +201,24 @@ func sword_attack():
 
 
 func apply_melee_damage():
-	for body in $Melee.get_overlapping_bodies():
-		if is_instance_valid(body):
-			target = body
-			# Make NPC face the target before attacking
-			forward_angle = (body.global_position - global_position).angle()
-			rotate_weapon(forward_angle)
+	if melee_cd:
+		for body in $Melee.get_overlapping_bodies():
+			if is_instance_valid(body):
+				target = body
+				melee_cd = false
+				$Meleetimer.start()
+				# Make NPC face the target before attacking
+				forward_angle = (body.global_position - global_position).angle()
+				rotate_weapon(forward_angle)
 
-			# Perform the attack
-			sword_attack()
-			is_attacking = true
-			body.take_damage(30)  # Adjust damage amount as needed
-	
-	melee_cd = false
-	meleetimer.start()
+				# Perform the attack
+				sword_attack()
+				is_attacking = true
+				body.take_damage(30)  # Adjust damage amount as needed
+		
+		melee_cd = false
+		meleetimer.start()
+
+
+func _on_meleetimer_timeout() -> void:
+	melee_cd = true

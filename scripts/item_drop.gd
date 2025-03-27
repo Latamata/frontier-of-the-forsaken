@@ -1,6 +1,6 @@
 extends Area2D
 
-var resource_type = ''
+@export var resource_type = ''
 var resource_types = ["food", "gold", "health"]
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 

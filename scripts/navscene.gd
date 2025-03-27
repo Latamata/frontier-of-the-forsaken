@@ -234,8 +234,6 @@ func _on_ui_fire_action():
 				npc.fire_gun()
 			else:
 				npc.apply_melee_damage()
-		#line_infantry_reloaded = false
-		#$gunreloadtimer.start()
 
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
@@ -264,7 +262,6 @@ func _on_waypoint_4_body_entered(body: Node2D) -> void:
 			for entity in zombiegroup.get_children():
 				entity.target = $waypoint1
 
-
 func _on_auto_shoot_timer_timeout() -> void:
 	_on_ui_fire_action()
 
@@ -292,7 +289,6 @@ func _on_wave_timer_timeout() -> void:
 		$waypoint3,
 		$waypoint4  # Add more as needed
 	]
-
 	# Pick a random waypoint
 	var random_waypoint = waypoints[randi() % waypoints.size()]
 
@@ -307,3 +303,11 @@ func _on_player_collect_item() -> void:
 func _on_ui_weapon_toggle() -> void:
 	for entity in npcgroup.get_children():
 		entity.switch_to_gun()
+
+
+func _on_player_heal_npc() -> void:
+	for npc in npcgroup.get_children():
+		if npc.HEALTH < npc.MAX_HEALTH:
+			npc.take_damage(-1)
+			return
+			#print(npc.HEALTH)
