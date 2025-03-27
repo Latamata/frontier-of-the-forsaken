@@ -19,13 +19,8 @@ func _ready() -> void:
 
 func collected():
 	queue_free()
-	if resource_type == 'gold':
-		Globals.add_gold(20)
-	elif resource_type == 'food':
-		Globals.add_food(20)
-	else:
-		print('add health to player')
+
 func get_random_resource():
-	print("hiii")
+	#print("hiii")
 	var chosen_type = resource_types[randi() % resource_types.size()]
 	resource_type = chosen_type

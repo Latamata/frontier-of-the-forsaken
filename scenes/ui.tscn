@@ -44,7 +44,7 @@ offset_right = 806.0
 offset_bottom = 79.0
 focus_mode = 0
 mouse_filter = 1
-text = "Fire/'1'"
+text = "Fire"
 
 [node name="weapontoggle" type="Button" parent="battlemapUI"]
 layout_mode = 0
@@ -73,13 +73,20 @@ offset_bottom = 68.0
 focus_mode = 0
 text = "auto shoot"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="battlemapUI"]
+[node name="reload_label" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 819.0
 offset_top = 22.0
 offset_right = 901.0
 offset_bottom = 46.0
 text = "Reload"
+
+[node name="wave" type="RichTextLabel" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 809.0
+offset_top = -538.0
+offset_right = 968.0
+offset_bottom = -498.0
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1

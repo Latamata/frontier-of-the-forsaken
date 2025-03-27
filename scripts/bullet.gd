@@ -12,7 +12,7 @@ func _on_body_entered(body):
 			body.take_damage(20)
 			pierced_through = true
 		elif body.is_in_group('zombie'):
-			print('running')
+			#print('running')
 			body.take_damage(10)
 			queue_free()
 	else:

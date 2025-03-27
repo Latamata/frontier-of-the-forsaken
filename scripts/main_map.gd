@@ -114,8 +114,14 @@ func _check_for_events():
 	elif rng < 20:  # 10% chance of finding supplies
 		print("You found food supplies!")
 		Globals.add_food(30)
-	elif rng < 25:  # 5% chance of wagon breaking down
-		print("Wagon wheel broke! You lose a turn.")
-		await get_tree().create_timer(1.5).timeout  # Simulate delay before continuing
+	elif rng < 30:  # 5% chance of wagon breaking down
+		print("Wagon wheel broke! The delay increases your wave amunt by 3")
+		Globals.wave_count += 3
+	elif rng < 40:  # 5% chance of wagon breaking down
+		print("A large zombie will show up with each wave")
+		pass
+	elif rng < 40:  # 5% chance of wagon breaking down
+		print("Plentiful bouonty, all map resources are double")
+		pass
 
 	$UI.update_resources()

@@ -205,7 +205,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf6aj"]
 size = Vector2(18, 16)
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_dqkch"]
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
 points = PackedVector2Array(0, 0, 47, 23, 47, -22)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
@@ -214,8 +214,6 @@ radius = 25.0799
 [node name="player" type="CharacterBody2D"]
 z_as_relative = false
 y_sort_enabled = true
-collision_layer = 3
-collision_mask = 3
 slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_block_on_wall = false
@@ -229,7 +227,7 @@ sprite_frames = SubResource("SpriteFrames_d2wvv")
 offset = Vector2(10, 0)
 
 [node name="Musket" type="Sprite2D" parent="."]
-position = Vector2(24, -35)
+position = Vector2(8, -34)
 texture = ExtResource("3_vos4w")
 centered = false
 
@@ -263,7 +261,7 @@ offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
 [node name="sabre" type="Sprite2D" parent="."]
-position = Vector2(-12, -6)
+position = Vector2(2, -33)
 texture = ExtResource("4_cqufx")
 centered = false
 
@@ -273,7 +271,7 @@ collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sabre/Area2D"]
 position = Vector2(14, 5)
-shape = SubResource("ConvexPolygonShape2D_dqkch")
+shape = SubResource("ConvexPolygonShape2D_qlg0r")
 
 [node name="Marker2D" type="Marker2D" parent="sabre"]
 position = Vector2(33, 11)

@@ -15,7 +15,7 @@ var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
 var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
 var ZOMBIE: PackedScene = preload("res://scenes/zombie.tscn")
 
-var line_infantry_reloaded = true  
+#var line_infantry_reloaded = true  
 #var circleselected = false
 var is_ui_interacting = false  # To track if the mouse button is being held
 var is_rotating = false  # To track if the mouse button is being held
@@ -23,6 +23,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	get_tree().paused = false
 	#$wave_timer.start()
 	spawn_zombies(2, 2, $waypoint1.position, 100.0)
 	# On ready spawn npcs
@@ -48,7 +49,7 @@ func _process(_delta: float) -> void:
 
 	if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
 		print("All zombies are dead! Starting next wave...")
-		#$wave_timer.start()
+		$wave_timer.start()
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -77,17 +78,9 @@ func _input(event):
 			process_rotation()
 			last_update_time = current_time
 		assign_npcs_to_indicators(rotation_angle)
-	if event.is_action_pressed("collect") and is_instance_valid(player):
-		
-		# Check if the player is near any plant
-		for area in $Enviorment/plantgroup.get_children():  # Loop through all plants in the level
-			if area is Area2D and area.has_method("try_collect") and area.player_nearby:
-				area.try_collect()  # Call the plant's try_collect method
-				ui.update_resources()
 	if Input.is_action_just_pressed("one_key") and player:
-		_on_ui_fire_action()
+		player.switch_weapon()
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
-		print()
 		var current_weapon = player.get_current_weapon()
 		
 		if current_weapon == player.gun && player.reloaded:  # Ensure only the gun can shoot
@@ -233,13 +226,16 @@ func _on_ui_aim_action():
 		npc.is_aiming = Globals.is_global_aiming
 
 func _on_ui_fire_action():
-	if line_infantry_reloaded:
-		for npc in npcgroup.get_children():
-			if is_instance_valid(npc):
+	#if line_infantry_reloaded:
+	for npc in npcgroup.get_children():
+		if is_instance_valid(npc) and not npc.moving:  # Ensure NPC is not moving
+			if npc.weapon_in_use == 'gun':
 				fire_gun(npc)
 				npc.fire_gun()
-		line_infantry_reloaded = false
-		$gunreloadtimer.start()
+			else:
+				npc.apply_melee_damage()
+		#line_infantry_reloaded = false
+		#$gunreloadtimer.start()
 
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
@@ -248,27 +244,6 @@ func _on_ui_ui_interaction_started():
 	
 func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
-
-func _on_ui_weapon_toggle() -> void:
-	if player != null:
-		player.switch_weapon()
-
-func _on_ui_inventory_item_dropped(item: Variant) -> void:
-	var droppeditem = musketgun.instantiate()  # Create the item instance
-	droppeditem.position = player.position + Vector2(0, 40)  # Drop slightly below the player
-	
-	# Assuming 'droppeditem' is a Sprite or has a Sprite child node
-	if droppeditem is Sprite2D:
-		droppeditem.texture = item  # Assuming 'item' is a texture or image you want to apply
-	elif droppeditem.has_node("Sprite2D"):
-		var sprite = droppeditem.get_node("Sprite2D") as Sprite2D
-		sprite.texture = item  # Apply the texture to the sprite
-	get_tree().current_scene.add_child(droppeditem)  # Add it to the scene
-	print("Item dropped at position:", droppeditem.position)
-
-func _on_gunreloadtimer_timeout() -> void:
-	line_infantry_reloaded = true
-	#print('running')
 
 func _on_waypoint_body_entered(body: Node2D) -> void:
 		if body.is_in_group('zombie'):
@@ -289,14 +264,9 @@ func _on_waypoint_4_body_entered(body: Node2D) -> void:
 			for entity in zombiegroup.get_children():
 				entity.target = $waypoint1
 
-func auto_shoot():
-	for entity in npcgroup.get_children():  # Include all entities
-		if  entity.reloaded && entity.target != null:
-			entity.fire_gun()
-			fire_gun(entity)
 
 func _on_auto_shoot_timer_timeout() -> void:
-	auto_shoot()
+	_on_ui_fire_action()
 
 var is_auto_shooting_enabled = false  # To track if auto shooting is on or off
 
@@ -307,12 +277,11 @@ func _on_ui_auto_shoot_action() -> void:
 		$auto_shoot_timer.start()  # Start the timer if auto-shooting is off
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
 
-var wave_count = 1
 var max_zombies = 64
 
 func _on_wave_timer_timeout() -> void:
-	#print('running')
-	var spawn_amount = min(8 + (wave_count * 2), max_zombies)  # Increases by 2 per wave
+	ui.update_wave(Globals.wave_count)
+	var spawn_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
 	var spawn_x = ceil(sqrt(spawn_amount))  # Distribute evenly
 	var spawn_y = ceil(spawn_amount / spawn_x)
 
@@ -330,7 +299,11 @@ func _on_wave_timer_timeout() -> void:
 	# Spawn zombies at the random waypoint
 	spawn_zombies(spawn_x, spawn_y, random_waypoint.position, 100.0)
 	
-	wave_count += 1
+	Globals.wave_count += 1
 
 func _on_player_collect_item() -> void:
 	ui.update_resources()
+
+func _on_ui_weapon_toggle() -> void:
+	for entity in npcgroup.get_children():
+		entity.switch_to_gun()

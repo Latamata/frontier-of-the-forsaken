@@ -85,3 +85,5 @@ func _on_button_button_down() -> void:
 func _on_shop_bought_something() -> void:
 	update_resources() 
 	#print('rinngs')
+func update_wave(wave_number):
+	$battlemapUI/wave.text = "Wave: " + str(wave_number)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=30 format=3 uid="uid://ds1svqdxxlh85"]
+[gd_scene load_steps=31 format=3 uid="uid://ds1svqdxxlh85"]
 
 [ext_resource type="Script" uid="uid://cw7t6pqiwxvx1" path="res://scripts/npc.gd" id="1_6lh2a"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="2_wp1fx"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="3_rsjd5"]
 [ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="4_7n8xq"]
+[ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="5_4wlns"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("4_7n8xq")
@@ -189,7 +190,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_npa22"]
-radius = 31.0161
+radius = 66.1211
 
 [node name="npc" type="CharacterBody2D" groups=["npc"]]
 y_sort_enabled = true
@@ -200,8 +201,7 @@ script = ExtResource("1_6lh2a")
 [node name="attackanimation" type="AnimatedSprite2D" parent="."]
 position = Vector2(36, -22)
 sprite_frames = SubResource("SpriteFrames_4wlns")
-animation = &"smoke"
-frame = 6
+frame = 2
 frame_progress = 1.0
 offset = Vector2(10, 0)
 
@@ -234,8 +234,6 @@ animation = &"idle"
 position = Vector2(0, -22)
 collision_layer = 2
 collision_mask = 2
-monitoring = false
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
 shape = SubResource("CircleShape2D_npa22")
@@ -256,6 +254,18 @@ metadata/_edit_use_anchors_ = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_postprocessing = 1
+
+[node name="sabre" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(11, -30)
+texture = ExtResource("5_4wlns")
+centered = false
+
+[node name="Marker2D" type="Marker2D" parent="sabre"]
+position = Vector2(50, 4)
+
+[node name="Meleetimer" type="Timer" parent="."]
+wait_time = 2.277
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
 [connection signal="timeout" from="takedamage" to="." method="_on_takedamage_timeout"]

@@ -3,10 +3,11 @@ extends Node
 var is_global_aiming = false
 
 # Properties
-var food: int =  120 # setget add_food, get_food
+var food: int =  1200 # setget add_food, get_food
 var gold: int =  25 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
+var wave_count = 1
 var current_line: int = 0
 var soldier_count: int = 10 # setget add_soldier_count, get_soldier_count
 var bullet_type = "lead"

@@ -141,15 +141,20 @@ func sword_attack():
 	
 	# Create a tween for smooth rotation over time
 	var tween = get_tree().create_tween()
-	tween.tween_property(sabre, "rotation", final_rotation, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)  # Smooth transition
-	tween.tween_property(sabre, "rotation", original_sabre_rotation, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)  # Swing back
+	tween.tween_property(sabre, "rotation", final_rotation, 0.2) \
+		.set_ease(Tween.EASE_OUT) \
+		.set_trans(Tween.TRANS_QUAD)  # First tween
+
+	tween.tween_property(sabre, "rotation", original_sabre_rotation, 0.2) \
+		.set_ease(Tween.EASE_IN) \
+		.set_trans(Tween.TRANS_QUAD)  # Second tween (automatically runs after the first)
 
 	# Play attack animation at correct position
 	$attackanimation.rotation = sabre.rotation
 	$attackanimation.global_position = $sabre/Marker2D.global_position
 	$attackanimation.play('default')
 	for entitity in $sabre/Area2D.get_overlapping_bodies():
-		print(entitity)
+		#print(entitity)
 		if entitity.is_in_group('zombie'):
 			entitity.take_damage(20)
 
@@ -157,9 +162,6 @@ func _on_meleetimer_timeout():
 	sabre.rotation = original_sabre_rotation  # Reset to saved rotation
 	#$sabre/attackanimation.visible = false
 
-func _on_reload_timeout():
-	reloaded = true
-	
 func player_shoot():
 	reload_timer.start()
 	reloaded = false
@@ -167,18 +169,19 @@ func player_shoot():
 	$attackanimation.global_position = $Musket/Marker2D.global_position 
 	$attackanimation.play('smoke')
 
-
+func _on_reload_timeout():
+	reloaded = true
 
 func _on_collection_area_area_entered(area: Area2D) -> void:
 	
 	if area.resource_type == 'health' && HEALTH < 100:
 		area.collected()
-		HEALTH += 15
+		HEALTH += 1
 		update_healthbar()
 	elif area.resource_type == 'gold':
 		area.collected()
-		Globals.add_gold(20)
+		Globals.add_gold(1)
 	elif area.resource_type == 'food':
 		area.collected()
-		Globals.add_food(20)
+		Globals.add_food(1)
 	emit_signal("collect_item")  # Pass the collected item as an argument
