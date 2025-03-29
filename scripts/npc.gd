@@ -153,11 +153,13 @@ func move_to_position(new_target_position: Vector2):
 
 func fire_gun():
 	if reloaded and not moving:  # Prevent shooting while moving
+		reloaded = false
 		$attackanimation.global_position = $Musket/Marker2D.global_position
 		$attackanimation.rotation = gun.rotation
-		$attackanimation.play("smoke")
-		reloaded = false
+		$attackanimation.play("smoke")		
 		$gunreload.start()
+		return true
+	return false
 
 
 func _on_gunreload_timeout() -> void:

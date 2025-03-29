@@ -229,10 +229,10 @@ func _on_ui_fire_action():
 	#if line_infantry_reloaded:
 	for npc in npcgroup.get_children():
 		if is_instance_valid(npc) and not npc.moving:  # Ensure NPC is not moving
-			if npc.weapon_in_use == 'gun':
+			if npc.weapon_in_use == 'gun' && npc.fire_gun():
 				fire_gun(npc)
-				npc.fire_gun()
 			else:
+				#print('running')
 				npc.apply_melee_damage()
 
 #prevent unit selection when ai is hovered

@@ -20,7 +20,9 @@ func _on_save_pressed() -> void:
 		"food": Globals.food,
 		"gold": Globals.gold,
 		"current_line": Globals.current_line,
-		"soldier_count": Globals.soldier_count
+		"soldier_count": Globals.soldier_count,
+		"bullets_unlocked": Globals.bullets_unlocked,
+		"bullet_type": Globals.bullet_type
 	}
 
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -46,6 +48,8 @@ func _on_load_pressed() -> void:
 			Globals.gold = save_data.get("gold", Globals.gold)
 			Globals.current_line = save_data.get("current_line", Globals.current_line)
 			Globals.soldier_count = save_data.get("soldier_count", Globals.soldier_count)
+			Globals.bullet_type = save_data.get("bullet_type", Globals.bullet_type)
+			Globals.bullets_unlocked = save_data.get("bullets_unlocked", Globals.bullets_unlocked)
 			print("Game Loaded!")
 
 			# Load the main map

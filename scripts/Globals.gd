@@ -11,7 +11,7 @@ var wave_count = 1
 var current_line: int = 0
 var soldier_count: int = 10 # setget add_soldier_count, get_soldier_count
 var bullet_type = "lead"
-var bullets_unlocked = false
+var bullets_unlocked = ['lead']
 # Optional: Setter/Getter for geo_map_camp if needed
 func set_current_line(value ) -> void:
 	current_line = value
