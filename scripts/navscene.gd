@@ -24,8 +24,8 @@ var rotation_angle: float
 
 func _ready():
 	get_tree().paused = false
-	#$wave_timer.start()
-	spawn_zombies(2, 2, $waypoint1.position, 100.0)
+	$wave_timer.start()
+	#spawn_zombies(2, 2, $waypoint1.position, 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column

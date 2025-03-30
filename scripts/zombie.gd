@@ -52,6 +52,7 @@ func _process(delta):
 		apply_melee_damage()
 	#move_and_collide(velocity * delta)
 	move_and_slide()
+
 func _on_animation_finished():
 	if animated_sprite_2d.animation == "attack":
 		is_attacking = false  # Reset attack state

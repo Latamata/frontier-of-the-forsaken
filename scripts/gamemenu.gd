@@ -51,7 +51,7 @@ func _on_load_pressed() -> void:
 			Globals.bullet_type = save_data.get("bullet_type", Globals.bullet_type)
 			Globals.bullets_unlocked = save_data.get("bullets_unlocked", Globals.bullets_unlocked)
 			print("Game Loaded!")
-
+			print(Globals.bullets_unlocked)
 			# Load the main map
 			get_tree().change_scene_to_file("res://scenes/main_map.tscn")
 
