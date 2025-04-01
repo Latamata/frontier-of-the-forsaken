@@ -1,6 +1,7 @@
 extends Node
 
 var is_global_aiming = false
+signal collect_item()  # Define signal with a parameter
 
 # Properties
 var food: int =  120 # setget add_food, get_food
@@ -21,9 +22,12 @@ func set_current_line(value ) -> void:
 func add_food(value: int) -> void:
 	food += value
 	food = max(0, food)  # Ensure no negative food
+	emit_signal("collect_item")  # Pass the collected item as an argument
+
 func add_gold(value: int) -> void:
 	gold += value
 	gold = max(0, gold)  # Ensure no negative food
+	emit_signal("collect_item")  # Pass the collected item as an argument
 
 func add_geo_map_camp(value: int) -> void:
 	geo_map_camp += value

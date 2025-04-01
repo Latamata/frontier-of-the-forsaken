@@ -2093,6 +2093,7 @@ texture_region_size = Vector2i(32, 32)
 10:0/size_in_atlas = Vector2i(2, 3)
 10:0/0 = 0
 10:0/0/texture_origin = Vector2i(0, 32)
+10:7/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_koupd"]
 tile_size = Vector2i(32, 32)
@@ -2158,7 +2159,6 @@ position = Vector2(1723, -201)
 wait_time = 10.0
 one_shot = true
 
-[connection signal="collect_item" from="Enviorment/sorted/player" to="." method="_on_player_collect_item"]
 [connection signal="heal_npc" from="Enviorment/sorted/player" to="." method="_on_player_heal_npc"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="auto_shoot_action" from="UI" to="." method="_on_ui_auto_shoot_action"]

@@ -10,7 +10,6 @@ extends Node2D
 @onready var wave_timer: Timer = $wave_timer
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
-var musketgun: PackedScene = preload("res://scenes/items.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
 var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
 var ZOMBIE: PackedScene = preload("res://scenes/zombie.tscn")
@@ -23,6 +22,8 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	#sets up UI to change when the global stat changes
+	Globals.connect( "collect_item", _on_player_collect_item )
 	get_tree().paused = false
 	$wave_timer.start()
 	#spawn_zombies(2, 2, $waypoint1.position, 100.0)
@@ -36,7 +37,7 @@ func _ready():
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
 		# Calculate the row and column index
 		var row = i % column_height  # Alternates between 0 and `column_height - 1`
-		var column = i / column_height  # Moves to the next column after every `column_height` musketmen
+		var column = i / column_height as int  # Moves to the next column after every `column_height` musketmen
 		# Set the position
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
 		# Add to the group
@@ -53,7 +54,7 @@ func _process(_delta: float) -> void:
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
-var update_interval = 100.0  # Minimum interval between updates (in seconds)
+var update_interval = 100  # Minimum interval between updates (in seconds)
 func _input(event):
 	if is_ui_interacting:
 		return
@@ -61,10 +62,10 @@ func _input(event):
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if event.pressed:
-					camera_2d.zoom = Vector2(1, 1)
+					camera_2d.zoom *= 0.9  # Zoom in
 			MOUSE_BUTTON_WHEEL_UP:
 				if event.pressed:
-					camera_2d.zoom = Vector2(2, 2)
+					camera_2d.zoom *= 1.1  # Zoom out
 			MOUSE_BUTTON_LEFT:
 				if event.pressed:
 					is_rotating = true
@@ -78,6 +79,8 @@ func _input(event):
 			process_rotation()
 			last_update_time = current_time
 		assign_npcs_to_indicators(rotation_angle)
+	if Input.is_action_just_pressed("collect") and player:
+		player.looting = true
 	if Input.is_action_just_pressed("one_key") and player:
 		player.switch_weapon()
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
@@ -232,7 +235,6 @@ func _on_ui_fire_action():
 			if npc.weapon_in_use == 'gun' && npc.fire_gun():
 				fire_gun(npc)
 			else:
-				#print('running')
 				npc.apply_melee_damage()
 
 #prevent unit selection when ai is hovered
@@ -304,10 +306,8 @@ func _on_ui_weapon_toggle() -> void:
 	for entity in npcgroup.get_children():
 		entity.switch_to_gun()
 
-
 func _on_player_heal_npc() -> void:
 	for npc in npcgroup.get_children():
 		if npc.HEALTH < npc.MAX_HEALTH:
 			npc.take_damage(-1)
 			return
-			#print(npc.HEALTH)

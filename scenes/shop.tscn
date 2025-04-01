@@ -21,7 +21,7 @@ region = Rect2(18.5, 155, 92, 89)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8r1wq"]
 atlas = ExtResource("1_lx5au")
-region = Rect2(168.096, 161.005, 86.0918, 78.034)
+region = Rect2(160.924, 158.028, 106.178, 88.1708)
 
 [node name="shop" type="Control"]
 layout_mode = 3
@@ -75,10 +75,10 @@ icon = SubResource("AtlasTexture_2fc2m")
 
 [node name="holy_bullet" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 309.0
-offset_top = 66.0
-offset_right = 403.0
-offset_bottom = 152.0
+offset_left = 310.0
+offset_top = 59.0
+offset_right = 420.0
+offset_bottom = 153.0
 focus_mode = 0
 icon = SubResource("AtlasTexture_8r1wq")
 

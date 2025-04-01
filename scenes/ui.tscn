@@ -87,6 +87,7 @@ offset_left = 809.0
 offset_top = -538.0
 offset_right = 968.0
 offset_bottom = -498.0
+theme_override_colors/default_color = Color(0.945098, 0.054902, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="battlemapUI"]
 visible = false

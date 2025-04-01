@@ -1,10 +1,11 @@
 extends CharacterBody2D
 
-signal collect_item()  # Define signal with a parameter
+
 signal heal_npc
 
 var HEALTH = 100
 var SPEED = 0.10
+var looting = false
 var reloaded = true
 var gather = false
 var direction
@@ -189,4 +190,8 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 	elif area.resource_type == 'food':
 		area.collected()
 		Globals.add_food(1)
-	emit_signal("collect_item")  # Pass the collected item as an argument
+
+
+#func loot_action():
+	#for lootbox in get_overlapping_areas():
+		#print(lootbox)
