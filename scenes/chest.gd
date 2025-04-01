@@ -6,7 +6,7 @@ var player: Node2D = null  # Store the player reference
 func _ready():
 	set_process(false)	  # Disable _process by default
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player.looting:  # Check input when player is inside
 		collected()
 

@@ -37,7 +37,10 @@ func _ready():
 		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
 		# Calculate the row and column index
 		var row = i % column_height  # Alternates between 0 and `column_height - 1`
-		var column = i / column_height as int  # Moves to the next column after every `column_height` musketmen
+		var column = floori(float(i) / float(column_height))
+
+		print(typeof(column_height))  # Check if it's TYPE_INT (2) or TYPE_FLOAT (3)
+
 		# Set the position
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
 		# Add to the group
@@ -157,7 +160,7 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 
 	var row_spacing = 25  # Distance between the two lines
 	var indicator_spacing = 50  # Distance between indicators in each line
-	var line_offset = -((npcgroup.get_child_count() / 2) - 1) * indicator_spacing / 2  # Center both lines around start_position
+	var line_offset = -((float(npcgroup.get_child_count()) / 2) - 1) * indicator_spacing / 2
 	var placed_positions = []
 
 	# Spawn NPCs in the formation
@@ -166,7 +169,7 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 
 		# Determine row (top or bottom) and position along the line
 		var row = i % 2
-		var position_in_line = i / 2
+		var position_in_line = float(i) / 2
 
 		# Calculate position relative to the start position
 		var indicator_position = start_position

@@ -25,7 +25,7 @@ func _ready() -> void:
 	#inventory.connect("item_dropped", Callable(self, "_on_inventory_signal"))
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
 
 func hide_map_ui(hideorshow):
