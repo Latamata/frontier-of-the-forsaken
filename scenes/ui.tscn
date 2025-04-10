@@ -19,10 +19,10 @@ color = Color(0.647059, 0.427451, 0.290196, 0.788235)
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 644.0
-offset_top = 23.0
-offset_right = 715.0
-offset_bottom = 79.0
+offset_left = 243.0
+offset_top = 16.0
+offset_right = 314.0
+offset_bottom = 72.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 text = "Aim"
@@ -38,20 +38,20 @@ text = "To the road"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 735.0
-offset_top = 23.0
-offset_right = 806.0
-offset_bottom = 79.0
+offset_left = 334.0
+offset_top = 16.0
+offset_right = 405.0
+offset_bottom = 72.0
 focus_mode = 0
 mouse_filter = 1
 text = "Fire"
 
 [node name="weapontoggle" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 350.0
-offset_top = 23.0
-offset_right = 380.0
-offset_bottom = 38.0
+offset_left = 735.0
+offset_top = 22.0
+offset_right = 805.0
+offset_bottom = 53.0
 focus_mode = 0
 text = "weapon"
 
@@ -66,10 +66,10 @@ show_percentage = false
 
 [node name="auto_shoot" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 540.0
-offset_top = 37.0
-offset_right = 632.0
-offset_bottom = 68.0
+offset_left = 139.0
+offset_top = 30.0
+offset_right = 231.0
+offset_bottom = 61.0
 focus_mode = 0
 text = "auto shoot"
 
@@ -110,7 +110,7 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_top = -324.0
-offset_right = 176.0
+offset_right = 169.0
 offset_bottom = 324.0
 grow_vertical = 2
 size_flags_horizontal = 0
@@ -147,9 +147,9 @@ grow_horizontal = 0
 
 [node name="move" type="Button" parent="mapgeoUI"]
 layout_mode = 0
-offset_left = 38.0
+offset_left = 34.0
 offset_top = 24.0
-offset_right = 140.0
+offset_right = 136.0
 offset_bottom = 83.0
 focus_mode = 0
 mouse_filter = 1
@@ -158,9 +158,9 @@ text = "move"
 
 [node name="camp" type="Button" parent="mapgeoUI"]
 layout_mode = 0
-offset_left = 37.0
+offset_left = 33.0
 offset_top = 102.0
-offset_right = 139.0
+offset_right = 135.0
 offset_bottom = 162.0
 focus_mode = 0
 text = "camp
@@ -168,16 +168,16 @@ text = "camp
 
 [node name="Button" type="Button" parent="mapgeoUI"]
 layout_mode = 0
-offset_left = 42.0
+offset_left = 38.0
 offset_top = 202.0
-offset_right = 140.0
+offset_right = 136.0
 offset_bottom = 233.0
 text = "Shop"
 
 [node name="resources" type="Panel" parent="."]
 offset_left = 444.0
 offset_top = 11.0
-offset_right = 513.0
+offset_right = 527.0
 offset_bottom = 33.0
 scale = Vector2(5.21036, 1.91125)
 
@@ -188,10 +188,26 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -16.0286
+offset_left = -31.7559
 offset_top = -9.43035
-offset_right = 54.9714
+offset_right = 39.2441
 offset_bottom = 13.5697
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.244132, 0.809747)
+text = "asd"
+
+[node name="infanty_amount" type="RichTextLabel" parent="resources"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -17.5535
+offset_top = -8.90713
+offset_right = 53.4465
+offset_bottom = 14.0929
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
@@ -204,10 +220,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -52.6864
-offset_top = -9.95356
-offset_right = 18.3136
-offset_bottom = 13.0465
+offset_left = -64.1913
+offset_top = -10.4768
+offset_right = 6.80869
+offset_bottom = 12.5233
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
@@ -215,10 +231,10 @@ text = "asd"
 
 [node name="resourcelabel" type="RichTextLabel" parent="resources"]
 layout_mode = 1
-offset_right = 179.0
+offset_right = 164.0
 offset_bottom = 25.0
 scale = Vector2(0.389164, 0.887227)
-text = "Food:           Gold:
+text = "Food:           Gold:       
 "
 
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]

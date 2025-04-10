@@ -16,17 +16,16 @@ func _process(delta):
 func _on_body_entered(body):
 	
 	if Globals.bullet_type == 'holy_bullet':
-		if body.is_in_group('zombie') && !pierced_through:
+		if body.is_in_group('zombie'):
 			body.take_damage(25)
 	elif Globals.bullet_type == 'steel':
 		if body.is_in_group('zombie') && !pierced_through:
 			body.take_damage(20)
 			pierced_through = true
 		elif body.is_in_group('zombie'):
-			#print('running')
 			body.take_damage(10)
 			queue_free()
-	else:
+	else: #the last bullet type 'LEAD'
 		if body.is_in_group('zombie'):
 			body.take_damage(20)
 			queue_free()

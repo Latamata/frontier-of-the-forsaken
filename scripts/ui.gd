@@ -15,15 +15,9 @@ signal ui_interaction_ended()
 @onready var gold: RichTextLabel = $resources/gold
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
-#@onready var inventory: Control = $inventory
-
-
 
 func _ready() -> void:
 	update_resources()
-	#pass
-	#inventory.connect("item_dropped", Callable(self, "_on_inventory_signal"))
-
 
 func _process(_delta: float) -> void:
 	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
@@ -35,11 +29,12 @@ func hide_map_ui(hideorshow):
 	else:
 		mapgeo.visible = false
 		battlemap.visible = true
+
 func update_resources() -> void:
-	#print(Globals.food)
-	
 	$resources/food.text = str(Globals.food)
 	$resources/gold.text = str(Globals.gold)
+	$resources/infanty_amount.text = str(Globals.soldier_count) + '/' + str(Globals.soldier_total)
+
 #-----------------GEOGRAPHIC MAP UI----------------------
 func _on_camp_button_down():
 	emit_signal("camp_action")
@@ -88,7 +83,6 @@ func _on_shop_bought_something() -> void:
 	#print('rinngs')
 func update_wave(wave_number):
 	$battlemapUI/wave.text = "Wave: " + str(wave_number)
-
 
 func _on_campaign_map_timer_timeout() -> void:
 	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )

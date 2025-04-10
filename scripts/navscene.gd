@@ -11,8 +11,10 @@ extends Node2D
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
+var TREASURE_CHEST: PackedScene = preload("res://scenes/chest.tscn")
 var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
 var ZOMBIE: PackedScene = preload("res://scenes/zombie.tscn")
+var TANK_ZOMBIE: PackedScene = preload("res://scenes/zombie_two.tscn")
 
 #var line_infantry_reloaded = true  
 #var circleselected = false
@@ -25,8 +27,8 @@ func _ready():
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
 	get_tree().paused = false
-	$wave_timer.start()
-	#spawn_zombies(2, 2, $waypoint1.position, 100.0)
+	#$wave_timer.start()
+	spawn_zombies(2, 2, $waypoint1.position, 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -38,9 +40,6 @@ func _ready():
 		# Calculate the row and column index
 		var row = i % column_height  # Alternates between 0 and `column_height - 1`
 		var column = floori(float(i) / float(column_height))
-
-		print(typeof(column_height))  # Check if it's TYPE_INT (2) or TYPE_FLOAT (3)
-
 		# Set the position
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
 		# Add to the group
@@ -53,7 +52,7 @@ func _process(_delta: float) -> void:
 
 	if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
 		print("All zombies are dead! Starting next wave...")
-		$wave_timer.start()
+		#$wave_timer.start()
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -89,10 +88,10 @@ func _input(event):
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
 		var current_weapon = player.get_current_weapon()
 		
-		if current_weapon == player.gun && player.reloaded:  # Ensure only the gun can shoot
+		if current_weapon == player.gun && player.gun_reloaded:  # Ensure only the gun can shoot
 			fire_gun(player)
 			player.player_shoot()
-		elif current_weapon == player.sabre :
+		elif current_weapon == player.sabre && player.melee_reloaded:
 			player.sword_attack()
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
@@ -194,34 +193,51 @@ func assign_npcs_to_indicators(forward_angle: float):
 		npc.move_to_position(indicator.position)
 
 
+# Add the 'async' keyword to allow for await-based delays
 func fire_gun(firing_entity: Node2D):
 	if not is_instance_valid(firing_entity) or not firing_entity.has_node("Musket/Marker2D"):
 		print("Error: Invalid firing entity or missing Musket/Marker2D node.")
 		return
-	# Fire the musket ball
+
+	# 🔄 Add a small random delay before firing (e.g., simulate flintlock delay)
+	await get_tree().create_timer(randf_range(0.05, 0.5)).timeout
+
 	var musketBall = BULLET.instantiate()
 	var gun_marker = firing_entity.get_node("Musket/Marker2D")
+
+	# 🔊 Play sound at gun's position
+	play_musket_sound(gun_marker.global_position)
+
 	musketBall.position = gun_marker.global_position
-	
+
 	var gun_angle = gun_marker.global_rotation
-	# Shoot with inaccuracy
-	var adjusted_angle = gun_angle + deg_to_rad(randf_range(-15, 15))
+	var adjusted_angle = gun_angle + deg_to_rad(randf_range(-3, 3))
 	var direction = Vector2(cos(adjusted_angle), sin(adjusted_angle)).normalized()
-	
+
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
 
-func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float):
+
+
+
+func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_chance: float = 0.2):
 	for _row in range(rows):
 		for _col in range(cols):
-			var zombie = ZOMBIE.instantiate()
+			# Randomly decide whether to spawn a tank zombie
+			var zombie
+			if randf() < tank_chance:
+				zombie = TANK_ZOMBIE.instantiate()
+			else:
+				zombie = ZOMBIE.instantiate()
+				
 			zombie.target = $waypoint1
 			# Spawn randomly within a circle around the center
 			var angle = randf() * TAU
 			var distance = randf_range(0, radius)
 			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
 			zombiegroup.add_child(zombie)
+
 
 func _on_ui_aim_action():
 	# Toggle the global aiming state
@@ -283,6 +299,8 @@ var max_zombies = 64
 
 func _on_wave_timer_timeout() -> void:
 	ui.update_wave(Globals.wave_count)
+	if Globals.wave_count > 1:
+		spawn_treasure_chest()
 	var spawn_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
 	var spawn_x = ceil(sqrt(spawn_amount))  # Distribute evenly
 	var spawn_y = ceil(spawn_amount / spawn_x)
@@ -314,3 +332,18 @@ func _on_player_heal_npc() -> void:
 		if npc.HEALTH < npc.MAX_HEALTH:
 			npc.take_damage(-1)
 			return
+
+func play_musket_sound(at_position: Vector2):
+	var sound = AudioStreamPlayer2D.new()
+	sound.stream = preload("res://sound/Musket Single Shot Distant 3 - QuickSounds.com.mp3")
+	sound.position = at_position  # Use position of the shooter
+	sound.volume_db = -5
+	add_child(sound)
+	sound.play()
+	sound.connect("finished", sound.queue_free)
+
+func spawn_treasure_chest():
+	var chest_instance = TREASURE_CHEST.instantiate()
+	chest_instance.chest_amount = 50 * Globals.wave_count# or a fixed Vector2
+	chest_instance.position = Vector2(465, 364) # or a fixed Vector2
+	add_child(chest_instance)

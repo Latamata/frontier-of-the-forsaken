@@ -1,10 +1,11 @@
-[gd_scene load_steps=33 format=3 uid="uid://dit4wkbv0e3nr"]
+[gd_scene load_steps=35 format=3 uid="uid://dit4wkbv0e3nr"]
 
 [ext_resource type="Script" uid="uid://cwv7rykqxjlnu" path="res://scripts/player.gd" id="1_y03rj"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="3_vos4w"]
 [ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="4_cqufx"]
 [ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="5_v052w"]
+[ext_resource type="AudioStream" uid="uid://cjwe8jxg6jdaw" path="res://sound/sword_sound.mp3" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("5_qlg0r")
@@ -202,6 +203,9 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jej6c"]
+atlas = ExtResource("5_v052w")
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf6aj"]
 size = Vector2(18, 16)
 
@@ -221,27 +225,36 @@ platform_on_leave = 2
 platform_floor_layers = 4294967040
 script = ExtResource("1_y03rj")
 
+[node name="Musket" type="Sprite2D" parent="."]
+position = Vector2(8, -34)
+texture = ExtResource("3_vos4w")
+centered = false
+offset = Vector2(0, -5)
+
+[node name="Marker2D" type="Marker2D" parent="Musket"]
+position = Vector2(56, 5)
+
 [node name="attackanimation" type="AnimatedSprite2D" parent="."]
 position = Vector2(80, -30)
 sprite_frames = SubResource("SpriteFrames_d2wvv")
 offset = Vector2(10, 0)
 
-[node name="Musket" type="Sprite2D" parent="."]
-position = Vector2(8, -34)
-texture = ExtResource("3_vos4w")
-centered = false
-
-[node name="Marker2D" type="Marker2D" parent="Musket"]
-position = Vector2(56, 5)
-
-[node name="reload" type="Timer" parent="."]
-wait_time = 6.0
-one_shot = true
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0.25, -25.25)
 sprite_frames = SubResource("SpriteFrames_5crhn")
 animation = &"walking_side"
+
+[node name="arm" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-1, -31)
+texture = SubResource("AtlasTexture_jej6c")
+offset = Vector2(0, 10)
+region_enabled = true
+region_rect = Rect2(106.998, 164.891, 18.4052, 23.3776)
+
+[node name="reload" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8)
@@ -284,5 +297,9 @@ collision_mask = 4
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_qlg0r")
 
+[node name="SwordSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_tuyoq")
+
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
+[connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
 [connection signal="area_entered" from="collection_area" to="." method="_on_collection_area_area_entered"]

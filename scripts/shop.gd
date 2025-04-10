@@ -58,7 +58,7 @@ func _on_buy_soldier_mouse_entered() -> void:
 	Cost: 25g"
 
 func _on_buy_soldier_button_down() -> void:
-	if Globals.gold >= 25:
+	if Globals.gold >= 25 && Globals.soldier_count < Globals.soldier_total:
 		Globals.gold -= 25
 		Globals.soldier_count += 1
 		emit_signal("bought_something")

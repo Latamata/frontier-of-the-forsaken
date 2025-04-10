@@ -2,11 +2,12 @@ extends CharacterBody2D
 
 # Variables
 var direction = Vector2.RIGHT
-var moving = true
+#var moving = true
 var is_attacking = false
 var melee_cd = true
 var target_position: Vector2
 var HEALTH = 100
+var DAMAGE = 35
 var target = null
 var SPEED = 0.10  # Base speed
 var time_since_last_path_update = 0.0
@@ -21,46 +22,49 @@ var gold_coin: PackedScene = preload("res://scenes/item_drop.tscn")
 @onready var targeting = $targeting
 @onready var healthbar: ProgressBar = $Healthbar
 @onready var meleetimer: Timer = $Meleetimer
+@onready var melee: Area2D = $Melee
 
 func _ready():
-	animated_sprite_2d.animation_finished.connect(_on_animation_finished)
+	#animated_sprite_2d.connect("animation_finished", Callable(self, "_on_Spritesheet_animation_finished"))
 	update_healthbar()
 
 func _process(delta):
 	time_since_last_path_update += delta
-	if not navigation_agent_2d.is_navigation_finished():
-		#print("runninh")
+	
+	# If attacking, don't move
+	if is_attacking:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return  # Stop further execution
+	
+	if melee_cd && target:
+		melee_cd = false
+		meleetimer.start()  # Start cooldown timer
+		apply_melee_damage()
+
+	elif not navigation_agent_2d.is_navigation_finished():
 		direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
 		velocity = direction * SPEED
 	else:
-		#moving = false
 		animated_sprite_2d.stop()
 		velocity = Vector2.ZERO
-			# Check if target goes out of bounds
+
 	if target and is_instance_valid(target):
 		# Continue chasing the target if valid
 		if time_since_last_path_update > path_update_interval:
 			#print('running')
 			navigation_agent_2d.target_position = target.global_position
 			time_since_last_path_update = 0.0  # Reset timer
-			target = null  # Optionally reset the target if out of bounds
+			#if target.global_position.distance_to(global_position) > 200:  # or some logic
+			target = null
 	else:
 		find_target()  # Look for a new target
-	# Handle melee if target is in range
-	sprite_frame_direction()
-	if melee_cd and overlapping_bodies.size() > 0:
-		apply_melee_damage()
-	#move_and_collide(velocity * delta)
+	#print(target)
 	move_and_slide()
 
-func _on_animation_finished():
-	if animated_sprite_2d.animation == "attack":
-		is_attacking = false  # Reset attack state
-		sprite_frame_direction()  # Resume movement animation
 
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()
-
 	if bodies_in_area.size() > 0:
 		var closest_target = null
 		var closest_distance = INF  # Large initial distance
@@ -71,10 +75,6 @@ func find_target():
 				if distance < closest_distance:
 					closest_target = body
 					closest_distance = distance
-		# If no valid target found, stop moving
-		#if closest_target == null:
-			#target = null
-			#moving = false
 			target = closest_target
 
 func sprite_frame_direction():
@@ -89,7 +89,7 @@ func sprite_frame_direction():
 func move_to_position(new_target_position: Vector2):
 	target_position = new_target_position
 	navigation_agent_2d.target_position = target_position
-	moving = true
+	#moving = true
 
 func take_damage(amount: int):
 	if !$Healthbar.visible:
@@ -126,35 +126,32 @@ func die():
 	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
 	tween.tween_callback(queue_free)  # Remove after animation
 
-
-
 func slow_affect(activate):
 	SPEED = 15.0 if activate else 30.0
 
 func update_healthbar():
 	healthbar.value = HEALTH  # Sync healthbar with current health
 
-func _on_melee_body_entered(body: Node2D) -> void:
-	if body.is_in_group("npc") and body not in overlapping_bodies:
-		overlapping_bodies.append(body)
-	if body.name == 'player':
-		overlapping_bodies.append(body)
-
-func _on_melee_body_exited(body: Node2D) -> void:
-	if body in overlapping_bodies:
-		overlapping_bodies.erase(body)  # Remove the specific body from the list
-
 func apply_melee_damage():
-	for body in overlapping_bodies:
-		if is_instance_valid(body):
-			is_attacking = true
-			animated_sprite_2d.animation = "attack"
-			animated_sprite_2d.play()
-			body.take_damage(30)  # Adjust damage amount as needed
-	melee_cd = false
-	meleetimer.start()
+	# Check if target is within melee range
+	if target in melee.get_overlapping_bodies():
+		#print("Attacking target:", target.name)  # Debugging print
+		is_attacking = true
+		# Play attack animation
+		animated_sprite_2d.animation = "attack"
+		animated_sprite_2d.play()
 
-func _on_meleetimer_timeout() -> void:
+		# Deal damage
+		target.take_damage(DAMAGE)
+
+# Ensure attack animation resets `is_attacking`
+func _on_Spritesheet_animation_finished():
+	if animated_sprite_2d.animation == "attack":
+		is_attacking = false
+		sprite_frame_direction()  # Resume normal movement animation
+
+# Melee cooldown timer callback
+func _on_meleetimer_timeout():
 	melee_cd = true
-	is_attacking = false  # Allow movement animations again
-	sprite_frame_direction()  # Make sure it switches back to walking
+	is_attacking = false  # Ensure we can attack again
+	sprite_frame_direction()

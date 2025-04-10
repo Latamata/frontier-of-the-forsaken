@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var pickupindicator: Label = $pickupindicator
 var player: Node2D = null  # Store the player reference
+var chest_amount # Store the player reference
 
 func _ready():
 	set_process(false)	  # Disable _process by default
@@ -24,6 +25,6 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 
 
 func collected():
-	Globals.add_food(100)
+	Globals.add_food(chest_amount)
 	print("Player looted this treasure")
 	queue_free()  # Optional: Remove the object after collecting
