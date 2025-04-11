@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ds1svqdxxlh85"]
+[gd_scene load_steps=32 format=3 uid="uid://ds1svqdxxlh85"]
 
 [ext_resource type="Script" uid="uid://cw7t6pqiwxvx1" path="res://scripts/npc.gd" id="1_6lh2a"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="2_wp1fx"]
@@ -189,6 +189,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wlns"]
+atlas = ExtResource("3_rsjd5")
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_npa22"]
 radius = 66.1211
 
@@ -229,6 +232,14 @@ wait_time = 2.0
 position = Vector2(3, -22)
 sprite_frames = SubResource("SpriteFrames_p12vx")
 animation = &"idle"
+
+[node name="arm" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-2, -28)
+texture = SubResource("AtlasTexture_4wlns")
+offset = Vector2(0, 10)
+region_enabled = true
+region_rect = Rect2(106.998, 164.891, 18.4052, 23.3776)
 
 [node name="Melee" type="Area2D" parent="."]
 position = Vector2(0, -22)

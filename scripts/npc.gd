@@ -23,6 +23,7 @@ var HEALTH = 100  # NPC's starting health
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var sabre: Sprite2D = $sabre
 @onready var meleetimer: Timer = $Meleetimer
+@onready var arm: Sprite2D = $arm
 
 var overlapping_bodies = []  # List of bodies in melee range
 var weapon_in_use = "gun"  # Track the weapon being used ("gun" or "sabre")
@@ -68,17 +69,35 @@ func _process(_delta):
 
 func sprite_frame_direction():
 	if abs(direction.x) > abs(direction.y):  # Horizontal movement
-		animated_sprite_2d.animation = "walking"
-		animated_sprite_2d.flip_h = direction.x < 0  # Flip for left direction
+		if direction.x > 0:  # Moving right
+			animated_sprite_2d.animation = "walking"
+			arm.position = Vector2(8, -30)  # Right direction
+			arm.flip_h = false  # No flip for right
+		else:  # Moving left
+			animated_sprite_2d.animation = "walking"
+			arm.position = Vector2(-5, -30)  # Left direction
+			arm.flip_h = true  # Flip for left
+		animated_sprite_2d.flip_h = direction.x < 0  # Flip sprite for left/right
 		animated_sprite_2d.play()
+		arm.visible = true
 	elif abs(direction.y) > abs(direction.x):  # Vertical movement
-		if direction.y < 0:
-			animated_sprite_2d.animation = "walking_away"  # Moving upward
-		else:
-			animated_sprite_2d.animation = "walking_toward"  # Moving downward
+		if direction.y < 0:  # Moving up
+			animated_sprite_2d.animation = "walking_away"
+			arm.visible = false  # Adjust arm for upward movement
+		else:  # Moving down
+			animated_sprite_2d.animation = "walking_toward"
+			arm.position = Vector2(-5, -30)  # Adjust arm for downward movement
+			arm.flip_h = false  # No flip for vertical movement
+			arm.visible = true
+			animated_sprite_2d.flip_h = false  # No flip for vertical movement
 		animated_sprite_2d.play()
-	else:
+
+	else:  # Idle state
+		arm.position = Vector2(-15, 30)  # Right direction
+		arm.flip_h = false  # No flip for right
 		animated_sprite_2d.animation = "idle"
+		animated_sprite_2d.flip_h = false
+		arm.position = Vector2(0, -30)  # Reset arm position when idle
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()
@@ -94,6 +113,17 @@ func find_zombies_in_area():
 			if distance_to_body < closest_distance:
 				closest_distance = distance_to_body
 				target = body
+func check_and_switch_weapon():
+	var zombies_in_range = false
+	for body in $Melee.get_overlapping_bodies():
+		if body.is_in_group("zombie") and is_instance_valid(body):
+			zombies_in_range = true
+			break
+
+	if zombies_in_range:
+		switch_to_sabre_only()
+	else:
+		switch_to_gun_only()
 
 func rotate_weapon(target_angle: float):
 	# Rotate the current weapon based on which weapon is in use
@@ -166,17 +196,16 @@ func _on_gunreload_timeout() -> void:
 	reloaded = true
 
 # Switch to gun
-func switch_to_gun():
-	if weapon_in_use != "gun":
-		weapon_in_use = "gun"
-		gun.visible = true
-		sabre.visible = false
-		#animated_sprite_2d.animation = "idle"
-	else:
-		weapon_in_use = "sabre"
-		gun.visible = false
-		sabre.visible = true
-		#animated_sprite_2d.animation = "melee_attack"
+func switch_to_gun_only():
+	weapon_in_use = "gun"
+	gun.visible = true
+	sabre.visible = false
+
+func switch_to_sabre_only():
+	weapon_in_use = "sabre"
+	gun.visible = false
+	sabre.visible = true
+
 
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
 func sword_attack():
