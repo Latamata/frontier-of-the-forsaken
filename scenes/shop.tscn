@@ -93,6 +93,17 @@ text = "Item:
 Cost: 15g
 damage"
 
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -37.0
+offset_bottom = 17.0
+grow_horizontal = 0
+text = "close
+"
+
 [connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]
 [connection signal="mouse_entered" from="Panel/buy_soldier" to="." method="_on_buy_soldier_mouse_entered"]
 [connection signal="button_down" from="Panel/buy_food" to="." method="_on_buy_food_button_down"]
@@ -103,3 +114,4 @@ damage"
 [connection signal="mouse_entered" from="Panel/buy_bullet_steel" to="." method="_on_buy_bullet_steel_mouse_entered"]
 [connection signal="button_down" from="Panel/holy_bullet" to="." method="_on_holy_bullet_button_down"]
 [connection signal="mouse_entered" from="Panel/holy_bullet" to="." method="_on_holy_bullet_mouse_entered"]
+[connection signal="button_down" from="Panel/Button" to="." method="_on_button_button_down"]

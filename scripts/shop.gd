@@ -113,3 +113,7 @@ func _on_holy_bullet_button_down() -> void:
 		Globals.bullet_type = 'holy_bullet'
 		update_bullet_buttons(holy_bullet, 'holy_bullet', [buy_bullet, buy_bullet_steel])
 		emit_signal("bought_something")
+
+
+func _on_button_button_down() -> void:
+	visible = false

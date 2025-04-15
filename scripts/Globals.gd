@@ -38,7 +38,6 @@ func add_soldier_count(value: int) -> void:
 func add_geo_map_camp(value: int) -> void:
 	geo_map_camp += value
 	geo_map_camp = max(0, geo_map_camp)
-	
 
 func get_soldier_count() -> int:
 	return soldier_count

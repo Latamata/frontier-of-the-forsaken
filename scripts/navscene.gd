@@ -18,6 +18,7 @@ var TANK_ZOMBIE: PackedScene = preload("res://scenes/zombie_two.tscn")
 
 #var line_infantry_reloaded = true  
 #var circleselected = false
+var chest_looted = false  # To track if the mouse button is being held
 var is_ui_interacting = false  # To track if the mouse button is being held
 var is_rotating = false  # To track if the mouse button is being held
 var initial_click_position = Vector2()  # Position where the click started
@@ -27,8 +28,8 @@ func _ready():
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
 	get_tree().paused = false
-	#$wave_timer.start()
-	spawn_zombies(2, 2, $waypoint1.position, 100.0)
+	$wave_timer.start()
+	#spawn_zombies(2, 2, $waypoint1.position, 100.0)
 	# On ready spawn npcs
 	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -50,9 +51,6 @@ func _process(_delta: float) -> void:
 	if player:
 		ui.get_child(0).get_node("reloadtimer").value = player.reload_timer.time_left
 
-	if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
-		print("All zombies are dead! Starting next wave...")
-		#$wave_timer.start()
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
@@ -89,8 +87,9 @@ func _input(event):
 		var current_weapon = player.get_current_weapon()
 		
 		if current_weapon == player.gun && player.gun_reloaded:  # Ensure only the gun can shoot
-			fire_gun(player)
 			player.player_shoot()
+			fire_gun(player)
+			
 		elif current_weapon == player.sabre && player.melee_reloaded:
 			player.sword_attack()
 func update_speed_based_on_tile(entity):
@@ -132,10 +131,6 @@ func get_nearest_tile(selected_position: Vector2, exclude_positions := []) -> Ve
 				
 				if tile_data and bool(tile_data.get_custom_data_by_layer_id(0)): 
 					var adjusted_position = tile_map.map_to_local(check_coords) + Vector2(tile_map.tile_set.tile_size) / 2
-					
-					# Align more closely to the mouse position
-					#adjusted_position.x = selected_position.x  # Align horizontally
-					# adjusted_position.y = selected_position.y  # Uncomment if aligning vertically instead
 					
 					return adjusted_position  
 		search_radius += 1
@@ -236,6 +231,7 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_ch
 			var angle = randf() * TAU
 			var distance = randf_range(0, radius)
 			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
+			zombie.connect("death_signal", Callable(self, "_on_death_signal"))
 			zombiegroup.add_child(zombie)
 
 
@@ -299,7 +295,7 @@ var max_zombies = 64
 
 func _on_wave_timer_timeout() -> void:
 	ui.update_wave(Globals.wave_count)
-	if Globals.wave_count > 1:
+	if Globals.wave_count >= 1:
 		spawn_treasure_chest()
 	var spawn_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
 	var spawn_x = ceil(sqrt(spawn_amount))  # Distribute evenly
@@ -344,6 +340,15 @@ func play_musket_sound(at_position: Vector2):
 
 func spawn_treasure_chest():
 	var chest_instance = TREASURE_CHEST.instantiate()
-	chest_instance.chest_amount = 50 * Globals.wave_count# or a fixed Vector2
-	chest_instance.position = Vector2(465, 364) # or a fixed Vector2
+	chest_instance.chest_amount = 50 * Globals.wave_count
+	chest_instance.position = Vector2(465, 364)
 	add_child(chest_instance)
+	#chest_instance.connect("wave_trigger", Callable(self, "_on_chest_collected"))
+
+func _on_death_signal():
+	#if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
+	print(zombiegroup.get_child_count() )
+	if zombiegroup.get_child_count() == 1 :
+		$wave_timer.start()
+		print("All zombies are dead! Spawning chest...")
+		spawn_treasure_chest()

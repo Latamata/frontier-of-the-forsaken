@@ -51,9 +51,11 @@ func _process(_delta):
 			move_and_slide()
 			sprite_frame_direction()
 	else:
+		velocity = Vector2.ZERO
+		direction = Vector2.ZERO  # <-- force it into idle logic
 		animated_sprite_2d.animation = "idle"
-	
-	# Check if we are aiming and if the target is within melee range
+		sprite_frame_direction()
+
 	if is_aiming:
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
@@ -66,38 +68,45 @@ func _process(_delta):
 			find_zombies_in_area()
 	else:
 		rotate_weapon(forward_angle)
+const ARM_POSITIONS = {
+	"right": Vector2(8, -30),
+	"left": Vector2(-6, -30),
+	"down": Vector2(-5, -30),
+	"idle": Vector2(18, -30)
+}
 
 func sprite_frame_direction():
-	if abs(direction.x) > abs(direction.y):  # Horizontal movement
-		if direction.x > 0:  # Moving right
-			animated_sprite_2d.animation = "walking"
-			arm.position = Vector2(8, -30)  # Right direction
-			arm.flip_h = false  # No flip for right
-		else:  # Moving left
-			animated_sprite_2d.animation = "walking"
-			arm.position = Vector2(-5, -30)  # Left direction
-			arm.flip_h = true  # Flip for left
-		animated_sprite_2d.flip_h = direction.x < 0  # Flip sprite for left/right
+
+	if abs(direction.x) > abs(direction.y):
+		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.play()
 		arm.visible = true
-	elif abs(direction.y) > abs(direction.x):  # Vertical movement
-		if direction.y < 0:  # Moving up
-			animated_sprite_2d.animation = "walking_away"
-			arm.visible = false  # Adjust arm for upward movement
-		else:  # Moving down
+		if direction.x > 0:
+			arm.position = ARM_POSITIONS["right"]
+			arm.flip_h = false
+			arm.rotation = 0
+			animated_sprite_2d.flip_h = false
+		else:
+			arm.position = ARM_POSITIONS["left"]
+			arm.flip_h = true
+			arm.flip_v = false
+			arm.rotation = 0
+			animated_sprite_2d.flip_h = true
+	elif abs(direction.y) > abs(direction.x):
+		
+		if direction.y > 0:
+			#print('walking down')
 			animated_sprite_2d.animation = "walking_toward"
-			arm.position = Vector2(-5, -30)  # Adjust arm for downward movement
-			arm.flip_h = false  # No flip for vertical movement
+			animated_sprite_2d.play()
+			arm.position = ARM_POSITIONS["down"]
+			animated_sprite_2d.flip_h = false
+			arm.flip_h = false
 			arm.visible = true
-			animated_sprite_2d.flip_h = false  # No flip for vertical movement
-		animated_sprite_2d.play()
-
-	else:  # Idle state
-		arm.position = Vector2(-15, 30)  # Right direction
-		arm.flip_h = false  # No flip for right
-		animated_sprite_2d.animation = "idle"
-		animated_sprite_2d.flip_h = false
-		arm.position = Vector2(0, -30)  # Reset arm position when idle
+		else:
+			#print('walking up ') 
+			animated_sprite_2d.animation = "walking_away"
+			animated_sprite_2d.play()
+			arm.visible = false
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()
@@ -113,6 +122,7 @@ func find_zombies_in_area():
 			if distance_to_body < closest_distance:
 				closest_distance = distance_to_body
 				target = body
+
 func check_and_switch_weapon():
 	var zombies_in_range = false
 	for body in $Melee.get_overlapping_bodies():

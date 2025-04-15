@@ -16,6 +16,8 @@ var facing_down = false
 var facing_left = false
 var facing_right = true
 const GUN_Y_OFFSET = Vector2(0, -25)
+var last_weapon_rotation = 0.0
+var last_weapon_position = Vector2.ZERO
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var gun = $Musket
@@ -33,8 +35,12 @@ func _ready():
 	weapons = [gun, sabre]
 	set_active_weapon(0)  # Start with the first weapon
 
+	# Force initial rotation and positioning
+
+	weapons[current_weapon_index].position = Vector2(0,-30)
 	# Initialize the healthbar
 	update_healthbar()
+
 
 func _process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -113,6 +119,7 @@ func sprite_frame_direction():
 			animated_sprite_2d.play()
 			weapons[current_weapon_index].z_index = 1
 			weapons[current_weapon_index].position = Vector2(-6,-33)
+			arm.rotation = PI / 3
 			arm.position = Vector2(-6,-33)
 			arm.offset = Vector2(3,10)
 			arm.flip_v = false
@@ -160,27 +167,34 @@ func get_current_weapon():
 	return weapons[current_weapon_index]  # Returns the active weapon node
 
 func switch_weapon():
-	# Increment index and loop around
+	var previous_weapon = weapons[current_weapon_index]
+	last_weapon_rotation = previous_weapon.rotation
+	last_weapon_position = previous_weapon.position
+
 	current_weapon_index = (current_weapon_index + 1) % weapons.size()
 	set_active_weapon(current_weapon_index)
 
+
 func set_active_weapon(index):
-	# Hide all weapons
 	for weapon in weapons:
 		weapon.hide()
 
-	# Show selected weapon
 	weapons[index].show()
 
-	# Special handling for the sword
+	# Apply the last known rotation and position
+	weapons[index].rotation = last_weapon_rotation
+	weapons[index].position = last_weapon_position
+
+	# Handle sword collision logic
 	if sabre is Area2D:
 		var collision = sabre.get_node("CollisionShape2D")
-		if index == weapons.find(sabre):  # If selecting the sword
+		if index == weapons.find(sabre):
 			sabre.monitoring = true
 			collision.set_deferred("disabled", false)
-		else:  # If switching to gun
+		else:
 			sabre.monitoring = false
 			collision.set_deferred("disabled", true)
+
 
 func update_healthbar():
 	# Sync the healthbar with the current health

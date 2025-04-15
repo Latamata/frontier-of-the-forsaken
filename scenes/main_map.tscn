@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://14knw1sb8mpu"]
+[gd_scene load_steps=10 format=3 uid="uid://14knw1sb8mpu"]
 
 [ext_resource type="Script" uid="uid://bg0sb7y5rjsbn" path="res://scripts/main_map.gd" id="1_hpxg0"]
 [ext_resource type="Texture2D" uid="uid://dapnug6dua22w" path="res://assets/mainmap.png" id="1_omdlb"]
 [ext_resource type="PackedScene" uid="uid://d11nep0qfx3xu" path="res://scenes/ui.tscn" id="2_ewkh1"]
 [ext_resource type="PackedScene" uid="uid://txoibxtqogig" path="res://scenes/playermenu.tscn" id="3_qtsfq"]
 [ext_resource type="Texture2D" uid="uid://bx78mr26vavlo" path="res://assets/wagon.png" id="4_w7jjp"]
+[ext_resource type="Texture2D" uid="uid://dip355sfk6cj1" path="res://assets/fort.png" id="6_4synu"]
 
 [sub_resource type="Curve2D" id="Curve2D_3c7he"]
 _data = {
@@ -56,6 +57,11 @@ position = Vector2(-12, -44)
 curve = SubResource("Curve2D_3r0jk")
 
 [node name="playermenu" parent="." instance=ExtResource("3_qtsfq")]
+
+[node name="Fort" type="Sprite2D" parent="."]
+position = Vector2(357, -781)
+scale = Vector2(0.678683, 0.592857)
+texture = ExtResource("6_4synu")
 
 [connection signal="camp_action" from="UI" to="." method="_on_ui_camp_action"]
 [connection signal="move_action" from="UI" to="." method="_on_ui_move_action"]

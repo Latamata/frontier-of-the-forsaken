@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal death_signal()  # Define signal with a parameter
 # Variables
 var direction = Vector2.RIGHT
 #var moving = true
@@ -107,6 +108,7 @@ func take_damage(amount: int):
 		die()
 
 func die():
+	emit_signal("death_signal")  # Pass the collected item as an argument
 	var coins = gold_coin.instantiate()  # Instantiate the coin
 	coins.position = global_position  
 	#coins.resource_type = 'gold'
