@@ -25,13 +25,14 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
 	get_tree().paused = false
 	$wave_timer.start()
 	#spawn_zombies(2, 2, $waypoint1.position, 100.0)
 	# On ready spawn npcs
-	var starting_position = Vector2(-300, -250)  # Initial position of the first musketman
+	var starting_position = Vector2(-200, 50)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
 	var column_offset = Vector2(0, 50)  # Offset for moving to the next column
 	var column_height = 2  # Number of musketmen per column
@@ -92,6 +93,7 @@ func _input(event):
 			
 		elif current_weapon == player.sabre && player.melee_reloaded:
 			player.sword_attack()
+
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
 		return
@@ -345,10 +347,14 @@ func spawn_treasure_chest():
 	add_child(chest_instance)
 	#chest_instance.connect("wave_trigger", Callable(self, "_on_chest_collected"))
 
-func _on_death_signal():
-	#if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
-	print(zombiegroup.get_child_count() )
-	if zombiegroup.get_child_count() == 1 :
+#func _on_death_signal():
+	##if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
+	#print(zombiegroup.get_child_count() )
+
+
+
+func _on_zombiegroup_child_exiting_tree(node: Node) -> void:
+	if get_child_count() == 0 :
 		$wave_timer.start()
 		print("All zombies are dead! Spawning chest...")
 		spawn_treasure_chest()

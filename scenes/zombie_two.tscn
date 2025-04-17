@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://g0tu3dp42hud"]
+[gd_scene load_steps=24 format=3 uid="uid://g0tu3dp42hud"]
 
 [ext_resource type="Script" uid="uid://bb1vvom1v64vo" path="res://scripts/zombie.gd" id="1_srr55"]
 [ext_resource type="Texture2D" uid="uid://ce04nruxxw505" path="res://assets/the_big_boy.png" id="2_o3ox1"]
+[ext_resource type="AudioStream" uid="uid://7j4trmbq4k13" path="res://sound/zombiepunch.mp3" id="3_o3ox1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_srr55"]
 atlas = ExtResource("2_o3ox1")
@@ -138,8 +139,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5omlt"]
-radius = 10.198
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3ox1"]
+radius = 13.0
+height = 26.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t0tcg"]
 radius = 336.121
@@ -157,8 +159,8 @@ animation = &"walking_away"
 frame_progress = 0.915656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4, 15)
-shape = SubResource("CircleShape2D_5omlt")
+position = Vector2(0, 11)
+shape = SubResource("CapsuleShape2D_o3ox1")
 
 [node name="targeting" type="Area2D" parent="."]
 visible = false
@@ -192,5 +194,8 @@ offset_top = -86.0
 offset_right = 48.0
 offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_o3ox1")
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

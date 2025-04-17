@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal death_signal()  # Define signal with a parameter
+#signal death_signal()  # Define signal with a parameter
 # Variables
 var direction = Vector2.RIGHT
 #var moving = true
@@ -26,6 +26,7 @@ var gold_coin: PackedScene = preload("res://scenes/item_drop.tscn")
 @onready var melee: Area2D = $Melee
 
 func _ready():
+	
 	#animated_sprite_2d.connect("animation_finished", Callable(self, "_on_Spritesheet_animation_finished"))
 	update_healthbar()
 
@@ -108,7 +109,7 @@ func take_damage(amount: int):
 		die()
 
 func die():
-	emit_signal("death_signal")  # Pass the collected item as an argument
+	#emit_signal("death_signal")  # Pass the collected item as an argument
 	var coins = gold_coin.instantiate()  # Instantiate the coin
 	coins.position = global_position  
 	#coins.resource_type = 'gold'
@@ -135,9 +136,10 @@ func update_healthbar():
 	healthbar.value = HEALTH  # Sync healthbar with current health
 
 func apply_melee_damage():
+	
 	# Check if target is within melee range
 	if target in melee.get_overlapping_bodies():
-		#print("Attacking target:", target.name)  # Debugging print
+		$AudioStreamPlayer2D.play()
 		is_attacking = true
 		# Play attack animation
 		animated_sprite_2d.animation = "attack"

@@ -27,7 +27,12 @@ var HEALTH = 100  # NPC's starting health
 
 var overlapping_bodies = []  # List of bodies in melee range
 var weapon_in_use = "gun"  # Track the weapon being used ("gun" or "sabre")
-
+const ARM_POSITIONS = {
+	"right": Vector2(8, -30),
+	"left": Vector2(-6, -30),
+	"down": Vector2(-5, -30),
+	"idle": Vector2(18, -30)
+}
 func _ready():
 	# Initialize health bar values
 	healthbar.min_value = 0
@@ -54,8 +59,8 @@ func _process(_delta):
 		velocity = Vector2.ZERO
 		direction = Vector2.ZERO  # <-- force it into idle logic
 		animated_sprite_2d.animation = "idle"
-		sprite_frame_direction()
-
+		#sprite_frame_direction()
+		arm.visible = true
 	if is_aiming:
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
@@ -68,12 +73,7 @@ func _process(_delta):
 			find_zombies_in_area()
 	else:
 		rotate_weapon(forward_angle)
-const ARM_POSITIONS = {
-	"right": Vector2(8, -30),
-	"left": Vector2(-6, -30),
-	"down": Vector2(-5, -30),
-	"idle": Vector2(18, -30)
-}
+
 
 func sprite_frame_direction():
 
@@ -93,13 +93,11 @@ func sprite_frame_direction():
 			arm.rotation = 0
 			animated_sprite_2d.flip_h = true
 	elif abs(direction.y) > abs(direction.x):
-		
+		animated_sprite_2d.flip_h = false
 		if direction.y > 0:
-			#print('walking down')
 			animated_sprite_2d.animation = "walking_toward"
 			animated_sprite_2d.play()
 			arm.position = ARM_POSITIONS["down"]
-			animated_sprite_2d.flip_h = false
 			arm.flip_h = false
 			arm.visible = true
 		else:
