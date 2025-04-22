@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ct81ynx3grse3"]
 
 [ext_resource type="Texture2D" uid="uid://h7jxea76re26" path="res://assets/map_things.png" id="1_oii8l"]
-[ext_resource type="Script" uid="uid://rrqmsjlbn6fg" path="res://scenes/chest.gd" id="1_sy5e1"]
+[ext_resource type="Script" uid="uid://rrqmsjlbn6fg" path="res://scripts/chest.gd" id="1_sy5e1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l64cd"]
 radius = 63.0079

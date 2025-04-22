@@ -211,12 +211,11 @@ func fire_gun(firing_entity: Node2D):
 	var adjusted_angle = gun_angle + deg_to_rad(randf_range(-3, 3))
 	var direction = Vector2(cos(adjusted_angle), sin(adjusted_angle)).normalized()
 
+	musketBall.damage_bonus += Globals.talent_tree["gun_damage"]["level"]
+	#print(musketBall.damage_bonus)
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
-
-
-
 
 func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_chance: float = 0.2):
 	for _row in range(rows):
@@ -233,7 +232,7 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_ch
 			var angle = randf() * TAU
 			var distance = randf_range(0, radius)
 			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
-			zombie.connect("death_signal", Callable(self, "_on_death_signal"))
+			#zombie.connect("death_signal", Callable(self, "_on_death_signal"))
 			zombiegroup.add_child(zombie)
 
 
@@ -345,16 +344,19 @@ func spawn_treasure_chest():
 	chest_instance.chest_amount = 50 * Globals.wave_count
 	chest_instance.position = Vector2(465, 364)
 	add_child(chest_instance)
-	#chest_instance.connect("wave_trigger", Callable(self, "_on_chest_collected"))
 
-#func _on_death_signal():
-	##if zombiegroup.get_child_count() == 0 and $wave_timer.is_stopped():
-	#print(zombiegroup.get_child_count() )
+func _on_zombiegroup_child_exiting_tree(_node: Node) -> void:
+	print("runnin")
 
+	await get_tree().create_timer(0.5).timeout  # waits ~1/10th of a second
 
-
-func _on_zombiegroup_child_exiting_tree(node: Node) -> void:
-	if get_child_count() == 0 :
+	if $Enviorment/sorted/ZOMBIEGROUP.get_child_count() == 0:
 		$wave_timer.start()
 		print("All zombies are dead! Spawning chest...")
 		spawn_treasure_chest()
+
+
+func _on_player_died() -> void:
+	ui.turn_screen_red()
+	$playermenu.visible = true
+	print('player died signal recieved')

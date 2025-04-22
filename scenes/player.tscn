@@ -1,86 +1,12 @@
-[gd_scene load_steps=35 format=3 uid="uid://dit4wkbv0e3nr"]
+[gd_scene load_steps=38 format=3 uid="uid://dit4wkbv0e3nr"]
 
 [ext_resource type="Script" uid="uid://cwv7rykqxjlnu" path="res://scripts/player.gd" id="1_y03rj"]
+[ext_resource type="Shader" uid="uid://crb282ik5xjor" path="res://shaders/goldenshader.gdshader" id="2_fjrip"]
 [ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="3_vos4w"]
 [ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="4_cqufx"]
 [ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="5_v052w"]
 [ext_resource type="AudioStream" uid="uid://cjwe8jxg6jdaw" path="res://sound/sword_sound.mp3" id="6_tuyoq"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_y4r1p"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(160, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(128, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
-atlas = ExtResource("5_qlg0r")
-region = Rect2(160, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_d2wvv"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qlg0r")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_y4r1p")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qlg0r")
-}],
-"loop": false,
-"name": &"default",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tuyoq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fjrip")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_smehm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ur7pv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d2wvv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3v2ag")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tuyoq")
-}],
-"loop": false,
-"name": &"smoke",
-"speed": 5.0
-}]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lcexw"]
 atlas = ExtResource("5_v052w")
@@ -203,14 +129,103 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fjrip"]
+shader = ExtResource("2_fjrip")
+shader_parameter/target_color = Color(0.625597, 0.625597, 0.625597, 1)
+shader_parameter/new_color = Color(0.596078, 0.498039, 0, 1)
+shader_parameter/tolerance = 0.1
+shader_parameter/toggle_gold = true
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
+points = PackedVector2Array(0, 0, 47, 23, 47, -22)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_smehm"]
+shader = ExtResource("2_fjrip")
+shader_parameter/target_color = Color(0.509804, 0.505882, 0.533333, 0.380392)
+shader_parameter/new_color = Color(0.596164, 0.499345, 0, 1)
+shader_parameter/tolerance = 0.1
+shader_parameter/toggle_gold = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4r1p"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
+atlas = ExtResource("5_qlg0r")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d2wvv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4r1p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjrip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smehm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur7pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2wvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v2ag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}],
+"loop": false,
+"name": &"smoke",
+"speed": 5.0
+}]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_jej6c"]
 atlas = ExtResource("5_v052w")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf6aj"]
 size = Vector2(18, 16)
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
-points = PackedVector2Array(0, 0, 47, 23, 47, -22)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
 radius = 25.0799
@@ -225,7 +240,30 @@ platform_on_leave = 2
 platform_floor_layers = 4294967040
 script = ExtResource("1_y03rj")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.25, -25.25)
+sprite_frames = SubResource("SpriteFrames_5crhn")
+animation = &"walking_side"
+
+[node name="sabre" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_fjrip")
+position = Vector2(2, -33)
+texture = ExtResource("4_cqufx")
+centered = false
+
+[node name="Area2D" type="Area2D" parent="sabre"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sabre/Area2D"]
+position = Vector2(14, 5)
+shape = SubResource("ConvexPolygonShape2D_qlg0r")
+
+[node name="Marker2D" type="Marker2D" parent="sabre"]
+position = Vector2(33, 11)
+
 [node name="Musket" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_smehm")
 position = Vector2(2, -29)
 texture = ExtResource("3_vos4w")
 centered = false
@@ -238,11 +276,6 @@ position = Vector2(56, 5)
 position = Vector2(80, -30)
 sprite_frames = SubResource("SpriteFrames_d2wvv")
 offset = Vector2(10, 0)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0.25, -25.25)
-sprite_frames = SubResource("SpriteFrames_5crhn")
-animation = &"walking_side"
 
 [node name="arm" type="Sprite2D" parent="."]
 z_index = 1
@@ -272,22 +305,6 @@ offset_top = -86.0
 offset_right = 48.0
 offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
-
-[node name="sabre" type="Sprite2D" parent="."]
-position = Vector2(2, -33)
-texture = ExtResource("4_cqufx")
-centered = false
-
-[node name="Area2D" type="Area2D" parent="sabre"]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="sabre/Area2D"]
-position = Vector2(14, 5)
-shape = SubResource("ConvexPolygonShape2D_qlg0r")
-
-[node name="Marker2D" type="Marker2D" parent="sabre"]
-position = Vector2(33, 11)
 
 [node name="collection_area" type="Area2D" parent="."]
 collision_layer = 4

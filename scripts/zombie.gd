@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-#signal death_signal()  # Define signal with a parameter
+
 # Variables
 var direction = Vector2.RIGHT
 #var moving = true

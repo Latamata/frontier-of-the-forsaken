@@ -2192,6 +2192,7 @@ tile_set = SubResource("TileSet_koupd")
 position = Vector2(-321, 47)
 
 [node name="UI" parent="." instance=ExtResource("5_qn5ki")]
+visible = false
 
 [node name="playermenu" parent="." instance=ExtResource("7_yw4ke")]
 
@@ -2213,7 +2214,9 @@ position = Vector2(1723, -201)
 wait_time = 10.0
 one_shot = true
 
+[connection signal="died" from="Enviorment/sorted/player" to="." method="_on_player_died"]
 [connection signal="heal_npc" from="Enviorment/sorted/player" to="." method="_on_player_heal_npc"]
+[connection signal="child_exiting_tree" from="Enviorment/sorted/ZOMBIEGROUP" to="." method="_on_zombiegroup_child_exiting_tree"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="auto_shoot_action" from="UI" to="." method="_on_ui_auto_shoot_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]

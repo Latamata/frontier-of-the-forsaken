@@ -22,7 +22,8 @@ func _on_save_pressed() -> void:
 		"current_line": Globals.current_line,
 		"soldier_count": Globals.soldier_count,
 		"bullets_unlocked": Globals.bullets_unlocked,
-		"bullet_type": Globals.bullet_type
+		"bullet_type": Globals.bullet_type,
+		"talent_tree": Globals.talent_tree  # <--- Add this line
 	}
 
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -50,9 +51,9 @@ func _on_load_pressed() -> void:
 			Globals.soldier_count = save_data.get("soldier_count", Globals.soldier_count)
 			Globals.bullet_type = save_data.get("bullet_type", Globals.bullet_type)
 			Globals.bullets_unlocked = save_data.get("bullets_unlocked", Globals.bullets_unlocked)
+			Globals.talent_tree = save_data.get("talent_tree", Globals.talent_tree)  # <--- Add this line
 			print("Game Loaded!")
 			print(Globals.bullets_unlocked)
-			# Load the main map
 			get_tree().change_scene_to_file("res://scenes/main_map.tscn")
 
 func _on_exit_button_down() -> void:

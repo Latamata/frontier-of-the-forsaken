@@ -2,9 +2,13 @@ extends CharacterBody2D
 
 
 signal heal_npc
+signal died
 
 var HEALTH = 100
+var base_reload_time = 6.0
 var SPEED = 0.10
+var sword_spec_damage_reduce = false
+var gun_spec_standing_speed = false
 var looting = false
 var gun_reloaded = true
 var melee_reloaded = true
@@ -18,6 +22,7 @@ var facing_right = true
 const GUN_Y_OFFSET = Vector2(0, -25)
 var last_weapon_rotation = 0.0
 var last_weapon_position = Vector2.ZERO
+var golden_material = preload("res://shaders/goldenshader.gdshader")
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var gun = $Musket
@@ -31,12 +36,15 @@ var weapons = []  # List to hold weapons
 var current_weapon_index = 0  # Index for switching
 
 func _ready():
+	change_melee_speed()
+	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
+	var reload_reduction_per_level = 0.1  # Adjust as needed
+	reload_timer.wait_time = max(0.1, reload_timer.wait_time - gun_speed_level * reload_reduction_per_level)
+
+	toggle_golden_gun(true)
 	# Initialize weapons list
 	weapons = [gun, sabre]
 	set_active_weapon(0)  # Start with the first weapon
-
-	# Force initial rotation and positioning
-
 	weapons[current_weapon_index].position = Vector2(0,-30)
 	# Initialize the healthbar
 	update_healthbar()
@@ -44,15 +52,22 @@ func _ready():
 
 func _process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+
 	if direction != Vector2.ZERO:
+		# Player is moving
 		camera_2d.global_position = global_position
 		sprite_frame_direction()
 		velocity = direction * SPEED
 		move_and_collide(velocity * delta)
 
+		# Set reload speed to normal while moving
+		if !gun_spec_standing_speed:
+			$reload.paused = true
 	else:
+		# Player is idle
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
+		$reload.paused = false
 
 
 func _input(event):
@@ -207,8 +222,13 @@ func slow_affect(activate):
 		SPEED = 60.0
 
 func take_damage(amount: int):
+	if sword_spec_damage_reduce:
+		amount = int(amount / 2.0)  # truncates toward 0
+
+
 	if !$Healthbar.visible:
 		$Healthbar.visible = true
+	#print(amount)
 	HEALTH -= amount
 	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
 	healthbar.value = HEALTH  # Update health bar
@@ -217,6 +237,7 @@ func take_damage(amount: int):
 		die()
 
 func die():
+	emit_signal('died')
 	animated_sprite_2d.stop()  # Stop movement animation
 	set_physics_process(false)  # Disable further movement
 	set_process(false)
@@ -254,7 +275,7 @@ func sword_attack():
 
 	for entitity in $sabre/Area2D.get_overlapping_bodies():
 		if entitity.is_in_group('zombie'):
-			entitity.take_damage(20)
+			entitity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
 
 func player_shoot():
 	reload_timer.start()
@@ -267,7 +288,6 @@ func _on_reload_timeout():
 	gun_reloaded = true
 
 func _on_collection_area_area_entered(area: Area2D) -> void:
-	
 	if area.resource_type == 'health' :
 		if  HEALTH < 100:
 			area.collected()
@@ -283,5 +303,18 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 		area.collected()
 		Globals.add_food(1)
 
+func change_melee_speed():
+	var max_level = 5
+	var base_time = 1.0
+	var min_time = 0.5
+	var level = Globals.talent_tree["sword_speed"]["level"]
+	var t = float(level) / max_level
+	$Meleetimer.wait_time = lerp(base_time, min_time, t)
+	#print($Meleetimer.wait_time)
+
 func _on_meleetimer_timeout() -> void:
+	print('running')
 	melee_reloaded = true
+
+func toggle_golden_gun(enable_gold: bool):
+	gun.material.set_shader_parameter("toggle_gold", enable_gold)

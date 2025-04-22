@@ -14,6 +14,45 @@ var soldier_count: int = 10 # setget add_soldier_count, get_soldier_count
 var soldier_total: int = 10 # setget add_soldier_count, get_soldier_count
 var bullet_type = "lead"
 var bullets_unlocked = ['lead']
+# Globals.gd
+var talent_tree = {
+	"gun_damage": {
+		"level": 1,
+		"max_level": 5
+	},
+	"sword_damage": {
+		"level": 0,
+		"max_level": 5
+	},
+	"gun_speed": {
+		"level": 0,
+		"max_level": 5
+	},
+	"sword_speed": {
+		"level": 2,
+		"max_level": 5
+	},
+	"talent_5": {
+		"level": 0,
+		"max_level": 5
+	},
+	"talent 6": {
+		"level": 0,
+		"max_level": 5
+	}
+}
+func increase_talent_level(talent_name: String) -> void:
+	if talent_tree.has(talent_name):
+		var talent = talent_tree[talent_name]
+		if talent["level"] < talent["max_level"]:
+			talent["level"] += 1
+			talent_tree[talent_name] = talent
+			print("%s increased to level %d" % [talent_name, talent["level"]])
+		else:
+			print("%s is already at max level!" % talent_name)
+	else:
+		print("Talent not found: %s" % talent_name)
+
 # Optional: Setter/Getter for geo_map_camp if needed
 func set_current_line(value ) -> void:
 	current_line = value

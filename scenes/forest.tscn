@@ -18,6 +18,3 @@ tile_map_data = PackedByteArray("AADs/xUAAQAAAAAAAADx/xUAAQAAAAAAAADu/xcAAQAAAAA
 
 [node name="Camera2D" parent="." index="1"]
 position = Vector2(-325, -159)
-
-[node name="UI" parent="." index="2"]
-visible = false

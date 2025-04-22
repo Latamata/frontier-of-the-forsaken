@@ -2,6 +2,7 @@ extends Area2D
 
 var direction: Vector2 = Vector2.ZERO 
 var speed = 260 
+var damage_bonus = 0
 var pierced_through = false
 func _ready() -> void:
 	if Globals.bullet_type == 'lead':
@@ -17,17 +18,18 @@ func _on_body_entered(body):
 	
 	if Globals.bullet_type == 'holy_bullet':
 		if body.is_in_group('zombie'):
-			body.take_damage(25)
+			body.take_damage(25 + damage_bonus)
+			print(25 + damage_bonus)
 	elif Globals.bullet_type == 'steel':
 		if body.is_in_group('zombie') && !pierced_through:
-			body.take_damage(20)
+			body.take_damage(20 + damage_bonus)
 			pierced_through = true
 		elif body.is_in_group('zombie'):
-			body.take_damage(10)
+			body.take_damage(10 + damage_bonus)
 			queue_free()
 	else: #the last bullet type 'LEAD'
 		if body.is_in_group('zombie'):
-			body.take_damage(20)
+			body.take_damage(20 + damage_bonus)
 			queue_free()
 
 
