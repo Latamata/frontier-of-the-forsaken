@@ -1,7 +1,7 @@
 extends Area2D
 
 var direction: Vector2 = Vector2.ZERO 
-var speed = 260 
+var speed = 360 
 var damage_bonus = 0
 var pierced_through = false
 func _ready() -> void:

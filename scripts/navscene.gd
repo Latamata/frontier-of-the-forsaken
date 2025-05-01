@@ -8,6 +8,7 @@ extends Node2D
 @onready var ui = $UI
 @onready var camera_2d = $Camera2D
 @onready var wave_timer: Timer = $wave_timer
+@onready var chest_container: Node2D = $Enviorment/chests
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
@@ -53,6 +54,7 @@ func _process(_delta: float) -> void:
 		ui.get_child(0).get_node("reloadtimer").value = player.reload_timer.time_left
 
 
+
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
 var update_interval = 100  # Minimum interval between updates (in seconds)
@@ -82,6 +84,8 @@ func _input(event):
 		assign_npcs_to_indicators(rotation_angle)
 	if Input.is_action_just_pressed("collect") and player:
 		player.looting = true
+	if Input.is_action_just_released("collect") and player:
+		player.looting = false
 	if Input.is_action_just_pressed("one_key") and player:
 		player.switch_weapon()
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
@@ -92,6 +96,7 @@ func _input(event):
 			fire_gun(player)
 			
 		elif current_weapon == player.sabre && player.melee_reloaded:
+			#print(player.melee_reloaded)
 			player.sword_attack()
 
 func update_speed_based_on_tile(entity):
@@ -223,7 +228,9 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_ch
 			# Randomly decide whether to spawn a tank zombie
 			var zombie
 			if randf() < tank_chance:
+				
 				zombie = TANK_ZOMBIE.instantiate()
+				zombie.SPEED = 45
 			else:
 				zombie = ZOMBIE.instantiate()
 				
@@ -247,11 +254,11 @@ func _on_ui_aim_action():
 func _on_ui_fire_action():
 	#if line_infantry_reloaded:
 	for npc in npcgroup.get_children():
-		if is_instance_valid(npc) and not npc.moving:  # Ensure NPC is not moving
+		if is_instance_valid(npc) and not npc.moving :  # Ensure NPC is not moving
 			if npc.weapon_in_use == 'gun' && npc.fire_gun():
 				fire_gun(npc)
-			else:
-				npc.apply_melee_damage()
+			#else:
+				#npc.apply_melee_damage()
 
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
@@ -281,7 +288,10 @@ func _on_waypoint_4_body_entered(body: Node2D) -> void:
 				entity.target = $waypoint1
 
 func _on_auto_shoot_timer_timeout() -> void:
-	_on_ui_fire_action()
+		for npc in npcgroup.get_children():
+			if is_instance_valid(npc) and not npc.moving && npc.target != null:  # Ensure NPC is not moving
+				if npc.weapon_in_use == 'gun' && npc.fire_gun():
+					fire_gun(npc)
 
 var is_auto_shooting_enabled = false  # To track if auto shooting is on or off
 
@@ -296,8 +306,8 @@ var max_zombies = 64
 
 func _on_wave_timer_timeout() -> void:
 	ui.update_wave(Globals.wave_count)
-	if Globals.wave_count >= 1:
-		spawn_treasure_chest()
+	#if Globals.wave_count >= 1:
+		#spawn_treasure_chest()
 	var spawn_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
 	var spawn_x = ceil(sqrt(spawn_amount))  # Distribute evenly
 	var spawn_y = ceil(spawn_amount / spawn_x)
@@ -320,9 +330,17 @@ func _on_wave_timer_timeout() -> void:
 func _on_player_collect_item() -> void:
 	ui.update_resources()
 
+var using_guns = true
+
 func _on_ui_weapon_toggle() -> void:
+	using_guns = !using_guns
 	for entity in npcgroup.get_children():
-		entity.switch_to_gun()
+		if using_guns:
+			if entity.has_method("switch_to_gun_only"):
+				entity.switch_to_gun_only()
+		else:
+			if entity.has_method("switch_to_sabre_only"):
+				entity.switch_to_sabre_only()
 
 func _on_player_heal_npc() -> void:
 	for npc in npcgroup.get_children():
@@ -340,13 +358,19 @@ func play_musket_sound(at_position: Vector2):
 	sound.connect("finished", sound.queue_free)
 
 func spawn_treasure_chest():
-	var chest_instance = TREASURE_CHEST.instantiate()
-	chest_instance.chest_amount = 50 * Globals.wave_count
-	chest_instance.position = Vector2(465, 364)
-	add_child(chest_instance)
+	
+	if chest_container.get_child_count() > 0:
+		var chest = chest_container.get_child(0)
+		chest.chest_amount += 5 * Globals.wave_count
+	else:
+		var chest_instance = TREASURE_CHEST.instantiate()
+		chest_instance.chest_amount = 5 * Globals.wave_count
+		chest_instance.position = Vector2(465, 364)
+		chest_container.add_child(chest_instance)
+
 
 func _on_zombiegroup_child_exiting_tree(_node: Node) -> void:
-	print("runnin")
+	ui.update_xp_talents() 
 
 	await get_tree().create_timer(0.5).timeout  # waits ~1/10th of a second
 

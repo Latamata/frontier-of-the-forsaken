@@ -134,7 +134,7 @@ shader = ExtResource("2_fjrip")
 shader_parameter/target_color = Color(0.625597, 0.625597, 0.625597, 1)
 shader_parameter/new_color = Color(0.596078, 0.498039, 0, 1)
 shader_parameter/tolerance = 0.1
-shader_parameter/toggle_gold = true
+shader_parameter/toggle_gold = false
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
 points = PackedVector2Array(0, 0, 47, 23, 47, -22)
@@ -294,6 +294,7 @@ position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_lf6aj")
 
 [node name="Meleetimer" type="Timer" parent="."]
+wait_time = 5.0
 
 [node name="Healthbar" type="ProgressBar" parent="."]
 visible = false

@@ -115,8 +115,8 @@ func _check_for_events():
 		print("You found food supplies!")
 		Globals.add_food(30)
 	elif rng < 30:  # 5% chance of wagon breaking down
-		print("Wagon wheel broke! The delay increases your wave amunt by 3")
-		Globals.wave_count += 3
+		print("Wagon wheel broke! The delay increases your wave amunt by 1")
+		Globals.wave_count += 1	
 	elif rng < 40:  # 5% chance of wagon breaking down
 		print("A large zombie will show up with each wave")
 		pass

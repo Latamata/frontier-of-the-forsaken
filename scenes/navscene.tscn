@@ -2171,6 +2171,8 @@ tile_set = SubResource("TileSet_wtqsw")
 
 [node name="indicators" type="Node2D" parent="Enviorment"]
 
+[node name="chests" type="Node2D" parent="Enviorment"]
+
 [node name="sorted" type="Node2D" parent="Enviorment"]
 y_sort_enabled = true
 

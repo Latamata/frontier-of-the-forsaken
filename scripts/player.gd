@@ -8,11 +8,11 @@ var HEALTH = 100
 var base_reload_time = 6.0
 var SPEED = 0.10
 var sword_spec_damage_reduce = false
-var gun_spec_standing_speed = false
+#var gun_spec_standing_speed = false
 var looting = false
 var gun_reloaded = true
 var melee_reloaded = true
-var gather = false
+#var gather = false
 var direction
 var targetResource
 var facing_up = false
@@ -22,7 +22,7 @@ var facing_right = true
 const GUN_Y_OFFSET = Vector2(0, -25)
 var last_weapon_rotation = 0.0
 var last_weapon_position = Vector2.ZERO
-var golden_material = preload("res://shaders/goldenshader.gdshader")
+#var golden_material = preload("res://shaders/goldenshader.gdshader")
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var gun = $Musket
@@ -31,6 +31,7 @@ var golden_material = preload("res://shaders/goldenshader.gdshader")
 @onready var camera_2d = $"../../../Camera2D"
 @onready var reload_timer = $reload
 @onready var arm: Sprite2D = $arm
+@onready var meleetimer: Timer = $Meleetimer
 
 var weapons = []  # List to hold weapons
 var current_weapon_index = 0  # Index for switching
@@ -38,16 +39,24 @@ var current_weapon_index = 0  # Index for switching
 func _ready():
 	change_melee_speed()
 	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
+	sword_spec_damage_reduce = Globals.talent_tree["sword_spec_damage_reduce"]["level"] == 1
+	#gun_spec_standing_speed = Globals.talent_tree["gun_spec_standing_speed"]["level"] == 1
+
 	var reload_reduction_per_level = 0.1  # Adjust as needed
 	reload_timer.wait_time = max(0.1, reload_timer.wait_time - gun_speed_level * reload_reduction_per_level)
 
-	toggle_golden_gun(true)
-	# Initialize weapons list
+	if Globals.golden_sword:
+		toggle_golden_sword(true)
+		meleetimer.wait_time = max(0.05, reload_timer.wait_time * 0.5)  # **Half reload time when golden musket active**
+	if Globals.golden_musket:
+		toggle_golden_gun(true)
+		reload_timer.wait_time = max(0.05, reload_timer.wait_time * 0.5)  # **Half reload time when golden musket active**
+
 	weapons = [gun, sabre]
-	set_active_weapon(0)  # Start with the first weapon
-	weapons[current_weapon_index].position = Vector2(0,-30)
-	# Initialize the healthbar
+	set_active_weapon(0)
+	weapons[current_weapon_index].position = Vector2(0, -30)
 	update_healthbar()
+
 
 
 func _process(delta):
@@ -59,15 +68,18 @@ func _process(delta):
 		sprite_frame_direction()
 		velocity = direction * SPEED
 		move_and_collide(velocity * delta)
-
-		# Set reload speed to normal while moving
-		if !gun_spec_standing_speed:
+		if !Globals.talent_tree["gun_spec_standing_speed"]["level"]:
 			$reload.paused = true
+			#print('running')
+		else:
+			
+			$reload.paused = false
 	else:
 		# Player is idle
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
-		$reload.paused = false
+		$reload.paused = false  # Always allow reload when idle
+
 
 
 func _input(event):
@@ -249,8 +261,10 @@ func die():
 
 
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
-
 func sword_attack():
+	if not melee_reloaded:
+		return  # If not reloaded, do nothing
+	
 	melee_reloaded = false
 	$Meleetimer.start()
 	original_sabre_rotation = sabre.rotation
@@ -270,12 +284,12 @@ func sword_attack():
 	$attackanimation.global_position = $sabre/Marker2D.global_position
 	$attackanimation.play('default')
 
-	# 🔊 Play sword sound
 	$SwordSound.play()
 
-	for entitity in $sabre/Area2D.get_overlapping_bodies():
-		if entitity.is_in_group('zombie'):
-			entitity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
+	for entity in $sabre/Area2D.get_overlapping_bodies():
+		if entity.is_in_group('zombie'):
+			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
+
 
 func player_shoot():
 	reload_timer.start()
@@ -305,16 +319,18 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 
 func change_melee_speed():
 	var max_level = 5
-	var base_time = 1.0
+	var base_time = 2.0
 	var min_time = 0.5
 	var level = Globals.talent_tree["sword_speed"]["level"]
 	var t = float(level) / max_level
-	$Meleetimer.wait_time = lerp(base_time, min_time, t)
+	meleetimer.wait_time = lerp(base_time, min_time, t)
 	#print($Meleetimer.wait_time)
 
 func _on_meleetimer_timeout() -> void:
-	print('running')
+	#print(meleetimer.wait_time)
 	melee_reloaded = true
 
 func toggle_golden_gun(enable_gold: bool):
 	gun.material.set_shader_parameter("toggle_gold", enable_gold)
+func toggle_golden_sword(enable_gold: bool):
+	sabre.material.set_shader_parameter("toggle_gold", enable_gold)

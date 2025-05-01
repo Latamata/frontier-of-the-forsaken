@@ -156,20 +156,21 @@ floor_stop_on_slope = false
 floor_block_on_wall = false
 platform_on_leave = 2
 platform_floor_layers = 0
-safe_margin = 7.08
 script = ExtResource("1_th0mh")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_max_distance = 80.0
 path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 1.111
+debug_enabled = true
 
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
+position = Vector2(5, -13)
 sprite_frames = SubResource("SpriteFrames_11mes")
 animation = &"attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-5, 12)
 shape = SubResource("CapsuleShape2D_xepks")
 
 [node name="targeting" type="Area2D" parent="."]
@@ -180,10 +181,9 @@ disable_mode = 2
 shape = SubResource("CircleShape2D_74v56")
 
 [node name="Melee" type="Area2D" parent="."]
-position = Vector2(-3, 5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
-position = Vector2(-3, -2)
+position = Vector2(0, -13)
 shape = SubResource("CircleShape2D_axwvo")
 
 [node name="Meleetimer" type="Timer" parent="."]

@@ -13,7 +13,7 @@ layout_direction = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -93.0
+offset_top = -67.0
 offset_right = 1153.0
 grow_vertical = 0
 color = Color(0.647059, 0.427451, 0.290196, 0.788235)
@@ -28,83 +28,84 @@ offset_bottom = -222.0
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 243.0
-offset_top = 16.0
-offset_right = 314.0
-offset_bottom = 72.0
+offset_left = 254.0
+offset_top = 6.0
+offset_right = 325.0
+offset_bottom = 62.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 text = "Aim"
 
 [node name="geomap" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 1036.0
-offset_top = 10.0
-offset_right = 1141.0
-offset_bottom = 85.0
+offset_left = 1031.0
+offset_top = 8.0
+offset_right = 1136.0
+offset_bottom = 67.0
 focus_mode = 0
 text = "To the road"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 334.0
-offset_top = 16.0
-offset_right = 405.0
-offset_bottom = 72.0
+offset_left = 335.0
+offset_top = 7.0
+offset_right = 406.0
+offset_bottom = 63.0
 focus_mode = 0
 mouse_filter = 1
 text = "Fire"
 
 [node name="weapontoggle" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 735.0
-offset_top = 22.0
-offset_right = 805.0
-offset_bottom = 53.0
+offset_left = 412.0
+offset_top = 32.0
+offset_right = 482.0
+offset_bottom = 63.0
 focus_mode = 0
 text = "weapon"
 
 [node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 816.0
-offset_top = 50.0
-offset_right = 976.0
-offset_bottom = 77.0
+offset_left = 827.0
+offset_top = 31.0
+offset_right = 987.0
+offset_bottom = 58.0
 max_value = 6.0
 show_percentage = false
 
 [node name="auto_shoot" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 139.0
-offset_top = 30.0
-offset_right = 231.0
-offset_bottom = 61.0
+offset_left = 158.0
+offset_top = 19.0
+offset_right = 250.0
+offset_bottom = 50.0
 focus_mode = 0
 text = "auto shoot"
 
 [node name="reload_label" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 819.0
-offset_top = 22.0
-offset_right = 901.0
-offset_bottom = 46.0
+offset_left = 825.0
+offset_top = 8.0
+offset_right = 907.0
+offset_bottom = 32.0
 text = "Reload"
 
 [node name="wave" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 809.0
-offset_top = -538.0
-offset_right = 968.0
-offset_bottom = -498.0
+offset_left = 880.0
+offset_top = -536.0
+offset_right = 1039.0
+offset_bottom = -496.0
 theme_override_colors/default_color = Color(0.945098, 0.054902, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="battlemapUI"]
 visible = false
+modulate = Color(0.160784, 0.227451, 1, 1)
 layout_mode = 0
-offset_left = 550.0
-offset_top = -316.0
-offset_right = 610.0
-offset_bottom = -266.0
+offset_left = 909.0
+offset_top = -500.0
+offset_right = 969.0
+offset_bottom = -450.0
 scale = Vector2(3.10101, 2.07037)
 theme_override_font_sizes/normal_font_size = 30
 text = "test"
@@ -115,10 +116,10 @@ one_shot = true
 
 [node name="Talents" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 543.0
-offset_top = 24.0
-offset_right = 597.0
-offset_bottom = 61.0
+offset_left = 746.0
+offset_top = 17.0
+offset_right = 811.0
+offset_bottom = 54.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 text = "Talents"

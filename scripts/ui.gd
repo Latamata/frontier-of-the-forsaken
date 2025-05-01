@@ -87,7 +87,8 @@ func update_wave(wave_number):
 func _on_campaign_map_timer_timeout() -> void:
 	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )
 
-
+func update_xp_talents() -> void:
+	$battlemapUI/talents.update_level_display() 
 func _on_talents_button_down() -> void:
 	if $battlemapUI/talents.visible:
 		$battlemapUI/talents.visible = false

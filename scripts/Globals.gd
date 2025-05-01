@@ -3,9 +3,14 @@ extends Node
 var is_global_aiming = false
 signal collect_item()  # Define signal with a parameter
 
+var experience: int = 0
+var level: int = 1
+var xp_to_next: int = 100
+
 # Properties
+var skill_points: int =  0 # setget add_food, get_food
 var food: int =  120 # setget add_food, get_food
-var gold: int =  500 # setget add_food, get_food
+var gold: int =  0 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var wave_count = 1
@@ -14,10 +19,12 @@ var soldier_count: int = 10 # setget add_soldier_count, get_soldier_count
 var soldier_total: int = 10 # setget add_soldier_count, get_soldier_count
 var bullet_type = "lead"
 var bullets_unlocked = ['lead']
+var golden_musket = false
+var golden_sword = false
 # Globals.gd
 var talent_tree = {
 	"gun_damage": {
-		"level": 1,
+		"level": 0,
 		"max_level": 5
 	},
 	"sword_damage": {
@@ -29,23 +36,47 @@ var talent_tree = {
 		"max_level": 5
 	},
 	"sword_speed": {
-		"level": 2,
-		"max_level": 5
-	},
-	"talent_5": {
 		"level": 0,
 		"max_level": 5
 	},
-	"talent 6": {
+	"sword_spec_damage_reduce": {
 		"level": 0,
-		"max_level": 5
+		"max_level": 1
+	},
+	"gun_spec_standing_speed": {
+		"level": 0,
+		"max_level": 1
 	}
 }
 func increase_talent_level(talent_name: String) -> void:
+	if skill_points <= 0:
+		print("Not enough skill points.")
+		return
+
+	# Tier restrictions
+	match talent_name:
+		"gun_speed":
+			if talent_tree["gun_damage"]["level"] < talent_tree["gun_damage"]["max_level"]:
+				print("Gun speed is locked. Max gun damage first.")
+				return
+		"gun_spec_standing_speed":
+			if talent_tree["gun_speed"]["level"] < talent_tree["gun_speed"]["max_level"]:
+				print("Gun spec is locked. Max gun speed first.")
+				return
+		"sword_speed":
+			if talent_tree["sword_damage"]["level"] < talent_tree["sword_damage"]["max_level"]:
+				print("Sword speed is locked. Max sword damage first.")
+				return
+		"sword_spec_damage_reduce":
+			if talent_tree["sword_speed"]["level"] < talent_tree["sword_speed"]["max_level"]:
+				print("Sword spec is locked. Max sword speed first.")
+				return
+
 	if talent_tree.has(talent_name):
 		var talent = talent_tree[talent_name]
 		if talent["level"] < talent["max_level"]:
 			talent["level"] += 1
+			skill_points -= 1
 			talent_tree[talent_name] = talent
 			print("%s increased to level %d" % [talent_name, talent["level"]])
 		else:
@@ -53,7 +84,17 @@ func increase_talent_level(talent_name: String) -> void:
 	else:
 		print("Talent not found: %s" % talent_name)
 
-# Optional: Setter/Getter for geo_map_camp if needed
+
+func add_experience(amount: int) -> void:
+	experience += amount
+	while experience >= xp_to_next:
+		experience -= xp_to_next
+		level += 1
+		skill_points += 1
+		xp_to_next = int(xp_to_next * 1.2) # Scale as needed
+		print("Level up! Now level %d" % level)
+
+
 func set_current_line(value ) -> void:
 	current_line = value
 	#print("Globals.current_line updated to:", value)

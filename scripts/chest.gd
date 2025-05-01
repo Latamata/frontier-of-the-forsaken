@@ -11,7 +11,7 @@ func _ready():
 func _process(_delta: float) -> void:
 	if player.looting:  # Check input when player is inside
 		collected()
-		player.looting = false
+		#player.looting = false
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	

@@ -42,37 +42,38 @@ func _ready():
 # Assuming you are already setting the target position
 func _process(_delta):
 	if moving:
-		# Ask NavigationAgent2D for the next point on the path
 		var next_position = navigation_agent_2d.get_next_path_position()
-		
-		# If close enough to the target, stop moving
 		if global_position.distance_to(next_position) < 5:
 			moving = false
-			navigation_agent_2d.set_target_position(global_position)  # Reset the target position
+			navigation_agent_2d.set_target_position(global_position)
 		else:
-			# Calculate the direction and move
 			direction = (next_position - global_position).normalized()
 			velocity = direction * speed
 			move_and_slide()
 			sprite_frame_direction()
 	else:
 		velocity = Vector2.ZERO
-		direction = Vector2.ZERO  # <-- force it into idle logic
+		direction = Vector2.ZERO
 		animated_sprite_2d.animation = "idle"
-		#sprite_frame_direction()
 		arm.visible = true
+
 	if is_aiming:
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
 			var target_angle = direction_to_target.angle()
-			
-			# Rotate the weapon based on the target's position
 			rotate_weapon(target_angle)
-
 		else:
 			find_zombies_in_area()
 	else:
 		rotate_weapon(forward_angle)
+
+	# This is the new part:
+	if weapon_in_use == "sabre" and melee_cd:
+		for body in $Melee.get_overlapping_bodies():
+			if body.is_in_group("zombie") and is_instance_valid(body):
+				apply_melee_damage()
+				break
+
 
 
 func sprite_frame_direction():
@@ -237,12 +238,12 @@ func sword_attack():
 	$attackanimation.rotation = sabre.rotation
 	$attackanimation.global_position = $sabre/Marker2D.global_position
 	$attackanimation.play('default')
-
+	$SwordSound.play()
 
 func apply_melee_damage():
 	if melee_cd:
 		for body in $Melee.get_overlapping_bodies():
-			if is_instance_valid(body):
+			if is_instance_valid(body) && body.is_in_group('zombie'):
 				target = body
 				melee_cd = false
 				$Meleetimer.start()
@@ -257,7 +258,9 @@ func apply_melee_damage():
 		
 		melee_cd = false
 		meleetimer.start()
-
+ 
 
 func _on_meleetimer_timeout() -> void:
+	apply_melee_damage()
+	#print('running')
 	melee_cd = true

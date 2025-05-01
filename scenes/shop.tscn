@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cjjx5rvo3h83d"]
+[gd_scene load_steps=13 format=3 uid="uid://cjjx5rvo3h83d"]
 
 [ext_resource type="Texture2D" uid="uid://p17chejyji5x" path="res://assets/shopicons.png" id="1_lx5au"]
 [ext_resource type="Script" uid="uid://dhc7bwuobf4cg" path="res://scripts/shop.gd" id="1_xfvoa"]
+[ext_resource type="Shader" uid="uid://crb282ik5xjor" path="res://shaders/goldenshader.gdshader" id="3_1l46r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xfvoa"]
 atlas = ExtResource("1_lx5au")
@@ -11,17 +12,39 @@ region = Rect2(13.5, 19, 117, 108)
 atlas = ExtResource("1_lx5au")
 region = Rect2(153.5, 22, 102, 113)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_032fp"]
-atlas = ExtResource("1_lx5au")
-region = Rect2(308.5, 43, 102, 86)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_032fp"]
+shader = ExtResource("3_1l46r")
+shader_parameter/target_color = Color(0.517184, 0.517184, 0.517184, 1)
+shader_parameter/new_color = Color(0.596078, 0.498039, 0, 1)
+shader_parameter/tolerance = 0.1
+shader_parameter/toggle_gold = false
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2fc2m"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajxib"]
 atlas = ExtResource("1_lx5au")
-region = Rect2(18.5, 155, 92, 89)
+region = Rect2(297.736, 144.302, 99.3474, 99.9683)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8r1wq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1l46r"]
+shader = ExtResource("3_1l46r")
+shader_parameter/target_color = Color(0.60933, 0.60933, 0.60933, 1)
+shader_parameter/new_color = Color(0.596078, 0.498039, 0, 1)
+shader_parameter/tolerance = 0.1
+shader_parameter/toggle_gold = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6sft"]
 atlas = ExtResource("1_lx5au")
-region = Rect2(160.924, 158.028, 106.178, 88.1708)
+region = Rect2(435.636, 27.6364, 101.818, 94.5455)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4ofw"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(311.443, 41.9584, 88.557, 80.9641)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_heatd"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(24.0275, 159.316, 89.3722, 80.3907)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1v8qu"]
+atlas = ExtResource("1_lx5au")
+region = Rect2(167.903, 162.255, 88.2607, 76.79)
 
 [node name="shop" type="Control"]
 layout_mode = 3
@@ -55,32 +78,27 @@ offset_bottom = 289.0
 focus_mode = 0
 icon = SubResource("AtlasTexture_1l46r")
 
-[node name="buy_bullet" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 171.0
-offset_top = 60.0
-offset_right = 281.0
-offset_bottom = 154.0
-focus_mode = 0
-icon = SubResource("AtlasTexture_032fp")
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -37.0
+offset_bottom = 17.0
+grow_horizontal = 0
+text = "close
+"
 
-[node name="buy_bullet_steel" type="Button" parent="Panel"]
+[node name="golden_musket" type="Button" parent="Panel"]
+material = SubResource("ShaderMaterial_032fp")
 layout_mode = 0
-offset_left = 171.0
-offset_top = 170.0
-offset_right = 281.0
-offset_bottom = 272.0
+offset_left = 158.0
+offset_top = 179.0
+offset_right = 265.0
+offset_bottom = 286.0
 focus_mode = 0
-icon = SubResource("AtlasTexture_2fc2m")
-
-[node name="holy_bullet" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 310.0
-offset_top = 59.0
-offset_right = 420.0
-offset_bottom = 153.0
-focus_mode = 0
-icon = SubResource("AtlasTexture_8r1wq")
+icon = SubResource("AtlasTexture_ajxib")
+flat = true
 
 [node name="Info" type="RichTextLabel" parent="Panel"]
 layout_mode = 0
@@ -93,25 +111,33 @@ text = "Item:
 Cost: 15g
 damage"
 
-[node name="Button" type="Button" parent="Panel"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -37.0
-offset_bottom = 17.0
-grow_horizontal = 0
-text = "close
-"
+[node name="golden_sword" type="Button" parent="Panel"]
+material = SubResource("ShaderMaterial_1l46r")
+layout_mode = 0
+offset_left = 306.0
+offset_top = 48.0
+offset_right = 415.0
+offset_bottom = 150.0
+focus_mode = 0
+icon = SubResource("AtlasTexture_y6sft")
+flat = true
+
+[node name="ItemList" type="ItemList" parent="Panel"]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 50.0
+offset_right = 283.0
+offset_bottom = 148.0
+item_count = 3
+item_0/icon = SubResource("AtlasTexture_m4ofw")
+item_1/icon = SubResource("AtlasTexture_heatd")
+item_2/icon = SubResource("AtlasTexture_1v8qu")
 
 [connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]
 [connection signal="mouse_entered" from="Panel/buy_soldier" to="." method="_on_buy_soldier_mouse_entered"]
 [connection signal="button_down" from="Panel/buy_food" to="." method="_on_buy_food_button_down"]
 [connection signal="mouse_entered" from="Panel/buy_food" to="." method="_on_buy_food_mouse_entered"]
-[connection signal="button_down" from="Panel/buy_bullet" to="." method="_on_buy_bullet_button_down"]
-[connection signal="mouse_entered" from="Panel/buy_bullet" to="." method="_on_buy_bullet_mouse_entered"]
-[connection signal="button_down" from="Panel/buy_bullet_steel" to="." method="_on_buy_bullet_steel_button_down"]
-[connection signal="mouse_entered" from="Panel/buy_bullet_steel" to="." method="_on_buy_bullet_steel_mouse_entered"]
-[connection signal="button_down" from="Panel/holy_bullet" to="." method="_on_holy_bullet_button_down"]
-[connection signal="mouse_entered" from="Panel/holy_bullet" to="." method="_on_holy_bullet_mouse_entered"]
 [connection signal="button_down" from="Panel/Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="Panel/golden_musket" to="." method="_on_golden_musket_button_down"]
+[connection signal="button_down" from="Panel/golden_sword" to="." method="_on_golden_sword_button_down"]
+[connection signal="item_selected" from="Panel/ItemList" to="." method="_on_item_list_item_selected"]

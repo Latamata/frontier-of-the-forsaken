@@ -10,7 +10,8 @@ var target_position: Vector2
 var HEALTH = 100
 var DAMAGE = 35
 var target = null
-var SPEED = 0.10  # Base speed
+var SPEED = 30  # Base speed
+var speed_modifier = 0  # Base speed
 var time_since_last_path_update = 0.0
 var path_update_interval = 0.1  # Pathfinding update interval
 var overlapping_bodies = []  # Bodies in melee range
@@ -26,8 +27,6 @@ var gold_coin: PackedScene = preload("res://scenes/item_drop.tscn")
 @onready var melee: Area2D = $Melee
 
 func _ready():
-	
-	#animated_sprite_2d.connect("animation_finished", Callable(self, "_on_Spritesheet_animation_finished"))
 	update_healthbar()
 
 func _process(delta):
@@ -45,12 +44,15 @@ func _process(delta):
 		apply_melee_damage()
 
 	elif not navigation_agent_2d.is_navigation_finished():
+		#print('rinning')
 		direction = (navigation_agent_2d.get_next_path_position() - global_position).normalized()
-		velocity = direction * SPEED
+		velocity = direction * (SPEED + speed_modifier)
+		#velocity = direction * SPEED
+		move_and_slide()
 	else:
 		animated_sprite_2d.stop()
 		velocity = Vector2.ZERO
-
+		
 	if target and is_instance_valid(target):
 		# Continue chasing the target if valid
 		if time_since_last_path_update > path_update_interval:
@@ -62,7 +64,7 @@ func _process(delta):
 	else:
 		find_target()  # Look for a new target
 	#print(target)
-	move_and_slide()
+	
 
 
 func find_target():
@@ -107,30 +109,34 @@ func take_damage(amount: int):
 
 	if HEALTH <= 0:
 		die()
-
 func die():
-	#emit_signal("death_signal")  # Pass the collected item as an argument
-	var coins = gold_coin.instantiate()  # Instantiate the coin
-	coins.position = global_position  
-	#coins.resource_type = 'gold'
+	# XP reward
+	Globals.add_experience(10)  # Or whatever amount makes sense
 
-	# Find the plantgroup node dynamically
+	# Gold drop
+	var coins = gold_coin.instantiate()
+	coins.position = global_position
+
 	var plantgroup = get_tree().get_root().find_child("plantgroup", true, false)
 	if plantgroup:
 		plantgroup.add_child(coins)
 	else:
 		print("Error: 'plantgroup' node not found!")
 
-	animated_sprite_2d.stop()  # Stop movement animation
-	set_physics_process(false)  # Disable further movement
+	animated_sprite_2d.stop()
+	set_physics_process(false)
 	set_process(false)
 
 	var tween = get_tree().create_tween()
-	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
-	tween.tween_callback(queue_free)  # Remove after animation
+	tween.tween_property(self, "rotation_degrees", 90, 0.5)
+	tween.tween_callback(queue_free)
 
 func slow_affect(activate):
-	SPEED = 15.0 if activate else 30.0
+	if activate:
+		speed_modifier = -15  # Slow them down by 15
+	else:
+		speed_modifier = 0  # No slow
+
 
 func update_healthbar():
 	healthbar.value = HEALTH  # Sync healthbar with current health

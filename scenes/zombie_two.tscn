@@ -140,45 +140,46 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3ox1"]
-radius = 13.0
 height = 26.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t0tcg"]
-radius = 336.121
+radius = 407.208
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0v0wp"]
 radius = 32.0156
 
 [node name="zombie_two" type="CharacterBody2D" groups=["zombie"]]
+floor_stop_on_slope = false
+floor_block_on_wall = false
+platform_on_leave = 2
+platform_floor_layers = 4294901760
 script = ExtResource("1_srr55")
-
-[node name="Spritesheet" type="AnimatedSprite2D" parent="."]
-position = Vector2(1, -1)
-sprite_frames = SubResource("SpriteFrames_4wia8")
-animation = &"walking_away"
-frame_progress = 0.915656
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 11)
-shape = SubResource("CapsuleShape2D_o3ox1")
-
-[node name="targeting" type="Area2D" parent="."]
-visible = false
-disable_mode = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="targeting"]
-shape = SubResource("CircleShape2D_t0tcg")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 1.111
+debug_enabled = true
+
+[node name="Spritesheet" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -14)
+sprite_frames = SubResource("SpriteFrames_4wia8")
+animation = &"walking_away"
+frame_progress = 0.915656
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_o3ox1")
+
+[node name="targeting" type="Area2D" parent="."]
+disable_mode = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="targeting"]
+shape = SubResource("CircleShape2D_t0tcg")
 
 [node name="Melee" type="Area2D" parent="."]
-position = Vector2(2, -11)
+position = Vector2(0, -13)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
-position = Vector2(-7, 19)
 shape = SubResource("CircleShape2D_0v0wp")
 
 [node name="Meleetimer" type="Timer" parent="."]

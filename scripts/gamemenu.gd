@@ -2,17 +2,16 @@ extends CanvasLayer
 
 @onready var load_button: Button = $load
 @onready var save_button: Button = $save
-const SAVE_PATH = "user://savegame.json"  # File path for saving
+const SAVE_PATH = "user://savegame.json"
 
 func _ready() -> void:
 	save_button.connect("pressed", _on_save_pressed)
 	load_button.connect("pressed", _on_load_pressed)
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):  # Escape key
-		visible = !visible  # Toggle menu visibility
-		get_tree().paused = visible  # Pause the game when menu is visible
-
+	if event.is_action_pressed("ui_cancel"):
+		visible = !visible
+		get_tree().paused = visible
 
 func _on_save_pressed() -> void:
 	var save_data = {
@@ -23,12 +22,15 @@ func _on_save_pressed() -> void:
 		"soldier_count": Globals.soldier_count,
 		"bullets_unlocked": Globals.bullets_unlocked,
 		"bullet_type": Globals.bullet_type,
-		"talent_tree": Globals.talent_tree  # <--- Add this line
+		"talent_tree": Globals.talent_tree,
+		"experience": Globals.experience,        # ✅ XP Save
+		"level": Globals.level,                  # ✅ Level Save
+		"xp_to_next": Globals.xp_to_next         # ✅ XP-to-next Save
 	}
 
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
-		file.store_string(JSON.stringify(save_data, "\t"))  # Save formatted JSON
+		file.store_string(JSON.stringify(save_data, "\t"))
 		file.close()
 		print("Game Saved!")
 
@@ -51,9 +53,12 @@ func _on_load_pressed() -> void:
 			Globals.soldier_count = save_data.get("soldier_count", Globals.soldier_count)
 			Globals.bullet_type = save_data.get("bullet_type", Globals.bullet_type)
 			Globals.bullets_unlocked = save_data.get("bullets_unlocked", Globals.bullets_unlocked)
-			Globals.talent_tree = save_data.get("talent_tree", Globals.talent_tree)  # <--- Add this line
+			Globals.talent_tree = save_data.get("talent_tree", Globals.talent_tree)
+			Globals.experience = save_data.get("experience", Globals.experience)      # ✅ XP Load
+			Globals.level = save_data.get("level", Globals.level)                    # ✅ Level Load
+			Globals.xp_to_next = save_data.get("xp_to_next", Globals.xp_to_next)    # ✅ XP-to-next Load
+
 			print("Game Loaded!")
-			print(Globals.bullets_unlocked)
 			get_tree().change_scene_to_file("res://scenes/main_map.tscn")
 
 func _on_exit_button_down() -> void:
