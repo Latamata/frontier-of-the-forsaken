@@ -129,6 +129,16 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jej6c"]
+atlas = ExtResource("5_v052w")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_smehm"]
+shader = ExtResource("2_fjrip")
+shader_parameter/target_color = Color(0.509804, 0.505882, 0.533333, 0.380392)
+shader_parameter/new_color = Color(0.596164, 0.499345, 0, 1)
+shader_parameter/tolerance = 0.1
+shader_parameter/toggle_gold = false
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fjrip"]
 shader = ExtResource("2_fjrip")
 shader_parameter/target_color = Color(0.625597, 0.625597, 0.625597, 1)
@@ -138,13 +148,6 @@ shader_parameter/toggle_gold = false
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
 points = PackedVector2Array(0, 0, 47, 23, 47, -22)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_smehm"]
-shader = ExtResource("2_fjrip")
-shader_parameter/target_color = Color(0.509804, 0.505882, 0.533333, 0.380392)
-shader_parameter/new_color = Color(0.596164, 0.499345, 0, 1)
-shader_parameter/tolerance = 0.1
-shader_parameter/toggle_gold = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("5_qlg0r")
@@ -221,9 +224,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jej6c"]
-atlas = ExtResource("5_v052w")
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf6aj"]
 size = Vector2(18, 16)
 
@@ -245,6 +245,21 @@ position = Vector2(0.25, -25.25)
 sprite_frames = SubResource("SpriteFrames_5crhn")
 animation = &"walking_side"
 
+[node name="arm" type="Sprite2D" parent="."]
+position = Vector2(-1, -30)
+texture = SubResource("AtlasTexture_jej6c")
+offset = Vector2(0, 10)
+region_enabled = true
+region_rect = Rect2(106.998, 164.891, 18.4052, 23.3776)
+
+[node name="Musket" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_smehm")
+texture = ExtResource("3_vos4w")
+centered = false
+
+[node name="Marker2D" type="Marker2D" parent="Musket"]
+position = Vector2(56, 5)
+
 [node name="sabre" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_fjrip")
 position = Vector2(2, -33)
@@ -262,28 +277,10 @@ shape = SubResource("ConvexPolygonShape2D_qlg0r")
 [node name="Marker2D" type="Marker2D" parent="sabre"]
 position = Vector2(33, 11)
 
-[node name="Musket" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_smehm")
-position = Vector2(2, -29)
-texture = ExtResource("3_vos4w")
-centered = false
-offset = Vector2(0, -5)
-
-[node name="Marker2D" type="Marker2D" parent="Musket"]
-position = Vector2(56, 5)
-
 [node name="attackanimation" type="AnimatedSprite2D" parent="."]
 position = Vector2(80, -30)
 sprite_frames = SubResource("SpriteFrames_d2wvv")
 offset = Vector2(10, 0)
-
-[node name="arm" type="Sprite2D" parent="."]
-z_index = 1
-position = Vector2(-1, -31)
-texture = SubResource("AtlasTexture_jej6c")
-offset = Vector2(0, 10)
-region_enabled = true
-region_rect = Rect2(106.998, 164.891, 18.4052, 23.3776)
 
 [node name="reload" type="Timer" parent="."]
 wait_time = 6.0

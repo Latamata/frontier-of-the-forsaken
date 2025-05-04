@@ -26,6 +26,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+
 	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
@@ -53,8 +54,6 @@ func _process(_delta: float) -> void:
 	if player:
 		ui.get_child(0).get_node("reloadtimer").value = player.reload_timer.time_left
 
-
-
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
 var update_interval = 100  # Minimum interval between updates (in seconds)
@@ -81,7 +80,10 @@ func _input(event):
 		if current_time - last_update_time > update_interval:
 			process_rotation()
 			last_update_time = current_time
+	else:
+		is_rotating = false
 		assign_npcs_to_indicators(rotation_angle)
+
 	if Input.is_action_just_pressed("collect") and player:
 		player.looting = true
 	if Input.is_action_just_released("collect") and player:
@@ -159,29 +161,28 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 	for child in indicators.get_children():
 		child.queue_free()
 
-	var row_spacing = 25  # Distance between the two lines
-	var indicator_spacing = 50  # Distance between indicators in each line
-	var line_offset = -((float(npcgroup.get_child_count()) / 2) - 1) * indicator_spacing / 2
+	var row_spacing = 20
+	var indicator_spacing = 50
 	var placed_positions = []
 
-	# Spawn NPCs in the formation
-	for i in range(npcgroup.get_child_count()):
+	var unit_count = npcgroup.get_child_count()
+	var line_count = ceil(unit_count / 2.0)
+	var line_center_offset = -((line_count - 1) * indicator_spacing) / 2.0
+
+	for i in range(unit_count):
 		var indicator_instance = IndicatorScene.instantiate()
 
-		# Determine row (top or bottom) and position along the line
 		var row = i % 2
-		var position_in_line = float(i) / 2
+		var position_in_line = floor(i / 2.0)
 
-		# Calculate position relative to the start position
-		var indicator_position = start_position
-		indicator_position.x += (row * 2 - 1) * row_spacing  # Offset for top or bottom row
-		indicator_position.y += line_offset + position_in_line * indicator_spacing
+		# 👉 NOW the forward movement is along Y (toward the mouse), and rows are spaced along X
+		var forward_offset = Vector2(0, (position_in_line * indicator_spacing) + line_center_offset)
+		var side_offset = Vector2((row * 2 - 1) * row_spacing, 0)
+		var offset = (forward_offset + side_offset).rotated(unit_rotation_angle)
 
-		# Rotate the indicator position around the start position
-		indicator_position = rotate_position_around_center(indicator_position, start_position, unit_rotation_angle)
-		#print(indicator_position)
-		# Set position and add to the scene
+		var indicator_position = start_position + offset
 		indicator_instance.position = get_nearest_tile(indicator_position, placed_positions)
+
 		indicators.add_child(indicator_instance)
 		placed_positions.append(tile_map.local_to_map(indicator_instance.position))
 

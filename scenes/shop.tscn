@@ -130,7 +130,9 @@ offset_right = 283.0
 offset_bottom = 148.0
 item_count = 3
 item_0/icon = SubResource("AtlasTexture_m4ofw")
+item_1/text = "250"
 item_1/icon = SubResource("AtlasTexture_heatd")
+item_2/text = "500"
 item_2/icon = SubResource("AtlasTexture_1v8qu")
 
 [connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]

@@ -7,20 +7,19 @@ extends Control
 #@onready var holy_bullet: Button = $Panel/holy_bullet
 @onready var golden_musket: Button = $Panel/golden_musket
 @onready var golden_sword: Button = $Panel/golden_sword
+@onready var item_list: ItemList = $Panel/ItemList
 
 signal bought_something
 
 func _ready() -> void:
-	pass
-	# This is setting the current selected bullet for button status
-	#if Globals.bullet_type == 'lead':
-		#update_bullet_buttons(buy_bullet, 'lead', [buy_bullet_steel, holy_bullet])
-	#elif Globals.bullet_type == 'steel':
-		#update_bullet_buttons(buy_bullet_steel, 'steel', [buy_bullet, holy_bullet])
-	#elif Globals.bullet_type == 'holy_bullet':
-		#update_bullet_buttons(holy_bullet, 'holy_bullet', [buy_bullet, buy_bullet_steel])
-	#elif Globals.bullet_type == 'golden_musket':
-		#pass
+	match Globals.bullet_type:
+		"lead":
+			item_list.select(0)
+		"steel":
+			item_list.select(1)
+		"holy_bullet":
+			item_list.select(2)
+
 
 # Helper function to update button states and set info text
 func update_bullet_buttons(button: Button, bullet_type: String, button_list: Array) -> void:

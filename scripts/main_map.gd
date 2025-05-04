@@ -115,13 +115,10 @@ func _check_for_events():
 		print("You found food supplies!")
 		Globals.add_food(30)
 	elif rng < 30:  # 5% chance of wagon breaking down
-		print("Wagon wheel broke! The delay increases your wave amunt by 1")
-		Globals.wave_count += 1	
-	elif rng < 40:  # 5% chance of wagon breaking down
-		print("A large zombie will show up with each wave")
-		pass
-	elif rng < 40:  # 5% chance of wagon breaking down
-		print("Plentiful bouonty, all map resources are double")
-		pass
+		print("Wagon wheel broke! The delay increases your wave amount by 1")
+		Globals.wave_count += 1
+	elif rng < 40:  # 5% chance of bounty
+		print("Plentiful bounty, all map resources are doubled")
+		# Add resource doubling logic here
 
 	$UI.update_resources()

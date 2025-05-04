@@ -149,6 +149,7 @@ radius = 407.208
 radius = 32.0156
 
 [node name="zombie_two" type="CharacterBody2D" groups=["zombie"]]
+slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_block_on_wall = false
 platform_on_leave = 2

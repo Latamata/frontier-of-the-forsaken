@@ -1,7 +1,7 @@
 extends CanvasLayer
 
-@onready var load_button: Button = $load
-@onready var save_button: Button = $save
+@onready var load_button: Button = $menu_items/load
+@onready var save_button: Button = $menu_items/save
 const SAVE_PATH = "user://savegame.json"
 
 func _ready() -> void:
@@ -63,3 +63,12 @@ func _on_load_pressed() -> void:
 
 func _on_exit_button_down() -> void:
 	get_tree().quit()
+
+
+func _on_settings_button_button_down() -> void:
+	$settings.visible = true
+	$menu_items.visible = false
+
+func _on_settings_settings_closed() -> void:
+	$settings.visible = false
+	$menu_items.visible = true

@@ -1,11 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://be6dxmx5pqeoq"]
+[gd_scene load_steps=3 format=3 uid="uid://be6dxmx5pqeoq"]
 
 [ext_resource type="Script" uid="uid://dm5kek0bktmru" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://h0ngykfdybl1" path="res://scenes/settings.tscn" id="2_ekxnf"]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_l6cm7")
 
-[node name="Title" type="RichTextLabel" parent="."]
+[node name="settings" parent="." instance=ExtResource("2_ekxnf")]
+visible = false
+offset_left = 266.0
+offset_top = 104.0
+offset_right = 266.0
+offset_bottom = 104.0
+
+[node name="main_screen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="RichTextLabel" parent="main_screen"]
+layout_mode = 0
 offset_left = 370.0
 offset_top = 97.0
 offset_right = 757.0
@@ -13,26 +28,31 @@ offset_bottom = 176.0
 theme_override_font_sizes/normal_font_size = 50
 text = "Game Title"
 
-[node name="Play" type="Button" parent="."]
+[node name="Play" type="Button" parent="main_screen"]
+layout_mode = 0
 offset_left = 301.0
 offset_top = 254.0
 offset_right = 748.0
 offset_bottom = 306.0
 text = "Play"
 
-[node name="Options" type="Button" parent="."]
+[node name="Options" type="Button" parent="main_screen"]
+layout_mode = 0
 offset_left = 303.0
 offset_top = 336.0
 offset_right = 750.0
 offset_bottom = 388.0
 text = "Options	"
 
-[node name="quit" type="Button" parent="."]
+[node name="quit" type="Button" parent="main_screen"]
+layout_mode = 0
 offset_left = 308.0
 offset_top = 421.0
 offset_right = 755.0
 offset_bottom = 473.0
 text = "quit"
 
-[connection signal="button_down" from="Play" to="." method="_on_play_button_down"]
-[connection signal="button_down" from="quit" to="." method="_on_quit_button_down"]
+[connection signal="settings_closed" from="settings" to="." method="_on_settings_settings_closed"]
+[connection signal="button_down" from="main_screen/Play" to="." method="_on_play_button_down"]
+[connection signal="button_down" from="main_screen/Options" to="." method="_on_options_button_down"]
+[connection signal="button_down" from="main_screen/quit" to="." method="_on_quit_button_down"]

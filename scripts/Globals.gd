@@ -10,7 +10,7 @@ var xp_to_next: int = 100
 # Properties
 var skill_points: int =  0 # setget add_food, get_food
 var food: int =  120 # setget add_food, get_food
-var gold: int =  0 # setget add_food, get_food
+var gold: int =  500 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
 var wave_count = 1

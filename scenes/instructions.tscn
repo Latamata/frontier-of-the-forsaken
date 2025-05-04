@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://decn8ittmpton"]
+
+[ext_resource type="Script" uid="uid://cousurpr7kngw" path="res://instructions.gd" id="1_dkfqi"]
+[ext_resource type="Texture2D" uid="uid://b2ucqlqr0d271" path="res://assets/controls_drawing.png" id="2_nisbi"]
+
+[node name="instructions" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dkfqi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 465.0
+offset_bottom = 524.0
+color = Color(0.0705882, 1, 1, 0.321569)
+
+[node name="Button" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_right = 38.0
+offset_bottom = 8.0
+text = "close"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 59.0
+offset_right = 338.0
+offset_bottom = 305.0
+text = "🕹️  Move — WASD / Arrow Keys  
+🧨  Shoot — Spacebar 
+💰  Buy Units — Click buttons in the shop  
+🥫  Need food to move along
+🌊  Survive as many waves as you can!
+
+🖱️ Click and hold, then drag to position your troops — the drag direction sets which way they face."
+
+[node name="ControlsDrawing" type="Sprite2D" parent="ColorRect"]
+position = Vector2(206, 403)
+scale = Vector2(1.57042, 0.9125)
+texture = ExtResource("2_nisbi")
+
+[connection signal="button_down" from="ColorRect/Button" to="." method="_on_button_button_down"]
