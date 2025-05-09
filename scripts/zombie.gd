@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal zombie_died
 
 # Variables
 var direction = Vector2.RIGHT
@@ -108,8 +109,10 @@ func take_damage(amount: int):
 	animated_sprite_2d.modulate = Color(1, 1, 1)  # Reset to normal
 
 	if HEALTH <= 0:
+		#$zombie_death.play()
 		die()
 func die():
+	emit_signal("zombie_died")
 	# XP reward
 	Globals.add_experience(10)  # Or whatever amount makes sense
 

@@ -30,25 +30,25 @@ text = "Game Title"
 
 [node name="Play" type="Button" parent="main_screen"]
 layout_mode = 0
-offset_left = 301.0
+offset_left = 300.0
 offset_top = 254.0
-offset_right = 748.0
+offset_right = 747.0
 offset_bottom = 306.0
 text = "Play"
 
 [node name="Options" type="Button" parent="main_screen"]
 layout_mode = 0
-offset_left = 303.0
+offset_left = 300.0
 offset_top = 336.0
-offset_right = 750.0
+offset_right = 747.0
 offset_bottom = 388.0
 text = "Options	"
 
 [node name="quit" type="Button" parent="main_screen"]
 layout_mode = 0
-offset_left = 308.0
+offset_left = 300.0
 offset_top = 421.0
-offset_right = 755.0
+offset_right = 747.0
 offset_bottom = 473.0
 text = "quit"
 

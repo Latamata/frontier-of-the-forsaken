@@ -40,8 +40,6 @@ func _ready():
 	change_melee_speed()
 	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
 	sword_spec_damage_reduce = Globals.talent_tree["sword_spec_damage_reduce"]["level"] == 1
-	#gun_spec_standing_speed = Globals.talent_tree["gun_spec_standing_speed"]["level"] == 1
-
 	var reload_reduction_per_level = 0.1  # Adjust as needed
 	reload_timer.wait_time = max(0.1, reload_timer.wait_time - gun_speed_level * reload_reduction_per_level)
 
@@ -70,9 +68,7 @@ func _process(delta):
 		move_and_collide(velocity * delta)
 		if !Globals.talent_tree["gun_spec_standing_speed"]["level"]:
 			$reload.paused = true
-			#print('running')
 		else:
-			
 			$reload.paused = false
 	else:
 		# Player is idle
@@ -156,6 +152,12 @@ func sprite_frame_direction():
 			weapons[current_weapon_index].rotation = PI / 2
 			weapons[current_weapon_index].position = Vector2(0, weapon_radius) + offset
 
+
+func level_up(current_level):
+	$LevelUpLabel.text = "Level %s" % current_level
+	$LevelUpLabel.visible = true
+	await get_tree().create_timer(5.0).timeout
+	$LevelUpLabel.visible = false
 
 func set_facing(dir: String):
 	facing_left = dir == "left"

@@ -64,7 +64,7 @@ func _update_turn_button_visibility():
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
 	if current_path and current_path.curve && Globals.food > 0:
-		Globals.add_food(-20)
+		Globals.add_food(-10)
 		$UI.update_resources()
 		
 		var total_points = current_path.curve.get_point_count()

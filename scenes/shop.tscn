@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cjjx5rvo3h83d"]
+[gd_scene load_steps=14 format=3 uid="uid://cjjx5rvo3h83d"]
 
 [ext_resource type="Texture2D" uid="uid://p17chejyji5x" path="res://assets/shopicons.png" id="1_lx5au"]
 [ext_resource type="Script" uid="uid://dhc7bwuobf4cg" path="res://scripts/shop.gd" id="1_xfvoa"]
+[ext_resource type="AudioStream" uid="uid://cv721b05urao1" path="res://sound/coin-spill-105867.mp3" id="2_032fp"]
 [ext_resource type="Shader" uid="uid://crb282ik5xjor" path="res://shaders/goldenshader.gdshader" id="3_1l46r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xfvoa"]
@@ -54,6 +55,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xfvoa")
+
+[node name="coin_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_032fp")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
@@ -128,6 +132,9 @@ offset_left = 144.0
 offset_top = 50.0
 offset_right = 283.0
 offset_bottom = 148.0
+focus_mode = 0
+allow_search = false
+wraparound_items = false
 item_count = 3
 item_0/icon = SubResource("AtlasTexture_m4ofw")
 item_1/text = "250"
@@ -141,5 +148,7 @@ item_2/icon = SubResource("AtlasTexture_1v8qu")
 [connection signal="mouse_entered" from="Panel/buy_food" to="." method="_on_buy_food_mouse_entered"]
 [connection signal="button_down" from="Panel/Button" to="." method="_on_button_button_down"]
 [connection signal="button_down" from="Panel/golden_musket" to="." method="_on_golden_musket_button_down"]
+[connection signal="mouse_entered" from="Panel/golden_musket" to="." method="_on_golden_musket_mouse_entered"]
 [connection signal="button_down" from="Panel/golden_sword" to="." method="_on_golden_sword_button_down"]
+[connection signal="mouse_entered" from="Panel/golden_sword" to="." method="_on_golden_sword_mouse_entered"]
 [connection signal="item_selected" from="Panel/ItemList" to="." method="_on_item_list_item_selected"]

@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal soldier_died
+
 var direction = Vector2.RIGHT
 var melee_cd = true
 var is_aiming = false
@@ -31,7 +33,7 @@ const ARM_POSITIONS = {
 	"right": Vector2(8, -30),
 	"left": Vector2(-6, -30),
 	"down": Vector2(-5, -30),
-	"idle": Vector2(18, -30)
+	"idle": Vector2(-6, -28)
 }
 func _ready():
 	# Initialize health bar values
@@ -41,6 +43,7 @@ func _ready():
 
 # Assuming you are already setting the target position
 func _process(_delta):
+	#print(animated_sprite_2d.animation)
 	if moving:
 		var next_position = navigation_agent_2d.get_next_path_position()
 		if global_position.distance_to(next_position) < 5:
@@ -52,10 +55,16 @@ func _process(_delta):
 			move_and_slide()
 			sprite_frame_direction()
 	else:
+		
 		velocity = Vector2.ZERO
 		direction = Vector2.ZERO
-		animated_sprite_2d.animation = "idle"
-		arm.visible = true
+
+		if animated_sprite_2d.animation != "idle":
+			animated_sprite_2d.animation = "idle"
+			sprite_frame_direction()
+			#print("Switched to idle")
+			arm.visible = true
+
 
 	if is_aiming:
 		if target and is_instance_valid(target):
@@ -69,6 +78,7 @@ func _process(_delta):
 
 	# This is the new part:
 	if weapon_in_use == "sabre" and melee_cd:
+		#print(weapon_in_use)
 		for body in $Melee.get_overlapping_bodies():
 			if body.is_in_group("zombie") and is_instance_valid(body):
 				apply_melee_damage()
@@ -77,35 +87,58 @@ func _process(_delta):
 
 
 func sprite_frame_direction():
+	# No movement - idle
+	if direction == Vector2.ZERO:
+		#print('running')
+		animated_sprite_2d.animation = "idle"
+		animated_sprite_2d.play()
+		arm.position = ARM_POSITIONS["idle"]
+		arm.flip_h = false
+		arm.flip_v = false
+		arm.rotation = 0
+		arm.visible = true
 
-	if abs(direction.x) > abs(direction.y):
+	elif abs(direction.x) > abs(direction.y):
+		# Horizontal movement
 		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.play()
 		arm.visible = true
+
 		if direction.x > 0:
-			arm.position = ARM_POSITIONS["right"]
-			arm.flip_h = false
-			arm.rotation = 0
+			# Facing right
 			animated_sprite_2d.flip_h = false
+			arm.flip_h = false
+			arm.flip_v = false
+			arm.rotation = 0
+			arm.position = ARM_POSITIONS["right"]
 		else:
-			arm.position = ARM_POSITIONS["left"]
+			# Facing left
+			animated_sprite_2d.flip_h = true
 			arm.flip_h = true
 			arm.flip_v = false
 			arm.rotation = 0
-			animated_sprite_2d.flip_h = true
+			arm.position = ARM_POSITIONS["left"]
+
 	elif abs(direction.y) > abs(direction.x):
+		# Vertical movement
 		animated_sprite_2d.flip_h = false
+
 		if direction.y > 0:
+			# Moving down
 			animated_sprite_2d.animation = "walking_toward"
 			animated_sprite_2d.play()
-			arm.position = ARM_POSITIONS["down"]
-			arm.flip_h = false
 			arm.visible = true
+			arm.flip_h = false
+			arm.flip_v = false
+			arm.rotation = 0
+			arm.position = ARM_POSITIONS["down"]
 		else:
-			#print('walking up ') 
+			# Moving up
 			animated_sprite_2d.animation = "walking_away"
 			animated_sprite_2d.play()
-			arm.visible = false
+			arm.visible = false  # Hide arm when walking away
+
+
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()
@@ -121,18 +154,6 @@ func find_zombies_in_area():
 			if distance_to_body < closest_distance:
 				closest_distance = distance_to_body
 				target = body
-
-func check_and_switch_weapon():
-	var zombies_in_range = false
-	for body in $Melee.get_overlapping_bodies():
-		if body.is_in_group("zombie") and is_instance_valid(body):
-			zombies_in_range = true
-			break
-
-	if zombies_in_range:
-		switch_to_sabre_only()
-	else:
-		switch_to_gun_only()
 
 func rotate_weapon(target_angle: float):
 	# Rotate the current weapon based on which weapon is in use
@@ -166,6 +187,7 @@ func take_damage(amount: int):
 	healthbar.value = HEALTH  # Update health bar
 
 	if HEALTH <= 0:
+		emit_signal("soldier_died")
 		die()
 
 func die():
@@ -241,23 +263,22 @@ func sword_attack():
 	$SwordSound.play()
 
 func apply_melee_damage():
-	if melee_cd:
+	if weapon_in_use == "sabre" and melee_cd:
+		#print(weapon_in_use)
 		for body in $Melee.get_overlapping_bodies():
-			if is_instance_valid(body) && body.is_in_group('zombie'):
+			if is_instance_valid(body) and body.is_in_group("zombie"):
 				target = body
 				melee_cd = false
 				$Meleetimer.start()
-				# Make NPC face the target before attacking
-				forward_angle = (body.global_position - global_position).angle()
+				
+				#var forward_angle = (body.global_position - global_position).angle()
 				rotate_weapon(forward_angle)
 
-				# Perform the attack
 				sword_attack()
 				is_attacking = true
-				body.take_damage(30)  # Adjust damage amount as needed
-		
-		melee_cd = false
-		meleetimer.start()
+				body.take_damage(30)
+				break  # Exit after hitting one zombie
+
  
 
 func _on_meleetimer_timeout() -> void:

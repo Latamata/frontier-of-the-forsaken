@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bb1vvom1v64vo" path="res://scripts/zombie.gd" id="1_th0mh"]
 [ext_resource type="Texture2D" uid="uid://40p38av5uqh0" path="res://assets/zombie.png" id="2_m4prw"]
-[ext_resource type="AudioStream" uid="uid://7j4trmbq4k13" path="res://sound/zombiepunch.mp3" id="3_xepks"]
+[ext_resource type="AudioStream" uid="uid://dabwoncsi0e82" path="res://sound/zombiepunch.mp3" id="3_xepks"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_httt1"]
 atlas = ExtResource("2_m4prw")
@@ -163,7 +163,6 @@ path_max_distance = 80.0
 path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 1.111
-debug_enabled = true
 
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
 position = Vector2(5, -13)
@@ -171,6 +170,7 @@ sprite_frames = SubResource("SpriteFrames_11mes")
 animation = &"attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_xepks")
 
 [node name="targeting" type="Area2D" parent="."]
@@ -183,7 +183,7 @@ shape = SubResource("CircleShape2D_74v56")
 [node name="Melee" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
-position = Vector2(0, -13)
+position = Vector2(0, -7)
 shape = SubResource("CircleShape2D_axwvo")
 
 [node name="Meleetimer" type="Timer" parent="."]

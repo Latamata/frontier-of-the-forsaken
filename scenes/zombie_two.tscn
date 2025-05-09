@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bb1vvom1v64vo" path="res://scripts/zombie.gd" id="1_srr55"]
 [ext_resource type="Texture2D" uid="uid://ce04nruxxw505" path="res://assets/the_big_boy.png" id="2_o3ox1"]
-[ext_resource type="AudioStream" uid="uid://7j4trmbq4k13" path="res://sound/zombiepunch.mp3" id="3_o3ox1"]
+[ext_resource type="AudioStream" uid="uid://dabwoncsi0e82" path="res://sound/zombiepunch.mp3" id="3_o3ox1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_srr55"]
 atlas = ExtResource("2_o3ox1")
@@ -140,27 +140,26 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3ox1"]
-height = 26.0
+radius = 13.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t0tcg"]
 radius = 407.208
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0v0wp"]
-radius = 32.0156
+radius = 29.0
 
 [node name="zombie_two" type="CharacterBody2D" groups=["zombie"]]
 slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_block_on_wall = false
 platform_on_leave = 2
-platform_floor_layers = 4294901760
+platform_floor_layers = 0
 script = ExtResource("1_srr55")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 1.111
-debug_enabled = true
 
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -14)
@@ -169,6 +168,7 @@ animation = &"walking_away"
 frame_progress = 0.915656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_o3ox1")
 
 [node name="targeting" type="Area2D" parent="."]
@@ -178,7 +178,7 @@ disable_mode = 2
 shape = SubResource("CircleShape2D_t0tcg")
 
 [node name="Melee" type="Area2D" parent="."]
-position = Vector2(0, -13)
+position = Vector2(0, -9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
 shape = SubResource("CircleShape2D_0v0wp")

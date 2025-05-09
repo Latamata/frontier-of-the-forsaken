@@ -34,6 +34,8 @@ offset_right = 325.0
 offset_bottom = 62.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
+theme_override_colors/font_pressed_color = Color(0.913725, 0, 0, 1)
+toggle_mode = true
 text = "Aim"
 
 [node name="geomap" type="Button" parent="battlemapUI"]
@@ -80,6 +82,8 @@ offset_top = 19.0
 offset_right = 250.0
 offset_bottom = 50.0
 focus_mode = 0
+theme_override_colors/font_pressed_color = Color(0.94902, 0, 0, 1)
+toggle_mode = true
 text = "auto shoot"
 
 [node name="reload_label" type="RichTextLabel" parent="battlemapUI"]

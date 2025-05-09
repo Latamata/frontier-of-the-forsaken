@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="3_rsjd5"]
 [ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="4_7n8xq"]
 [ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="5_4wlns"]
-[ext_resource type="AudioStream" uid="uid://cjwe8jxg6jdaw" path="res://sound/sword_sound.mp3" id="6_tl2vt"]
+[ext_resource type="AudioStream" uid="uid://cwdkeaduorwkb" path="res://sound/sword_sound.mp3" id="6_tl2vt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("4_7n8xq")
@@ -194,7 +194,7 @@ animations = [{
 atlas = ExtResource("3_rsjd5")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_npa22"]
-radius = 63.0079
+radius = 40.0125
 
 [node name="npc" type="CharacterBody2D" groups=["npc"]]
 y_sort_enabled = true

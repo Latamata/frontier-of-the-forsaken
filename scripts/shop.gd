@@ -8,6 +8,7 @@ extends Control
 @onready var golden_musket: Button = $Panel/golden_musket
 @onready var golden_sword: Button = $Panel/golden_sword
 @onready var item_list: ItemList = $Panel/ItemList
+@onready var coin_sound: AudioStreamPlayer2D = $coin_sound
 
 signal bought_something
 
@@ -40,9 +41,9 @@ func get_bullet_cost(bullet_type: String) -> int:
 		"lead":
 			return 15
 		"steel":
-			return 150
+			return 50
 		"holy_bullet":
-			return 500
+			return 90
 	return 0  # Default in case of an unknown bullet type
 
 # Function to get the damage of each bullet type
@@ -82,7 +83,7 @@ func _on_buy_food_button_down() -> void:
 
 # Update for Bullet (Iron Bullet)
 func _on_buy_bullet_button_down() -> void:
-	print('leadbullet')
+	#print('leadbullet')
 	if "lead" in Globals.bullets_unlocked:
 		Globals.bullet_type = 'lead'
 		#update_bullet_buttons(buy_bullet, 'lead', [buy_bullet_steel, holy_bullet])
@@ -96,13 +97,14 @@ func _on_buy_bullet_button_down() -> void:
 
 # Update for Bullet (Steel Bullet)
 func _on_buy_bullet_steel_button_down() -> void:
-	print('seelbullet')
+	#print('seelbullet')
 	if "steel" in Globals.bullets_unlocked:
 		Globals.bullet_type = 'steel'
 		#update_bullet_buttons(buy_bullet_steel, 'steel', [buy_bullet, holy_bullet])
 		emit_signal("bought_something")
-	elif Globals.gold >= 150:
-		Globals.gold -= 150
+	elif Globals.gold >= 50:
+		coin_sound.play()
+		Globals.gold -= 50
 		Globals.bullets_unlocked.append('steel')
 		Globals.bullet_type = 'steel'
 		#update_bullet_buttons(buy_bullet_steel, 'steel', [buy_bullet, holy_bullet])
@@ -115,8 +117,9 @@ func _on_holy_bullet_button_down() -> void:
 		Globals.bullet_type = 'holy_bullet'
 		#update_bullet_buttons(holy_bullet, 'holy_bullet', [buy_bullet, buy_bullet_steel])
 		emit_signal("bought_something")
-	elif Globals.gold >= 500:
-		Globals.gold -= 500
+	elif Globals.gold >= 90:
+		coin_sound.play()
+		Globals.gold -= 90
 		Globals.bullets_unlocked.append('holy_bullet')
 		Globals.bullet_type = 'holy_bullet'
 		#update_bullet_buttons(holy_bullet, 'holy_bullet', [buy_bullet, buy_bullet_steel])
@@ -126,12 +129,12 @@ func _on_holy_bullet_button_down() -> void:
 func _on_button_button_down() -> void:
 	visible = false
 
-
-
 func _on_golden_musket_button_down() -> void:
+	
 	if !Globals.golden_musket:
-		if Globals.gold >= 500:
-			Globals.gold -= 500
+		if Globals.gold >= 100:
+			coin_sound.play()
+			Globals.gold -= 100
 			emit_signal("bought_something")
 			Globals.bullets_unlocked.append('golden_musket')
 			Globals.golden_musket = true
@@ -146,9 +149,11 @@ func _on_golden_musket_button_down() -> void:
 
 
 func _on_golden_sword_button_down() -> void:
+	
 	if !Globals.golden_sword:
-		if Globals.gold >= 0:
-			Globals.gold -= 0
+		if Globals.gold >= 100:
+			coin_sound.play()
+			Globals.gold -= 100
 			emit_signal("bought_something")
 			Globals.bullets_unlocked.append('golden_sword')
 			Globals.golden_sword = true
@@ -165,8 +170,28 @@ func _on_golden_sword_button_down() -> void:
 func _on_item_list_item_selected(index: int) -> void:
 	match index:
 		0:
+			info.text = "Item: Lead Bullet\nCost: %dg\nDamage: %d" % [
+				get_bullet_cost("lead"),
+				get_bullet_damage("lead")
+			]
 			_on_buy_bullet_button_down()
 		1:
+			info.text = "Item: Steel Bullet\nCost: %dg\nDamage: %d" % [
+				get_bullet_cost("steel"),
+				get_bullet_damage("steel")
+			]
 			_on_buy_bullet_steel_button_down()
 		2:
+			info.text = "Item: Holy Bullet\nCost: %dg\nDamage: %d" % [
+				get_bullet_cost("holy_bullet"),
+				get_bullet_damage("holy_bullet")
+			]
 			_on_holy_bullet_button_down()
+
+
+func _on_golden_sword_mouse_entered() -> void:
+	info.text = "Item: Golden Sword\nCost: 100g\nEffect: Toggles gold visuals on sword"
+
+
+func _on_golden_musket_mouse_entered() -> void:
+	info.text = "Item: Golden Musket\nCost: 100g\nEffect: Toggles gold visuals on musket"

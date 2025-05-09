@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="4_cqufx"]
 [ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="5_v052w"]
-[ext_resource type="AudioStream" uid="uid://cjwe8jxg6jdaw" path="res://sound/sword_sound.mp3" id="6_tuyoq"]
+[ext_resource type="AudioStream" uid="uid://cwdkeaduorwkb" path="res://sound/sword_sound.mp3" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lcexw"]
 atlas = ExtResource("5_v052w")
@@ -147,7 +147,7 @@ shader_parameter/tolerance = 0.1
 shader_parameter/toggle_gold = false
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
-points = PackedVector2Array(0, 0, 47, 23, 47, -22)
+points = PackedVector2Array(0, 0, 35, 45, 33, -38)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("5_qlg0r")
@@ -237,7 +237,7 @@ slide_on_ceiling = false
 floor_stop_on_slope = false
 floor_block_on_wall = false
 platform_on_leave = 2
-platform_floor_layers = 4294967040
+platform_floor_layers = 0
 script = ExtResource("1_y03rj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -314,6 +314,14 @@ shape = SubResource("CircleShape2D_qlg0r")
 
 [node name="SwordSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_tuyoq")
+
+[node name="LevelUpLabel" type="RichTextLabel" parent="."]
+visible = false
+offset_left = -32.0
+offset_top = -106.0
+offset_right = 85.0
+offset_bottom = -60.0
+text = "Level"
 
 [connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
