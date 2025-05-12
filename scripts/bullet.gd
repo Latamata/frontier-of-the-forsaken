@@ -18,14 +18,13 @@ func _on_body_entered(body):
 	
 	if Globals.bullet_type == 'holy_bullet':
 		if body.is_in_group('zombie'):
-			body.take_damage(25 + damage_bonus)
-			print(25 + damage_bonus)
+			body.take_damage(40 + damage_bonus)
 	elif Globals.bullet_type == 'steel':
 		if body.is_in_group('zombie') && !pierced_through:
-			body.take_damage(20 + damage_bonus)
+			body.take_damage(30 + damage_bonus)
 			pierced_through = true
 		elif body.is_in_group('zombie'):
-			body.take_damage(10 + damage_bonus)
+			body.take_damage(15 + damage_bonus)
 			queue_free()
 	else: #the last bullet type 'LEAD'
 		if body.is_in_group('zombie'):

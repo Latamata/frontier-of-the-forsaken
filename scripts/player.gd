@@ -102,7 +102,8 @@ func sprite_frame_direction():
 			arm.rotation = PI  # Reset gun rotation
 			weapons[current_weapon_index].flip_v = true  # Flip gun rotation
 			weapons[current_weapon_index].rotation = PI  # Flip gun rotation
-			weapons[current_weapon_index].position = Vector2(cos(PI), sin(PI)) * weapon_radius + offset
+			weapons[current_weapon_index].position = Vector2(3, -15) 
+			#weapons[current_weapon_index].position = Vector2(cos(PI), sin(PI)) * weapon_radius + offset
 			rotate_weapon(weapons[current_weapon_index])
 		elif direction.x > 0 and !facing_right:  # Moving right
 			set_facing("right")
@@ -110,6 +111,7 @@ func sprite_frame_direction():
 			arm.offset = Vector2(3,10)
 			arm.flip_v = false
 			arm.rotation = 0.0  # Reset gun rotation
+			weapons[current_weapon_index].flip_h = false
 			weapons[current_weapon_index].flip_v = false  # Flip gun rotation
 			weapons[current_weapon_index].rotation = 0.0  # Reset gun rotation
 			weapons[current_weapon_index].position = Vector2(cos(0.0), sin(0.0)) * weapon_radius + offset

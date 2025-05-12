@@ -241,12 +241,12 @@ platform_floor_layers = 0
 script = ExtResource("1_y03rj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0.25, -25.25)
+position = Vector2(0.25, -23.25)
 sprite_frames = SubResource("SpriteFrames_5crhn")
 animation = &"walking_side"
 
 [node name="arm" type="Sprite2D" parent="."]
-position = Vector2(-1, -30)
+position = Vector2(-1, -28)
 texture = SubResource("AtlasTexture_jej6c")
 offset = Vector2(0, 10)
 region_enabled = true
@@ -254,6 +254,7 @@ region_rect = Rect2(106.998, 164.891, 18.4052, 23.3776)
 
 [node name="Musket" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_smehm")
+position = Vector2(0, -21)
 texture = ExtResource("3_vos4w")
 centered = false
 
@@ -262,7 +263,7 @@ position = Vector2(56, 5)
 
 [node name="sabre" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_fjrip")
-position = Vector2(2, -33)
+position = Vector2(2, -31)
 texture = ExtResource("4_cqufx")
 centered = false
 
@@ -278,7 +279,7 @@ shape = SubResource("ConvexPolygonShape2D_qlg0r")
 position = Vector2(33, 11)
 
 [node name="attackanimation" type="AnimatedSprite2D" parent="."]
-position = Vector2(80, -30)
+position = Vector2(80, -28)
 sprite_frames = SubResource("SpriteFrames_d2wvv")
 offset = Vector2(10, 0)
 
@@ -287,7 +288,7 @@ wait_time = 6.0
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(2, -7)
 shape = SubResource("RectangleShape2D_lf6aj")
 
 [node name="Meleetimer" type="Timer" parent="."]
@@ -305,6 +306,7 @@ offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
 [node name="collection_area" type="Area2D" parent="."]
+position = Vector2(0, 2)
 collision_layer = 4
 collision_mask = 4
 
@@ -313,6 +315,7 @@ position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_qlg0r")
 
 [node name="SwordSound" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, 2)
 stream = ExtResource("6_tuyoq")
 
 [node name="LevelUpLabel" type="RichTextLabel" parent="."]

@@ -26,6 +26,9 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	var custom_cursor = load("res://assets/mousepointer.png")
+	Input.set_custom_mouse_cursor(custom_cursor)
+	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(30, 30))  # Assuming 32x32 image
 	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )

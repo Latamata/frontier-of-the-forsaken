@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d11nep0qfx3xu"]
+[gd_scene load_steps=5 format=3 uid="uid://d11nep0qfx3xu"]
 
 [ext_resource type="Script" uid="uid://okmy7btlpgbo" path="res://scripts/ui.gd" id="1_eji1r"]
+[ext_resource type="PackedScene" uid="uid://decn8ittmpton" path="res://scenes/instructions.tscn" id="2_gdt2y"]
 [ext_resource type="PackedScene" uid="uid://bu848huj4bjxb" path="res://scenes/skill_tree.tscn" id="2_yev5y"]
 [ext_resource type="PackedScene" uid="uid://cjjx5rvo3h83d" path="res://scenes/shop.tscn" id="3_yev5y"]
 
@@ -18,6 +19,13 @@ offset_right = 1153.0
 grow_vertical = 0
 color = Color(0.647059, 0.427451, 0.290196, 0.788235)
 
+[node name="instructions" parent="battlemapUI" instance=ExtResource("2_gdt2y")]
+layout_mode = 1
+offset_left = 190.0
+offset_top = -551.0
+offset_right = 190.0
+offset_bottom = -551.0
+
 [node name="talents" parent="battlemapUI" instance=ExtResource("2_yev5y")]
 visible = false
 layout_mode = 1
@@ -28,10 +36,10 @@ offset_bottom = -222.0
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 254.0
-offset_top = 6.0
-offset_right = 325.0
-offset_bottom = 62.0
+offset_left = 239.0
+offset_top = 34.0
+offset_right = 330.0
+offset_bottom = 65.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 theme_override_colors/font_pressed_color = Color(0.913725, 0, 0, 1)
@@ -49,21 +57,22 @@ text = "To the road"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 335.0
-offset_top = 7.0
-offset_right = 406.0
-offset_bottom = 63.0
+offset_left = 333.0
+offset_top = 3.0
+offset_right = 405.0
+offset_bottom = 65.0
 focus_mode = 0
 mouse_filter = 1
 text = "Fire"
 
 [node name="weapontoggle" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 412.0
-offset_top = 32.0
-offset_right = 482.0
-offset_bottom = 63.0
+offset_left = 407.0
+offset_top = 3.0
+offset_right = 477.0
+offset_bottom = 34.0
 focus_mode = 0
+mouse_filter = 1
 text = "weapon"
 
 [node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
@@ -77,11 +86,12 @@ show_percentage = false
 
 [node name="auto_shoot" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 158.0
-offset_top = 19.0
-offset_right = 250.0
-offset_bottom = 50.0
+offset_left = 239.0
+offset_top = 1.0
+offset_right = 331.0
+offset_bottom = 32.0
 focus_mode = 0
+mouse_filter = 1
 theme_override_colors/font_pressed_color = Color(0.94902, 0, 0, 1)
 toggle_mode = true
 text = "auto shoot"
@@ -125,6 +135,7 @@ offset_top = 17.0
 offset_right = 811.0
 offset_bottom = 54.0
 focus_mode = 0
+mouse_filter = 1
 mouse_force_pass_scroll_events = false
 text = "Talents"
 
@@ -173,8 +184,8 @@ grow_horizontal = 0
 layout_mode = 0
 offset_left = 34.0
 offset_top = 24.0
-offset_right = 136.0
-offset_bottom = 83.0
+offset_right = 134.0
+offset_bottom = 84.0
 focus_mode = 0
 mouse_filter = 1
 mouse_force_pass_scroll_events = false
@@ -182,20 +193,20 @@ text = "move"
 
 [node name="camp" type="Button" parent="mapgeoUI"]
 layout_mode = 0
-offset_left = 33.0
-offset_top = 102.0
-offset_right = 135.0
-offset_bottom = 162.0
+offset_left = 34.0
+offset_top = 111.0
+offset_right = 134.0
+offset_bottom = 171.0
 focus_mode = 0
 text = "camp
 "
 
 [node name="Button" type="Button" parent="mapgeoUI"]
 layout_mode = 0
-offset_left = 38.0
+offset_left = 34.0
 offset_top = 202.0
-offset_right = 136.0
-offset_bottom = 233.0
+offset_right = 134.0
+offset_bottom = 262.0
 text = "Shop"
 
 [node name="resources" type="Panel" parent="."]

@@ -1,10 +1,6 @@
 extends Control
 
-#var enable_gold = true
 @onready var info: RichTextLabel = $Panel/Info
-#@onready var buy_bullet: Button = $Panel/buy_bullet/
-#@onready var buy_bullet_steel: Button = $Panel/buy_bullet_steel
-#@onready var holy_bullet: Button = $Panel/holy_bullet
 @onready var golden_musket: Button = $Panel/golden_musket
 @onready var golden_sword: Button = $Panel/golden_sword
 @onready var item_list: ItemList = $Panel/ItemList
@@ -13,6 +9,12 @@ extends Control
 signal bought_something
 
 func _ready() -> void:
+	print(Globals.golden_musket)
+	if Globals.golden_musket:
+		golden_musket.material.set_shader_parameter("toggle_gold", Globals.golden_musket)
+	if Globals.golden_sword:
+		golden_sword.material.set_shader_parameter("toggle_gold", Globals.golden_sword)
+
 	match Globals.bullet_type:
 		"lead":
 			item_list.select(0)
@@ -86,7 +88,6 @@ func _on_buy_bullet_button_down() -> void:
 	#print('leadbullet')
 	if "lead" in Globals.bullets_unlocked:
 		Globals.bullet_type = 'lead'
-		#update_bullet_buttons(buy_bullet, 'lead', [buy_bullet_steel, holy_bullet])
 		emit_signal("bought_something")
 	elif Globals.gold >= 15:
 		Globals.gold -= 15
@@ -130,41 +131,30 @@ func _on_button_button_down() -> void:
 	visible = false
 
 func _on_golden_musket_button_down() -> void:
-	
 	if !Globals.golden_musket:
-		if Globals.gold >= 100:
+		if "golden_musket" in Globals.bullets_unlocked:
+			Globals.golden_musket = true
+		elif Globals.gold >= 100:
 			coin_sound.play()
 			Globals.gold -= 100
-			emit_signal("bought_something")
 			Globals.bullets_unlocked.append('golden_musket')
 			Globals.golden_musket = true
-		elif "golden_musket" in Globals.bullets_unlocked:
-			Globals.golden_musket = true
-	else:
-		Globals.golden_musket = false
+			emit_signal("bought_something")
 	
 	golden_musket.material.set_shader_parameter("toggle_gold", Globals.golden_musket)
- 
-
-
 
 func _on_golden_sword_button_down() -> void:
-	
 	if !Globals.golden_sword:
-		if Globals.gold >= 100:
+		if "golden_sword" in Globals.bullets_unlocked:
+			Globals.golden_sword = true
+		elif Globals.gold >= 100:
 			coin_sound.play()
 			Globals.gold -= 100
-			emit_signal("bought_something")
 			Globals.bullets_unlocked.append('golden_sword')
 			Globals.golden_sword = true
-		elif "golden_sword" in Globals.bullets_unlocked:
-			Globals.golden_sword = true
-	else:
-		Globals.golden_sword = false
-	
+			emit_signal("bought_something")
+
 	golden_sword.material.set_shader_parameter("toggle_gold", Globals.golden_sword)
-	
-	print(golden_sword.material)
 
 
 func _on_item_list_item_selected(index: int) -> void:

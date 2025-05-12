@@ -21,9 +21,12 @@ func _on_save_pressed() -> void:
 		"current_line": Globals.current_line,
 		"soldier_count": Globals.soldier_count,
 		"bullets_unlocked": Globals.bullets_unlocked,
+		"golden_musket": Globals.golden_musket,
+		"golden_sword": Globals.golden_sword,
 		"bullet_type": Globals.bullet_type,
 		"talent_tree": Globals.talent_tree,
 		"experience": Globals.experience,        # ✅ XP Save
+		"wave_count": Globals.wave_count,                  # ✅ Level Save
 		"level": Globals.level,                  # ✅ Level Save
 		"xp_to_next": Globals.xp_to_next         # ✅ XP-to-next Save
 	}
@@ -33,6 +36,7 @@ func _on_save_pressed() -> void:
 		file.store_string(JSON.stringify(save_data, "\t"))
 		file.close()
 		print("Game Saved!")
+
 
 func _on_load_pressed() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):
@@ -53,8 +57,16 @@ func _on_load_pressed() -> void:
 			Globals.soldier_count = save_data.get("soldier_count", Globals.soldier_count)
 			Globals.bullet_type = save_data.get("bullet_type", Globals.bullet_type)
 			Globals.bullets_unlocked = save_data.get("bullets_unlocked", Globals.bullets_unlocked)
-			Globals.talent_tree = save_data.get("talent_tree", Globals.talent_tree)
+			Globals.golden_musket = save_data.get("golden_musket", Globals.golden_musket)
+			Globals.golden_sword = save_data.get("golden_sword", Globals.golden_sword)
+			# Force all talent levels and max_levels to be integers
+			for talent_key in Globals.talent_tree.keys():
+				var talent = Globals.talent_tree[talent_key]
+				talent["level"] = int(talent.get("level", 0))
+				talent["max_level"] = int(talent.get("max_level", 1))
+
 			Globals.experience = save_data.get("experience", Globals.experience)      # ✅ XP Load
+			Globals.wave_count = int(save_data.get("wave_count", Globals.wave_count))    # ✅ Level Load
 			Globals.level = save_data.get("level", Globals.level)                    # ✅ Level Load
 			Globals.xp_to_next = save_data.get("xp_to_next", Globals.xp_to_next)    # ✅ XP-to-next Load
 
