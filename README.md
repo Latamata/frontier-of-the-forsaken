@@ -43,4 +43,4 @@ This project explores:
 ## 🧪 How to Run
 
 ```bash
-git clone https://github.com/yourusername/oregon-trail-roguelite.git
+git clone https://github.com/Latamata/oregon-trail-roguelite.git
