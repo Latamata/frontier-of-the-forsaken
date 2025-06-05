@@ -298,6 +298,7 @@ func _on_auto_shoot_timer_timeout() -> void:
 		if is_instance_valid(npc) and not npc.moving && npc.target != null:  # Ensure NPC is not moving
 			if npc.weapon_in_use == 'gun' && npc.fire_gun():
 				fire_gun(npc)
+				npc.play_reload_animation(12)
 
 var is_auto_shooting_enabled = false  # To track if auto shooting is on or off
 func _on_ui_auto_shoot_action() -> void:

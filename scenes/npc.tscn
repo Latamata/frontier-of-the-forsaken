@@ -286,5 +286,4 @@ stream = ExtResource("6_tl2vt")
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
 [connection signal="timeout" from="takedamage" to="." method="_on_takedamage_timeout"]
-[connection signal="timeout" from="gunreload" to="." method="_on_gunreload_timeout"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

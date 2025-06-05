@@ -35,7 +35,35 @@ const ARM_POSITIONS = {
 	"down": Vector2(-5, -30),
 	"idle": Vector2(-6, -28)
 }
+func play_reload_animation(repeat_count := 2):
+	var delay = randi() % 10 * 0.05  # Random 0 to 0.5 sec delay
+	await get_tree().create_timer(delay).timeout
+
+	# Force the gun to point vertically upward (screen-wise)
+	gun.rotation_degrees = -90
+	gun.flip_v = false  # Optional, based on how your sprite is drawn
+	gun.z_index = 1     # Optional, for layering
+
+	var tween = get_tree().create_tween()
+	var duration = 0.3
+
+	for i in range(repeat_count):
+		tween.tween_property(arm, "rotation_degrees", -45, duration).set_ease(Tween.EASE_OUT)
+		tween.tween_property(arm, "rotation_degrees", 0, duration).set_ease(Tween.EASE_IN)
+
+	tween.tween_callback(func():
+		if target and is_instance_valid(target):
+			var direction_to_target = (target.global_position - global_position).normalized()
+			var angle = direction_to_target.angle()
+			rotate_weapon(angle)  # <- use actual direction, not forward_angle
+		else:
+			rotate_weapon(forward_angle)  # fallback
+	)
+
+
+
 func _ready():
+	rotate_weapon(forward_angle)
 	# Initialize health bar values
 	healthbar.min_value = 0
 	healthbar.max_value = MAX_HEALTH
@@ -43,6 +71,7 @@ func _ready():
 
 # Assuming you are already setting the target position
 func _process(_delta):
+	
 	#print(animated_sprite_2d.animation)
 	if moving:
 		var next_position = navigation_agent_2d.get_next_path_position()
@@ -64,8 +93,6 @@ func _process(_delta):
 			sprite_frame_direction()
 			#print("Switched to idle")
 			arm.visible = true
-
-
 	if is_aiming:
 		if target and is_instance_valid(target):
 			var direction_to_target = (target.global_position - global_position).normalized()
@@ -74,7 +101,8 @@ func _process(_delta):
 		else:
 			find_zombies_in_area()
 	else:
-		rotate_weapon(forward_angle)
+		#rotate_weapon(forward_angle)
+		pass
 
 	# This is the new part:
 	if weapon_in_use == "sabre" and melee_cd:
@@ -85,6 +113,7 @@ func _process(_delta):
 				break
 
 
+var facing_right := true
 
 func sprite_frame_direction():
 	# No movement - idle
@@ -103,21 +132,22 @@ func sprite_frame_direction():
 		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.play()
 		arm.visible = true
-
 		if direction.x > 0:
-			# Facing right
+			facing_right = true
 			animated_sprite_2d.flip_h = false
 			arm.flip_h = false
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["right"]
 		else:
-			# Facing left
-			animated_sprite_2d.flip_h = true
+			#print('running')
+			facing_right = false
+			animated_sprite_2d.flip_h = false
 			arm.flip_h = true
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["left"]
+
 
 	elif abs(direction.y) > abs(direction.x):
 		# Vertical movement
@@ -137,8 +167,6 @@ func sprite_frame_direction():
 			animated_sprite_2d.animation = "walking_away"
 			animated_sprite_2d.play()
 			arm.visible = false  # Hide arm when walking away
-
-
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()
@@ -213,18 +241,25 @@ func move_to_position(new_target_position: Vector2):
 	moving = true
 
 func fire_gun():
-	if reloaded and not moving:  # Prevent shooting while moving
+	if reloaded and not moving:
 		reloaded = false
+
+		# 🔫 Immediate fire
 		$attackanimation.global_position = $Musket/Marker2D.global_position
 		$attackanimation.rotation = gun.rotation
-		$attackanimation.play("smoke")		
-		$gunreload.start()
+		$attackanimation.play("smoke")
+
+		# 🕒 Delay + reload animation + reload complete
+		call_deferred("_start_reload_animation")
+
 		return true
 	return false
 
+func _start_reload_animation():
+	await get_tree().create_timer(0.4).timeout  # Small delay before reload animation
+	await play_reload_animation(12)             # Wait for reload animation to finish
+	reloaded = true                             # Now you’re reloaded
 
-func _on_gunreload_timeout() -> void:
-	reloaded = true
 
 # Switch to gun
 func switch_to_gun_only():
