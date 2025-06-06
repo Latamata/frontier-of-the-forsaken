@@ -40,6 +40,64 @@ const ARM_POSITIONS = {
 #var reload_in_progress := false
 var reload_pumps := 0
 var reload_tick_in_progress = true
+
+
+
+func _ready():
+	rotate_weapon(forward_angle)
+	# Initialize health bar values
+	healthbar.min_value = 0
+	healthbar.max_value = MAX_HEALTH
+	healthbar.value = HEALTH
+
+# Assuming you are already setting the target position
+func _process(_delta):
+	
+	#print(animated_sprite_2d.animation)
+	if moving:
+		var next_position = navigation_agent_2d.get_next_path_position()
+		if global_position.distance_to(next_position) < 5:
+			moving = false
+			navigation_agent_2d.set_target_position(global_position)
+		else:
+			direction = (next_position - global_position).normalized()
+			velocity = direction * speed
+			move_and_slide()
+			sprite_frame_direction()
+	else:
+		# Handle per-idle-frame reload pumping
+		if weapon_in_use == "gun" and not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
+			reload_tick_in_progress = true
+			play_reload_animation(1)
+
+
+		velocity = Vector2.ZERO
+		direction = Vector2.ZERO
+
+		if animated_sprite_2d.animation != "idle":
+			animated_sprite_2d.animation = "idle"
+			sprite_frame_direction()
+			#print("Switched to idle")
+			arm.visible = true
+	if is_aiming:
+		if target and is_instance_valid(target):
+			var direction_to_target = (target.global_position - global_position).normalized()
+			var target_angle = direction_to_target.angle()
+			rotate_weapon(target_angle)
+		else:
+			find_zombies_in_area()
+	else:
+		#rotate_weapon(forward_angle)
+		pass
+
+	# This is the new part:
+	if weapon_in_use == "sabre" and melee_cd:
+		#print(weapon_in_use)
+		for body in $Melee.get_overlapping_bodies():
+			if body.is_in_group("zombie") and is_instance_valid(body):
+				apply_melee_damage()
+				break
+
 func play_reload_animation(repeat_count := 1):
 	var delay = randi() % 10 * 0.05
 	await get_tree().create_timer(delay).timeout
@@ -73,64 +131,6 @@ func play_reload_animation(repeat_count := 1):
 				rotate_weapon(forward_angle)
 		reload_tick_in_progress = false
 	)
-
-
-
-func _ready():
-	rotate_weapon(forward_angle)
-	# Initialize health bar values
-	healthbar.min_value = 0
-	healthbar.max_value = MAX_HEALTH
-	healthbar.value = HEALTH
-
-# Assuming you are already setting the target position
-func _process(_delta):
-	
-	#print(animated_sprite_2d.animation)
-	if moving:
-		var next_position = navigation_agent_2d.get_next_path_position()
-		if global_position.distance_to(next_position) < 5:
-			moving = false
-			navigation_agent_2d.set_target_position(global_position)
-		else:
-			direction = (next_position - global_position).normalized()
-			velocity = direction * speed
-			move_and_slide()
-			sprite_frame_direction()
-	else:
-		# Handle per-idle-frame reload pumping
-		if not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
-			#print('running')
-			reload_tick_in_progress = true
-			play_reload_animation(1)
-
-		velocity = Vector2.ZERO
-		direction = Vector2.ZERO
-
-		if animated_sprite_2d.animation != "idle":
-			animated_sprite_2d.animation = "idle"
-			sprite_frame_direction()
-			#print("Switched to idle")
-			arm.visible = true
-	if is_aiming:
-		if target and is_instance_valid(target):
-			var direction_to_target = (target.global_position - global_position).normalized()
-			var target_angle = direction_to_target.angle()
-			rotate_weapon(target_angle)
-		else:
-			find_zombies_in_area()
-	else:
-		#rotate_weapon(forward_angle)
-		pass
-
-	# This is the new part:
-	if weapon_in_use == "sabre" and melee_cd:
-		#print(weapon_in_use)
-		for body in $Melee.get_overlapping_bodies():
-			if body.is_in_group("zombie") and is_instance_valid(body):
-				apply_melee_damage()
-				break
-
 
 var facing_right := true
 
@@ -262,7 +262,7 @@ func move_to_position(new_target_position: Vector2):
 func fire_gun():
 	#print(reloaded)
 	if reloaded and not moving:
-
+		
 #if not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
 		# 🔫 Immediate fire
 		$attackanimation.global_position = $Musket/Marker2D.global_position
@@ -270,12 +270,11 @@ func fire_gun():
 		$attackanimation.play("smoke")
 		# 🕒 Delay + reload animation + reload complete
 		call_deferred("_start_reload_animation")
-
 		return true
 	return false
 
 func _start_reload_animation() -> void:
-	await get_tree().create_timer(0.4).timeout  # Add delay here (0.3 seconds — change as needed)
+	await get_tree().create_timer(0.5).timeout  # Add delay here (0.3 seconds — change as needed)
 
 	reloaded = false
 	reload_tick_in_progress = false

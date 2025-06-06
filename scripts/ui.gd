@@ -50,9 +50,21 @@ func _on_aim_button_down():
 	emit_signal("aim_action")
 	#print("Move button pressed - Signal emitted")
 
+var can_fire = true
+var fire_cooldown = 0.5  # cooldown duration in seconds
+
 func _on_fire_button_down():
+	if not can_fire:
+		return  # ignore button press if still cooling down
+
+	can_fire = false
 	emit_signal("fire_action")
-	#print("Move button pressed - Signal emitted")
+	# start cooldown timer to reset can_fire
+	get_tree().create_timer(fire_cooldown).connect("timeout", Callable(self, "_reset_fire_cooldown"))
+
+func _reset_fire_cooldown():
+	can_fire = true
+
 
 func _on_battlemap_ui_mouse_entered():
 	emit_signal("ui_interaction_started") 

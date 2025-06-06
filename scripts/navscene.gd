@@ -262,9 +262,10 @@ func _on_ui_aim_action():
 func _on_ui_fire_action():
 	#if line_infantry_reloaded:
 	for npc in npcgroup.get_children():
-		if is_instance_valid(npc) and not npc.moving :  # Ensure NPC is not moving
-			if npc.weapon_in_use == 'gun' && npc.fire_gun():
+		if is_instance_valid(npc) and not npc.moving:  # Ensure NPC is not moving
+			if npc.weapon_in_use == 'gun' and npc.fire_gun():
 				fire_gun(npc)
+
 
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
