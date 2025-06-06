@@ -341,16 +341,14 @@ func _on_level_up():
 	#$Tween.tween_property($LevelUpLabel, "modulate:a", 0, 1.5)
 
 var using_guns = true
-
 func _on_ui_weapon_toggle() -> void:
 	using_guns = !using_guns
+	var weapon = "gun" if using_guns else "sabre"
+
 	for entity in npcgroup.get_children():
-		if using_guns:
-			if entity.has_method("switch_to_gun_only"):
-				entity.switch_to_gun_only()
-		else:
-			if entity.has_method("switch_to_sabre_only"):
-				entity.switch_to_sabre_only()
+		if entity.has_method("switch_weapon"):
+			entity.switch_weapon(weapon)
+
 
 func _on_player_heal_npc() -> void:
 	for npc in npcgroup.get_children():

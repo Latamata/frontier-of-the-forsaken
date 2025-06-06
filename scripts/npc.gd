@@ -5,7 +5,7 @@ signal soldier_died
 var direction = Vector2.RIGHT
 var melee_cd = true
 var is_aiming = false
-var is_attacking = false
+#var is_attacking = false
 var moving = false
 var reloaded = true
 
@@ -27,6 +27,7 @@ var HEALTH = 100  # NPC's starting health
 @onready var sabre: Sprite2D = $sabre
 @onready var meleetimer: Timer = $Meleetimer
 @onready var arm: Sprite2D = $arm
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var overlapping_bodies = []  # List of bodies in melee range
 var weapon_in_use = "gun"  # Track the weapon being used ("gun" or "sabre")
@@ -36,12 +37,8 @@ const ARM_POSITIONS = {
 	"down": Vector2(-5, -30),
 	"idle": Vector2(-6, -28)
 }
-#var reload_tween: Tween
-#var reload_in_progress := false
 var reload_pumps := 0
 var reload_tick_in_progress = true
-
-
 
 func _ready():
 	rotate_weapon(forward_angle)
@@ -66,9 +63,10 @@ func _process(_delta):
 			sprite_frame_direction()
 	else:
 		# Handle per-idle-frame reload pumping
-		if weapon_in_use == "gun" and not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
-			reload_tick_in_progress = true
-			play_reload_animation(1)
+		if weapon_in_use == "gun" and not reloaded and reload_pumps > 0:
+			#reload_tick_in_progress = true
+			#play_reload_animation(1)
+			animation_player.play("reload")
 
 
 		velocity = Vector2.ZERO
@@ -77,18 +75,16 @@ func _process(_delta):
 		if animated_sprite_2d.animation != "idle":
 			animated_sprite_2d.animation = "idle"
 			sprite_frame_direction()
-			#print("Switched to idle")
+			rotate_weapon(forward_angle)
+			#gun.rotation = forward_angle
 			arm.visible = true
 	if is_aiming:
-		if target and is_instance_valid(target):
+		if target and is_instance_valid(target) &&  reloaded:
 			var direction_to_target = (target.global_position - global_position).normalized()
 			var target_angle = direction_to_target.angle()
 			rotate_weapon(target_angle)
 		else:
 			find_zombies_in_area()
-	else:
-		#rotate_weapon(forward_angle)
-		pass
 
 	# This is the new part:
 	if weapon_in_use == "sabre" and melee_cd:
@@ -97,41 +93,7 @@ func _process(_delta):
 			if body.is_in_group("zombie") and is_instance_valid(body):
 				apply_melee_damage()
 				break
-
-func play_reload_animation(repeat_count := 1):
-	var delay = randi() % 10 * 0.05
-	await get_tree().create_timer(delay).timeout
-
-	gun.rotation_degrees = -90
-	gun.flip_v = false
-	gun.z_index = 1
-
-	var tween = get_tree().create_tween()
-	var duration = 0.3
-
-	for i in range(repeat_count):
-		tween.tween_property(arm, "rotation_degrees", -45, duration).set_ease(Tween.EASE_OUT)
-		tween.tween_property(arm, "rotation_degrees", 0, duration).set_ease(Tween.EASE_IN)
-
-	tween.tween_callback(func():
-		if moving:
-			# Movement interrupted reload
-			reload_tick_in_progress = false
-			return  # Don't decrement pumps or finish reload
-		reload_pumps -= repeat_count
-		if reload_pumps <= 0:
-			reload_pumps = 0
-			reloaded = true
-
-			if target and is_instance_valid(target):
-				var direction_to_target = (target.global_position - global_position).normalized()
-				var angle = direction_to_target.angle()
-				rotate_weapon(angle)
-			else:
-				rotate_weapon(forward_angle)
-		reload_tick_in_progress = false
-	)
-
+#
 var facing_right := true
 
 func sprite_frame_direction():
@@ -277,20 +239,22 @@ func _start_reload_animation() -> void:
 	await get_tree().create_timer(0.5).timeout  # Add delay here (0.3 seconds — change as needed)
 
 	reloaded = false
-	reload_tick_in_progress = false
-	reload_pumps = 12  # Now you’re reloaded
+	#reload_tick_in_progress = false
+	reload_pumps = 10  # Now you’re reloaded
 
+func switch_weapon(weapon: String):
+	weapon_in_use = weapon
 
-# Switch to gun
-func switch_to_gun_only():
-	weapon_in_use = "gun"
-	gun.visible = true
-	sabre.visible = false
+	match weapon:
+		"gun":
+			gun.visible = true
+			sabre.visible = false
+		"sabre":
+			gun.visible = false
+			sabre.visible = true
+		_:
+			push_error("Unknown weapon: %s" % weapon)
 
-func switch_to_sabre_only():
-	weapon_in_use = "sabre"
-	gun.visible = false
-	sabre.visible = true
 
 
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
@@ -319,24 +283,32 @@ func sword_attack():
 
 func apply_melee_damage():
 	if weapon_in_use == "sabre" and melee_cd:
-		#print(weapon_in_use)
+		rotate_weapon(forward_angle)
 		for body in $Melee.get_overlapping_bodies():
 			if is_instance_valid(body) and body.is_in_group("zombie"):
 				target = body
 				melee_cd = false
 				$Meleetimer.start()
-				
 				#var forward_angle = (body.global_position - global_position).angle()
 				rotate_weapon(forward_angle)
-
 				sword_attack()
-				is_attacking = true
+				#is_attacking = true
 				body.take_damage(30)
 				break  # Exit after hitting one zombie
 
- 
 
 func _on_meleetimer_timeout() -> void:
 	apply_melee_damage()
 	#print('running')
 	melee_cd = true
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == 'reload':
+		reload_pumps -= 1
+		#reload_tick_in_progress = false
+		if reload_pumps <= 0:
+			reload_pumps = 0
+			reloaded = true
+			rotate_weapon(forward_angle)
+			#gun.rotation = forward_angle
