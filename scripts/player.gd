@@ -76,8 +76,6 @@ func _process(delta):
 		animated_sprite_2d.stop()
 		$reload.paused = false  # Always allow reload when idle
 
-
-
 func _input(event):
 	if event is InputEventMouseMotion:
 		var current_weapon = weapons[current_weapon_index]

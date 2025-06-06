@@ -8,6 +8,7 @@ var is_aiming = false
 var is_attacking = false
 var moving = false
 var reloaded = true
+
 var target_position: Vector2
 var speed = 19.0
 var forward_angle: float = 0
@@ -35,14 +36,17 @@ const ARM_POSITIONS = {
 	"down": Vector2(-5, -30),
 	"idle": Vector2(-6, -28)
 }
-func play_reload_animation(repeat_count := 2):
-	var delay = randi() % 10 * 0.05  # Random 0 to 0.5 sec delay
+#var reload_tween: Tween
+#var reload_in_progress := false
+var reload_pumps := 0
+var reload_tick_in_progress = true
+func play_reload_animation(repeat_count := 1):
+	var delay = randi() % 10 * 0.05
 	await get_tree().create_timer(delay).timeout
 
-	# Force the gun to point vertically upward (screen-wise)
 	gun.rotation_degrees = -90
-	gun.flip_v = false  # Optional, based on how your sprite is drawn
-	gun.z_index = 1     # Optional, for layering
+	gun.flip_v = false
+	gun.z_index = 1
 
 	var tween = get_tree().create_tween()
 	var duration = 0.3
@@ -52,12 +56,22 @@ func play_reload_animation(repeat_count := 2):
 		tween.tween_property(arm, "rotation_degrees", 0, duration).set_ease(Tween.EASE_IN)
 
 	tween.tween_callback(func():
-		if target and is_instance_valid(target):
-			var direction_to_target = (target.global_position - global_position).normalized()
-			var angle = direction_to_target.angle()
-			rotate_weapon(angle)  # <- use actual direction, not forward_angle
-		else:
-			rotate_weapon(forward_angle)  # fallback
+		if moving:
+			# Movement interrupted reload
+			reload_tick_in_progress = false
+			return  # Don't decrement pumps or finish reload
+		reload_pumps -= repeat_count
+		if reload_pumps <= 0:
+			reload_pumps = 0
+			reloaded = true
+
+			if target and is_instance_valid(target):
+				var direction_to_target = (target.global_position - global_position).normalized()
+				var angle = direction_to_target.angle()
+				rotate_weapon(angle)
+			else:
+				rotate_weapon(forward_angle)
+		reload_tick_in_progress = false
 	)
 
 
@@ -84,7 +98,12 @@ func _process(_delta):
 			move_and_slide()
 			sprite_frame_direction()
 	else:
-		
+		# Handle per-idle-frame reload pumping
+		if not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
+			#print('running')
+			reload_tick_in_progress = true
+			play_reload_animation(1)
+
 		velocity = Vector2.ZERO
 		direction = Vector2.ZERO
 
@@ -241,24 +260,26 @@ func move_to_position(new_target_position: Vector2):
 	moving = true
 
 func fire_gun():
+	#print(reloaded)
 	if reloaded and not moving:
-		reloaded = false
 
+#if not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
 		# 🔫 Immediate fire
 		$attackanimation.global_position = $Musket/Marker2D.global_position
 		$attackanimation.rotation = gun.rotation
 		$attackanimation.play("smoke")
-
 		# 🕒 Delay + reload animation + reload complete
 		call_deferred("_start_reload_animation")
 
 		return true
 	return false
 
-func _start_reload_animation():
-	await get_tree().create_timer(0.4).timeout  # Small delay before reload animation
-	await play_reload_animation(12)             # Wait for reload animation to finish
-	reloaded = true                             # Now you’re reloaded
+func _start_reload_animation() -> void:
+	await get_tree().create_timer(0.4).timeout  # Add delay here (0.3 seconds — change as needed)
+
+	reloaded = false
+	reload_tick_in_progress = false
+	reload_pumps = 12  # Now you’re reloaded
 
 
 # Switch to gun
