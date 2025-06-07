@@ -32,6 +32,7 @@ var last_weapon_position = Vector2.ZERO
 @onready var reload_timer = $reload
 @onready var arm: Sprite2D = $arm
 @onready var meleetimer: Timer = $Meleetimer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var weapons = []  # List to hold weapons
 var current_weapon_index = 0  # Index for switching
@@ -75,7 +76,13 @@ func _process(delta):
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
 		$reload.paused = false  # Always allow reload when idle
-
+		if !gun_reloaded && current_weapon_index == 0:
+			await get_tree().create_timer(0.5).timeout  
+			if !facing_right:
+				animation_player.play("reload_leftfacing")
+			else:
+				animation_player.play("reload")
+		
 func _input(event):
 	if event is InputEventMouseMotion:
 		var current_weapon = weapons[current_weapon_index]
@@ -303,7 +310,19 @@ func player_shoot():
 
 func _on_reload_timeout():
 	gun_reloaded = true
+	await get_tree().create_timer(0.5).timeout
+	
+	if facing_right:
+		animation_player.play("RESET")
+	elif facing_left:
+		animation_player.stop()
 
+	# Re-aim the weapon cleanly
+	rotate_weapon(weapons[current_weapon_index])
+
+
+
+	
 func _on_collection_area_area_entered(area: Area2D) -> void:
 	if area.resource_type == 'health' :
 		if  HEALTH < 100:

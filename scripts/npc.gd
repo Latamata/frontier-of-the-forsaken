@@ -49,8 +49,6 @@ func _ready():
 
 # Assuming you are already setting the target position
 func _process(_delta):
-	
-	#print(animated_sprite_2d.animation)
 	if moving:
 		var next_position = navigation_agent_2d.get_next_path_position()
 		if global_position.distance_to(next_position) < 5:
@@ -67,7 +65,6 @@ func _process(_delta):
 			#reload_tick_in_progress = true
 			#play_reload_animation(1)
 			animation_player.play("reload")
-
 
 		velocity = Vector2.ZERO
 		direction = Vector2.ZERO
@@ -93,9 +90,8 @@ func _process(_delta):
 			if body.is_in_group("zombie") and is_instance_valid(body):
 				apply_melee_damage()
 				break
-#
-var facing_right := true
 
+var facing_right := true
 func sprite_frame_direction():
 	# No movement - idle
 	if direction == Vector2.ZERO:
@@ -107,7 +103,6 @@ func sprite_frame_direction():
 		arm.flip_v = false
 		arm.rotation = 0
 		arm.visible = true
-
 	elif abs(direction.x) > abs(direction.y):
 		# Horizontal movement
 		animated_sprite_2d.animation = "walking"
@@ -128,8 +123,6 @@ func sprite_frame_direction():
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["left"]
-
-
 	elif abs(direction.y) > abs(direction.x):
 		# Vertical movement
 		animated_sprite_2d.flip_h = false
@@ -254,8 +247,6 @@ func switch_weapon(weapon: String):
 			sabre.visible = true
 		_:
 			push_error("Unknown weapon: %s" % weapon)
-
-
 
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
 func sword_attack():
