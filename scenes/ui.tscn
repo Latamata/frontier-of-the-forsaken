@@ -210,6 +210,20 @@ offset_right = 134.0
 offset_bottom = 262.0
 text = "Shop"
 
+[node name="current_map" type="RichTextLabel" parent="mapgeoUI"]
+offset_left = 13.0
+offset_top = 270.0
+offset_right = 143.0
+offset_bottom = 319.0
+text = "test"
+
+[node name="Events" type="RichTextLabel" parent="mapgeoUI"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 330.0
+offset_right = 155.0
+offset_bottom = 464.0
+
 [node name="resources" type="Panel" parent="."]
 offset_left = 444.0
 offset_top = 11.0

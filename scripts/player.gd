@@ -320,9 +320,6 @@ func _on_reload_timeout():
 	# Re-aim the weapon cleanly
 	rotate_weapon(weapons[current_weapon_index])
 
-
-
-	
 func _on_collection_area_area_entered(area: Area2D) -> void:
 	if area.resource_type == 'health' :
 		if  HEALTH < 100:

@@ -39,11 +39,26 @@ var path_connections = {
 		0: {"line": 0, "point": 12}   # Point 8 in Path2D2 connects to Path2D3, point 3
 	}
 }
-
 func _ready():
 	ui.hide_map_ui(true)
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
+
+func update_current_biome_label():
+	var line = Globals.current_line
+	var point = Globals.geo_map_camp
+	
+	if point in mountain_points_by_line[line]:
+		#current_map.text = "[Mountain]"
+		ui.update_currentmap_UI('Mountain')
+	elif point in forest_points_by_line[line]:
+		ui.update_currentmap_UI('Forest')
+		#current_map.text = "[Forest]"
+	elif point in desert_points_by_line[line]:
+		#current_map.text = "[Desert]"
+		ui.update_currentmap_UI('Desert')
+	else:
+		ui.update_currentmap_UI('Unknown')
 
 func move_wagon_to_line(target_line: Path2D, line_point: int):
 	# Move the wagon to a specific point on the given path
@@ -54,6 +69,7 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	var point_position = target_line.curve.get_point_position(line_point)
 	wagonpin.global_position = target_line.global_position + point_position
 	_update_turn_button_visibility()
+	update_current_biome_label()
 
 func _update_turn_button_visibility():
 	var turn_button = $UI.get_node("mapgeoUI/turn")
@@ -110,15 +126,20 @@ func _check_for_events():
 	var rng = randi() % 100  # Random chance (0-99)
 	if rng < 10:  # 10% chance of a bandit attack
 		print("Bandits attack! Lose some gold.")
+		ui.update_event_UI("Bandits attack! Lose some gold.")
 		Globals.add_gold(-10)
 	elif rng < 20:  # 10% chance of finding supplies
 		print("You found food supplies!")
+		ui.update_event_UI("You found food supplies!")
 		Globals.add_food(30)
 	elif rng < 30:  # 5% chance of wagon breaking down
 		print("Wagon wheel broke! The delay increases your wave amount by 1")
+		ui.update_event_UI("Wagon wheel broke! The delay increases your wave amount by 1")
 		Globals.wave_count += 1
 	elif rng < 40:  # 5% chance of bounty
+		ui.update_event_UI("Plentiful bounty, all map resources are doubled")
 		print("Plentiful bounty, all map resources are doubled")
 		# Add resource doubling logic here
-
+	else:
+		ui.update_event_UI("")
 	$UI.update_resources()

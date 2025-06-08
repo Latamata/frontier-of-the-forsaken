@@ -15,6 +15,8 @@ signal ui_interaction_ended()
 @onready var gold: RichTextLabel = $resources/gold
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
+@onready var current_map: RichTextLabel = $mapgeoUI/current_map
+@onready var events: RichTextLabel = $mapgeoUI/Events
 
 func _ready() -> void:
 	update_resources()
@@ -22,6 +24,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
 
+func update_currentmap_UI(map):
+	current_map.text = map
+func update_event_UI(event):
+	events.text = 'Events: ' + event
 func hide_map_ui(hideorshow):
 	if hideorshow:
 		mapgeo.visible = true
