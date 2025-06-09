@@ -9,7 +9,7 @@ var xp_to_next: int = 100
 signal level_up
 
 # Properties
-var skill_points: int =  0 # setget add_food, get_food
+var skill_points: int =  10 # setget add_food, get_food
 var food: int =  0 # setget add_food, get_food
 var gold: int =  175 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
@@ -23,6 +23,7 @@ var bullets_unlocked = ['lead']
 var double_resources = false
 var golden_musket = false
 var golden_sword = false
+
 # Globals.gd
 var talent_tree = {
 	"gun_damage": {
@@ -35,11 +36,11 @@ var talent_tree = {
 	},
 	"gun_speed": {
 		"level": 0,
-		"max_level": 5
+		"max_level": 3
 	},
 	"sword_speed": {
 		"level": 0,
-		"max_level": 5
+		"max_level": 3
 	},
 	"sword_spec_damage_reduce": {
 		"level": 0,
@@ -47,7 +48,7 @@ var talent_tree = {
 	},
 	"gun_spec_standing_speed": {
 		"level": 0,
-		"max_level": 1
+		"max_level": 1	
 	}
 }
 
@@ -86,7 +87,6 @@ func increase_talent_level(talent_name: String) -> void:
 			print("%s is already at max level!" % talent_name)
 	else:
 		print("Talent not found: %s" % talent_name)
-
 
 func add_experience(amount: int) -> void:
 	experience += amount

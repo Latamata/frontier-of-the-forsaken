@@ -9,6 +9,12 @@ extends Node2D
 @onready var camera_2d = $Camera2D
 @onready var wave_timer: Timer = $wave_timer
 @onready var chest_container: Node2D = $Enviorment/chests
+@onready var waypoints = [
+	$waypoint1,
+	$waypoint2,
+	$waypoint3,
+	$waypoint4
+]
 
 var musketman: PackedScene = preload("res://scenes/npc.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
@@ -26,6 +32,9 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready():
+	for wp in waypoints:
+		wp.connect("body_entered", Callable(self, "_on_any_waypoint_body_entered"))
+
 	var custom_cursor = load("res://assets/mousepointer.png")
 	Input.set_custom_mouse_cursor(custom_cursor)
 	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(30, 30))  # Assuming 32x32 image
@@ -96,7 +105,6 @@ func _input(event):
 		player.switch_weapon()
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
 		var current_weapon = player.get_current_weapon()
-		
 		if current_weapon == player.gun && player.gun_reloaded:  # Ensure only the gun can shoot
 			player.player_shoot()
 			fire_gun(player)
@@ -275,24 +283,10 @@ func _on_ui_ui_interaction_started():
 func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
 
-func _on_waypoint_body_entered(body: Node2D) -> void:
-	if body.is_in_group('zombie'):
-		for entity in zombiegroup.get_children():
-			entity.target = $waypoint2
-func _on_waypoint_2_body_entered(body: Node2D) -> void:
-	if body.is_in_group('zombie'):
-		for entity in zombiegroup.get_children():
-			entity.target = $waypoint3
+func _on_any_waypoint_body_entered(body: Node2D) -> void:
+	if body.is_in_group("zombie"):
+		body.target = get_random_waypoint(body.target)
 
-func _on_waypoint_3_body_entered(body: Node2D) -> void:
-	if body.is_in_group('zombie'):
-		for entity in zombiegroup.get_children():
-			entity.target = $waypoint4
-
-func _on_waypoint_4_body_entered(body: Node2D) -> void:
-	if body.is_in_group('zombie'):
-		for entity in zombiegroup.get_children():
-			entity.target = $waypoint1
 
 func _on_auto_shoot_timer_timeout() -> void:
 	for npc in npcgroup.get_children():
@@ -328,9 +322,13 @@ func _on_wave_timer_timeout() -> void:
 	var random_waypoint = waypoints[randi() % waypoints.size()]
 
 	# Spawn zombies at the random waypoint
-	spawn_zombies(spawn_x, spawn_y, random_waypoint.position, 100.0)
+	spawn_zombies(spawn_x, spawn_y, random_waypoint.position, 120.0)
 	
 	Globals.wave_count += 1
+	
+func get_random_waypoint(exclude: Node) -> Node:
+	var available = waypoints.filter(func(wp): return wp != exclude)
+	return available[randi() % available.size()]
 
 func _on_player_collect_item() -> void:
 	ui.update_resources()

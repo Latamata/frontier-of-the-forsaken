@@ -9,6 +9,7 @@ var SPEED = 0.10
 var reload_pumps = 0
 var sword_spec_damage_reduce = false
 var looting = false
+var gun_reloaded_stopped = true
 var gun_reloaded = true
 var melee_reloaded = true
 var direction
@@ -36,9 +37,8 @@ var current_weapon_index = 0  # Index for switching
 
 func _ready():
 	change_melee_speed()
-	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
 	sword_spec_damage_reduce = Globals.talent_tree["sword_spec_damage_reduce"]["level"] == 1
-	var reload_reduction_per_level = 0.1  # Adjust as needed
+	#LastGunSPecperkreloadwhilemoving = Globals.talent_tree["gun_spec_standing_speed"]["level"] == 1
 	if Globals.golden_sword:
 		toggle_golden_sword(true)
 	if Globals.golden_musket:
@@ -50,29 +50,28 @@ func _ready():
 
 func _process(delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-
+	
 	if direction != Vector2.ZERO:
 		# Player is moving
+		if Globals.talent_tree["gun_spec_standing_speed"]["level"] != 1:
+			if animation_player.is_playing():
+				animation_player.stop()
+				gun_reloaded_stopped = true  # Mark that reload was interrupted
 		camera_2d.global_position = global_position
 		sprite_frame_direction()
 		velocity = direction * SPEED
 		move_and_collide(velocity * delta)
-		if !Globals.talent_tree["gun_spec_standing_speed"]["level"]:
-			$reload.paused = true
-		else:
-			$reload.paused = false
 	else:
 		# Player is idle
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
-		if reload_pumps > 0 && current_weapon_index == 0:
-			await get_tree().create_timer(0.5).timeout  
-			if facing_left  :
-				animation_player.play("reload_leftfacing")
-			elif facing_right  :
-				animation_player.play("reload")
-			else:
-				animation_player.play("reload")
+		print(reload_pumps)
+		# Resume reload if it was interrupted
+		if gun_reloaded_stopped and reload_pumps > 0:
+			gun_reloaded_stopped = false
+			start_reload_if_needed()
+
+
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -278,13 +277,27 @@ func sword_attack():
 			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
 
 func player_shoot():
-	reload_pumps = 5
+	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
+	reload_pumps = 7 - gun_speed_level
 	gun_reloaded = false
 	$attackanimation.rotation = gun.rotation
 	$attackanimation.global_position = $Musket/Marker2D.global_position
 	$attackanimation.play('smoke')
+	start_reload_if_needed()
 
-	#gun_reloaded = true
+func start_reload_if_needed():
+	if reload_pumps > 0 and current_weapon_index == 0:
+		# Only start reloading if not already doing so
+		if !animation_player.is_playing():
+			await get_tree().create_timer(0.5).timeout
+			if facing_left:
+				animation_player.play("reload_leftfacing")
+			else:
+				animation_player.play("reload")
+			gun_reloaded_stopped = false
+
+
+
 func _on_collection_area_area_entered(area: Area2D) -> void:
 	var mulitplier
 	if Globals.double_resources:
@@ -322,10 +335,21 @@ func toggle_golden_gun(enable_gold: bool):
 func toggle_golden_sword(enable_gold: bool):
 	sabre.material.set_shader_parameter("toggle_gold", enable_gold)
 
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if reload_pumps == 0:
+func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
+
+		
+	if reload_pumps > 0 && current_weapon_index == 0:
+		reload_pumps -= 1
+		if reload_pumps == 0:
+			gun_reloaded = true
+		#await get_tree().create_timer(0.5).timeout  
+		if facing_left  :
+			animation_player.play("reload_leftfacing")
+		elif facing_right  :
+			animation_player.play("reload")
+		else:
+			animation_player.play("reload")
+	else:
 		var current_weapon = weapons[current_weapon_index]
 		rotate_weapon(current_weapon)
-		gun_reloaded = true
-	else:
-		reload_pumps -= 1
+		

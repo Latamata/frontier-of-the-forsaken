@@ -67,20 +67,18 @@ func _process(delta):
 	#print(target)
 	
 
-
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()
 	if bodies_in_area.size() > 0:
 		var closest_target = null
-		var closest_distance = INF  # Large initial distance
+		var closest_distance = INF
 		for body in bodies_in_area:
-			# Ensure the body is a valid target (e.g., has health or belongs to a specific group)
-			if body.is_in_group("npc") or body.name == "player":  # Adjust as needed
+			if body.is_in_group("npc") or body.name == "player":
 				var distance = global_position.distance_to(body.global_position)
 				if distance < closest_distance:
 					closest_target = body
 					closest_distance = distance
-			target = closest_target
+		target = closest_target
 
 func sprite_frame_direction():
 	if !is_attacking:
