@@ -40,6 +40,7 @@ var path_connections = {
 	}
 }
 func _ready():
+	Globals.double_resources = false
 	ui.hide_map_ui(true)
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
@@ -138,6 +139,7 @@ func _check_for_events():
 		Globals.wave_count += 1
 	elif rng < 40:  # 5% chance of bounty
 		ui.update_event_UI("Plentiful bounty, all map resources are doubled")
+		Globals.double_resources = true
 		print("Plentiful bounty, all map resources are doubled")
 		# Add resource doubling logic here
 	else:

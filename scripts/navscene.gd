@@ -56,7 +56,7 @@ func _ready():
 func _process(_delta: float) -> void:
 	update_all_speeds()
 	if player:
-		ui.get_child(0).get_node("reloadtimer").value = player.reload_timer.time_left
+		ui.get_child(0).get_node("reloadtimer").value = player.reload_pumps 
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
