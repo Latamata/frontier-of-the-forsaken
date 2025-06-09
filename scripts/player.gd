@@ -65,7 +65,6 @@ func _process(delta):
 		# Player is idle
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
-		print(reload_pumps)
 		# Resume reload if it was interrupted
 		if gun_reloaded_stopped and reload_pumps > 0:
 			gun_reloaded_stopped = false
@@ -337,12 +336,11 @@ func toggle_golden_sword(enable_gold: bool):
 
 func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 
-		
+	reload_pumps -= 1
 	if reload_pumps > 0 && current_weapon_index == 0:
-		reload_pumps -= 1
-		if reload_pumps == 0:
-			gun_reloaded = true
-		#await get_tree().create_timer(0.5).timeout  
+		#reload_pumps -= 1
+
+		#
 		if facing_left  :
 			animation_player.play("reload_leftfacing")
 		elif facing_right  :
@@ -352,4 +350,6 @@ func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 	else:
 		var current_weapon = weapons[current_weapon_index]
 		rotate_weapon(current_weapon)
-		
+		if reload_pumps == 0:
+			await get_tree().create_timer(0.4).timeout  
+			gun_reloaded = true

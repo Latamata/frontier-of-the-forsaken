@@ -105,9 +105,9 @@ func _input(event):
 		player.switch_weapon()
 	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
 		var current_weapon = player.get_current_weapon()
-		if current_weapon == player.gun && player.gun_reloaded:  # Ensure only the gun can shoot
-			player.player_shoot()
+		if current_weapon == player.gun && player.gun_reloaded: 
 			fire_gun(player)
+			player.player_shoot()
 		elif current_weapon == player.sabre && player.melee_reloaded:
 			player.sword_attack()
 
