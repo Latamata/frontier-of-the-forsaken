@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cl0vxbm3iugrg"]
+[gd_scene load_steps=25 format=3 uid="uid://cl0vxbm3iugrg"]
 
 [ext_resource type="Script" uid="uid://bb1vvom1v64vo" path="res://scripts/zombie.gd" id="1_th0mh"]
 [ext_resource type="Texture2D" uid="uid://40p38av5uqh0" path="res://assets/zombie.png" id="2_m4prw"]
@@ -140,14 +140,17 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xepks"]
-radius = 9.0
-height = 18.0
+radius = 7.0
+height = 14.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_74v56"]
 radius = 336.121
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
 radius = 28.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gx57"]
+radius = 11.0
 
 [node name="zombie" type="CharacterBody2D" groups=["zombie"]]
 collision_layer = 3
@@ -171,7 +174,7 @@ sprite_frames = SubResource("SpriteFrames_11mes")
 animation = &"attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3)
+position = Vector2(0, 6)
 shape = SubResource("CapsuleShape2D_xepks")
 
 [node name="targeting" type="Area2D" parent="."]
@@ -203,5 +206,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_xepks")
+
+[node name="zombie_hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_hitbox"]
+position = Vector2(0, -5)
+shape = SubResource("CapsuleShape2D_4gx57")
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

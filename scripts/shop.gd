@@ -9,7 +9,7 @@ extends Control
 signal bought_something
 
 func _ready() -> void:
-	print(Globals.golden_musket)
+	#print(Globals.golden_musket)
 	if Globals.golden_musket:
 		golden_musket.material.set_shader_parameter("toggle_gold", Globals.golden_musket)
 	if Globals.golden_sword:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://g0tu3dp42hud"]
+[gd_scene load_steps=25 format=3 uid="uid://g0tu3dp42hud"]
 
 [ext_resource type="Script" uid="uid://bb1vvom1v64vo" path="res://scripts/zombie.gd" id="1_srr55"]
 [ext_resource type="Texture2D" uid="uid://ce04nruxxw505" path="res://assets/the_big_boy.png" id="2_o3ox1"]
@@ -140,14 +140,17 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3ox1"]
-radius = 12.0
-height = 24.0
+radius = 8.0
+height = 16.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t0tcg"]
 radius = 407.208
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0v0wp"]
 radius = 29.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vx5f"]
+radius = 11.0
 
 [node name="zombie_two" type="CharacterBody2D" groups=["zombie"]]
 slide_on_ceiling = false
@@ -169,7 +172,7 @@ animation = &"walking_away"
 frame_progress = 0.915656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, -5)
+position = Vector2(-1, -1)
 shape = SubResource("CapsuleShape2D_o3ox1")
 
 [node name="targeting" type="Area2D" parent="."]
@@ -202,5 +205,12 @@ metadata/_edit_use_anchors_ = true
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(0, -5)
 stream = ExtResource("3_o3ox1")
+
+[node name="zombie_hitbox" type="Area2D" parent="."]
+position = Vector2(-1, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_hitbox"]
+position = Vector2(0, -5)
+shape = SubResource("CapsuleShape2D_3vx5f")
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
