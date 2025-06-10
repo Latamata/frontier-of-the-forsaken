@@ -2354,7 +2354,7 @@ stream = ExtResource("12_mnb8n")
 [connection signal="ui_interaction_ended" from="UI" to="." method="_on_ui_ui_interaction_ended"]
 [connection signal="ui_interaction_started" from="UI" to="." method="_on_ui_ui_interaction_started"]
 [connection signal="weapon_toggle" from="UI" to="." method="_on_ui_weapon_toggle"]
-[connection signal="body_entered" from="waypoint1" to="." method="_on_waypoint_body_entered"]
+[connection signal="body_entered" from="waypoint1" to="." method="_on_waypoint_1_body_entered"]
 [connection signal="body_entered" from="waypoint2" to="." method="_on_waypoint_2_body_entered"]
 [connection signal="body_entered" from="waypoint3" to="." method="_on_waypoint_3_body_entered"]
 [connection signal="body_entered" from="waypoint4" to="." method="_on_waypoint_4_body_entered"]

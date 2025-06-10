@@ -31,9 +31,9 @@ var is_rotating = false  # To track if the mouse button is being held
 var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
-func _ready():
-	for wp in waypoints:
-		wp.connect("body_entered", Callable(self, "_on_any_waypoint_body_entered"))
+func _ready() -> void:
+	for waypoint in waypoints:
+		waypoint.body_entered.connect(_on_waypoint_body_entered.bind(waypoint))
 
 	var custom_cursor = load("res://assets/mousepointer.png")
 	Input.set_custom_mouse_cursor(custom_cursor)
@@ -283,11 +283,6 @@ func _on_ui_ui_interaction_started():
 func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
 
-func _on_any_waypoint_body_entered(body: Node2D) -> void:
-	if body.is_in_group("zombie"):
-		body.target = get_random_waypoint(body.target)
-
-
 func _on_auto_shoot_timer_timeout() -> void:
 	for npc in npcgroup.get_children():
 		if is_instance_valid(npc) and not npc.moving && npc.target != null:  # Ensure NPC is not moving
@@ -303,28 +298,28 @@ func _on_ui_auto_shoot_action() -> void:
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
 
 var max_zombies = 64
+
 func _on_wave_timer_timeout() -> void:
 	ui.update_wave(Globals.wave_count)
-	#if Globals.wave_count >= 1:
-		#spawn_treasure_chest()
-	var spawn_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
-	var spawn_x = ceil(sqrt(spawn_amount))  # Distribute evenly
-	var spawn_y = ceil(spawn_amount / spawn_x)
 
-	# Define an array of waypoints
-	var waypoints = [
-		$waypoint1,
-		$waypoint2,
-		$waypoint3,
-		$waypoint4  # Add more as needed
-	]
-	# Pick a random waypoint
-	var random_waypoint = waypoints[randi() % waypoints.size()]
+	var green_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
+	var purple_amount = clamp( (Globals.wave_count * 0.1), 0.1, 2.0)  # Increases slowly, capped at 2.0
 
-	# Spawn zombies at the random waypoint
-	spawn_zombies(spawn_x, spawn_y, random_waypoint.position, 120.0)
-	
+	# Spawn green zombies
+	var green_spawn_x = ceil(sqrt(green_amount))
+	var green_spawn_y = ceil(green_amount / green_spawn_x)
+	var random_waypoint_green = waypoints[randi() % waypoints.size()]
+	spawn_zombies(green_spawn_x, green_spawn_y, random_waypoint_green.position, 150.0)
+
+	# Spawn purple zombies
+	var purple_count = int(purple_amount)
+	if purple_count > 0:
+		for i in purple_count:
+			var random_waypoint_purple = waypoints[randi() % waypoints.size()]
+			spawn_zombies(1, 1, random_waypoint_purple.position, 0.0, purple_amount)
+
 	Globals.wave_count += 1
+
 	
 func get_random_waypoint(exclude: Node) -> Node:
 	var available = waypoints.filter(func(wp): return wp != exclude)
@@ -392,3 +387,20 @@ func _on_soldier_died():
 
 func _on_zombie_died():
 	_play_sound(preload("res://sound/zombiedeath.wav"), global_position)
+
+func _on_waypoint_body_entered(body: Node2D, waypoint: Node) -> void:
+	if body.is_in_group("zombie"):
+		# Disable monitoring for the current waypoint
+		waypoint.set_deferred("monitoring", false)
+		
+		# Enable monitoring for all other waypoints
+		for wp in waypoints:
+			if wp != waypoint:
+				wp.set_deferred("monitoring", true)
+		
+		# Pick a new waypoint for zombies to target (excluding the current)
+		var new_waypoint = get_random_waypoint(waypoint)
+		
+		# Update all zombies' targets to the new waypoint
+		for zombie in get_tree().get_nodes_in_group("zombie"):
+			zombie.target = new_waypoint

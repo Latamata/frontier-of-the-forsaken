@@ -140,7 +140,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3ox1"]
-radius = 13.0
+radius = 12.0
+height = 24.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t0tcg"]
 radius = 407.208
@@ -168,7 +169,7 @@ animation = &"walking_away"
 frame_progress = 0.915656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -6)
+position = Vector2(-1, -5)
 shape = SubResource("CapsuleShape2D_o3ox1")
 
 [node name="targeting" type="Area2D" parent="."]

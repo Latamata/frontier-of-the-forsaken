@@ -197,7 +197,7 @@ func switch_weapon():
 	last_weapon_position = previous_weapon.position
 	current_weapon_index = (current_weapon_index + 1) % weapons.size()
 	set_active_weapon(current_weapon_index)
-
+	start_reload_if_needed()
 func set_active_weapon(index):
 	for weapon in weapons:
 		weapon.hide()
