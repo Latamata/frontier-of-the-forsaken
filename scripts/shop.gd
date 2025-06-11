@@ -66,8 +66,8 @@ func _on_buy_soldier_mouse_entered() -> void:
 	Cost: 25g"
 
 func _on_buy_soldier_button_down() -> void:
-	if Globals.gold >= 25 && Globals.soldier_count < Globals.soldier_total:
-		Globals.gold -= 25
+	if Globals.gold >= 20 && Globals.soldier_count < Globals.soldier_total:
+		Globals.gold -= 20
 		Globals.soldier_count += 1
 		emit_signal("bought_something")
 
@@ -103,9 +103,9 @@ func _on_buy_bullet_steel_button_down() -> void:
 		Globals.bullet_type = 'steel'
 		#update_bullet_buttons(buy_bullet_steel, 'steel', [buy_bullet, holy_bullet])
 		emit_signal("bought_something")
-	elif Globals.gold >= 50:
+	elif Globals.gold >= 91:
 		coin_sound.play()
-		Globals.gold -= 50
+		Globals.gold -= 91
 		Globals.bullets_unlocked.append('steel')
 		Globals.bullet_type = 'steel'
 		#update_bullet_buttons(buy_bullet_steel, 'steel', [buy_bullet, holy_bullet])
@@ -118,9 +118,9 @@ func _on_holy_bullet_button_down() -> void:
 		Globals.bullet_type = 'holy_bullet'
 		#update_bullet_buttons(holy_bullet, 'holy_bullet', [buy_bullet, buy_bullet_steel])
 		emit_signal("bought_something")
-	elif Globals.gold >= 90:
+	elif Globals.gold >= 144:
 		coin_sound.play()
-		Globals.gold -= 90
+		Globals.gold -= 144
 		Globals.bullets_unlocked.append('holy_bullet')
 		Globals.bullet_type = 'holy_bullet'
 		#update_bullet_buttons(holy_bullet, 'holy_bullet', [buy_bullet, buy_bullet_steel])

@@ -147,7 +147,7 @@ height = 14.0
 radius = 336.121
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
-radius = 28.0
+radius = 25.02
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gx57"]
 radius = 11.0
@@ -210,7 +210,7 @@ stream = ExtResource("3_xepks")
 [node name="zombie_hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_hitbox"]
-position = Vector2(0, -5)
+position = Vector2(0, -6)
 shape = SubResource("CapsuleShape2D_4gx57")
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

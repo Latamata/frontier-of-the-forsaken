@@ -70,14 +70,17 @@ func _process(delta):
 			gun_reloaded_stopped = false
 			start_reload_if_needed()
 
-
-
 func _input(event):
 	if event is InputEventMouseMotion:
 		var current_weapon = weapons[current_weapon_index]
 		rotate_weapon(current_weapon)  # Rotate the active weapon normally
 
 func sprite_frame_direction():
+	if is_swinging:
+		return  # Don't update sprite or weapon facing during a swing
+
+	# rest of your direction logic
+
 	var weapon_radius = 5.0
 	var offset = Vector2(0, -33)  # Unified Y-offset for both directions
 
@@ -97,7 +100,7 @@ func sprite_frame_direction():
 			weapons[current_weapon_index].flip_v = true  # Flip gun rotation
 			weapons[current_weapon_index].rotation = PI  # Flip gun rotation
 			weapons[current_weapon_index].position = Vector2(3, -15) 
-			#weapons[current_weapon_index].position = Vector2(cos(PI), sin(PI)) * weapon_radius + offset
+			weapons[current_weapon_index].position = Vector2(cos(PI), sin(PI)) * weapon_radius + offset
 			rotate_weapon(weapons[current_weapon_index])
 		elif direction.x > 0 and !facing_right:  # Moving right
 			set_facing("right")
@@ -128,7 +131,7 @@ func sprite_frame_direction():
 
 			weapons[current_weapon_index].flip_v = false
 			weapons[current_weapon_index].rotation = -PI / 2
-			weapons[current_weapon_index].position = Vector2(0, -weapon_radius) + offset
+			#weapons[current_weapon_index].position = Vector2(0, -weapon_radius) + offset
 
 		elif direction.y > 0:  # Moving down
 			if !facing_down:
@@ -164,12 +167,16 @@ func set_facing(dir: String):
 func set_weapon_angle(current_weapon, angle: float, radius: float):
 	current_weapon.rotation = angle
 	current_weapon.position = Vector2(cos(angle), sin(angle)) * radius + GUN_Y_OFFSET
+var is_swinging = false
 
 func rotate_weapon(current_weapon):
+	if is_swinging and current_weapon == sabre:
+		return  # Skip rotation if sword is mid-swing
+
 	var mouse_position = get_global_mouse_position()
 	var angle = (mouse_position - global_position).angle()
 	var weapon_radius = 5.0
-
+		## Gun logic
 	if facing_right and mouse_position.x >= global_position.x:
 		arm.rotation = angle
 		set_weapon_angle(current_weapon, angle, weapon_radius)
@@ -186,7 +193,7 @@ func rotate_weapon(current_weapon):
 	elif facing_down and mouse_position.y > global_position.y:
 		arm.rotation = angle
 		current_weapon.rotation = angle
-		weapons[current_weapon_index].position = Vector2(-6,-33)
+		current_weapon.position = Vector2(-6, -33)  # You can fine-tune this too
 
 func get_current_weapon():
 	return weapons[current_weapon_index]  # Returns the active weapon node
@@ -195,9 +202,15 @@ func switch_weapon():
 	var previous_weapon = weapons[current_weapon_index]
 	last_weapon_rotation = previous_weapon.rotation
 	last_weapon_position = previous_weapon.position
+
 	current_weapon_index = (current_weapon_index + 1) % weapons.size()
 	set_active_weapon(current_weapon_index)
 	start_reload_if_needed()
+
+	var current_weapon = weapons[current_weapon_index]  # Get the new weapon
+	rotate_weapon(current_weapon)  # Now rotate it to match mouse
+
+
 func set_active_weapon(index):
 	for weapon in weapons:
 		weapon.hide()
@@ -244,14 +257,17 @@ func die():
 	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
 	#tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
 	tween.tween_callback(queue_free)  # Remove after animation
-
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
+
 func sword_attack():
 	if not melee_reloaded:
-		return  # If not reloaded, do nothing
-	
+		return
+
+	sprite_frame_direction()
 	melee_reloaded = false
+	is_swinging = true  # Block rotation while swinging
 	$Meleetimer.start()
+
 	original_sabre_rotation = sabre.rotation
 	var attack_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	var final_rotation = attack_angle + deg_to_rad(45)
@@ -265,15 +281,16 @@ func sword_attack():
 		.set_ease(Tween.EASE_IN) \
 		.set_trans(Tween.TRANS_QUAD)
 
-	$attackanimation.rotation = sabre.rotation
-	$attackanimation.global_position = $sabre/Marker2D.global_position
-	$attackanimation.play('default')
+	tween.tween_callback(func(): is_swinging = false)  # Allow rotation again after swing finishes
 
+	$attackanimation.rotation = sabre.rotation
+	$attackanimation.play('default')
 	$SwordSound.play()
 
 	for entity in $sabre/Area2D.get_overlapping_bodies():
 		if entity.is_in_group('zombie'):
 			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
+
 
 func player_shoot():
 	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
