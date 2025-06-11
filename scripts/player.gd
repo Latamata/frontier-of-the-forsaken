@@ -283,13 +283,15 @@ func sword_attack():
 
 	tween.tween_callback(func(): is_swinging = false)  # Allow rotation again after swing finishes
 
+	# Calculate an offset vector pointing forward from the sword's position
+	var offset_distance = 25  # tweak this to move attack animation further out
+	var offset = Vector2(cos(sabre.rotation), sin(sabre.rotation)) * offset_distance
+
 	$attackanimation.rotation = sabre.rotation
+	$attackanimation.position = sabre.position + offset
 	$attackanimation.play('default')
 	$SwordSound.play()
 
-	for entity in $sabre/Area2D.get_overlapping_bodies():
-		if entity.is_in_group('zombie'):
-			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
 
 
 func player_shoot():
