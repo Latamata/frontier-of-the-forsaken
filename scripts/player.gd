@@ -290,18 +290,18 @@ func sword_attack():
 		if entity.is_in_group('zombie'):
 			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
 
-	$attackanimation.rotation = sabre.rotation
-	$attackanimation.position = sabre.position + offset
-	$attackanimation.play('default')
+	$smoke_and_sword.rotation = sabre.rotation
+	$smoke_and_sword.position = sabre.position + offset
+	$smoke_and_sword.play('default')
 	$SwordSound.play()
 
 func player_shoot():
 	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
 	reload_pumps = 7 - gun_speed_level
 	gun_reloaded = false
-	$attackanimation.rotation = gun.rotation
-	$attackanimation.global_position = $Musket/Marker2D.global_position
-	$attackanimation.play('smoke')
+	$smoke_and_sword.rotation = gun.rotation
+	$smoke_and_sword.global_position = $Musket/Marker2D.global_position
+	$smoke_and_sword.play('smoke')
 	start_reload_if_needed()
 
 func start_reload_if_needed():
