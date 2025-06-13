@@ -15,9 +15,17 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -67.0
-offset_right = 1153.0
+offset_right = 284.0
 grow_vertical = 0
-color = Color(0.647059, 0.427451, 0.290196, 0.788235)
+color = Color(0.838856, 0.608445, 0.468178, 0.788235)
+
+[node name="ColorRect" type="ColorRect" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 773.0
+offset_top = 3.0
+offset_right = 1152.0
+offset_bottom = 67.0
+color = Color(0.839216, 0.607843, 0.466667, 0.788235)
 
 [node name="instructions" parent="battlemapUI" instance=ExtResource("2_gdt2y")]
 visible = false
@@ -30,16 +38,16 @@ offset_bottom = -551.0
 [node name="talents" parent="battlemapUI" instance=ExtResource("2_yev5y")]
 visible = false
 layout_mode = 1
-offset_left = -2.0
-offset_top = -222.0
-offset_right = -2.0
-offset_bottom = -222.0
+offset_left = 802.0
+offset_top = -185.0
+offset_right = 802.0
+offset_bottom = -185.0
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 10.0
 offset_top = 34.0
-offset_right = 330.0
+offset_right = 101.0
 offset_bottom = 65.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
@@ -58,9 +66,9 @@ text = "To the road"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 333.0
+offset_left = 104.0
 offset_top = 3.0
-offset_right = 405.0
+offset_right = 176.0
 offset_bottom = 65.0
 focus_mode = 0
 mouse_filter = 1
@@ -68,29 +76,29 @@ text = "Fire"
 
 [node name="weapontoggle" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 407.0
-offset_top = 3.0
-offset_right = 477.0
-offset_bottom = 34.0
+offset_left = 181.0
+offset_top = 6.0
+offset_right = 251.0
+offset_bottom = 37.0
 focus_mode = 0
 mouse_filter = 1
 text = "weapon"
 
 [node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 827.0
-offset_top = 31.0
-offset_right = 987.0
-offset_bottom = 58.0
+offset_left = 866.0
+offset_top = 36.0
+offset_right = 1026.0
+offset_bottom = 63.0
 max_value = 7.0
 step = 1.0
 show_percentage = false
 
 [node name="auto_shoot" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 239.0
+offset_left = 10.0
 offset_top = 1.0
-offset_right = 331.0
+offset_right = 102.0
 offset_bottom = 32.0
 focus_mode = 0
 mouse_filter = 1
@@ -100,18 +108,18 @@ text = "auto shoot"
 
 [node name="reload_label" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 825.0
-offset_top = 8.0
-offset_right = 907.0
-offset_bottom = 32.0
+offset_left = 864.0
+offset_top = 13.0
+offset_right = 946.0
+offset_bottom = 37.0
 text = "Reload"
 
 [node name="wave" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 880.0
-offset_top = -536.0
-offset_right = 1039.0
-offset_bottom = -496.0
+offset_left = 808.0
+offset_top = -575.0
+offset_right = 967.0
+offset_bottom = -535.0
 theme_override_colors/default_color = Color(0.945098, 0.054902, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="battlemapUI"]
@@ -132,26 +140,27 @@ one_shot = true
 
 [node name="Talents" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 746.0
-offset_top = 17.0
-offset_right = 811.0
-offset_bottom = 54.0
+offset_left = 780.0
+offset_top = 24.0
+offset_right = 845.0
+offset_bottom = 61.0
 focus_mode = 0
 mouse_filter = 1
 mouse_force_pass_scroll_events = false
 text = "Talents"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
+visible = false
 layout_direction = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_top = -324.0
-offset_right = 169.0
+offset_right = 163.0
 offset_bottom = 324.0
 grow_vertical = 2
 size_flags_horizontal = 0
-color = Color(0.647059, 0.427451, 0.290196, 0.788235)
+color = Color(0.854102, 0.631888, 0.497276, 0.788235)
 
 [node name="turn" type="Button" parent="mapgeoUI"]
 visible = false
@@ -227,11 +236,15 @@ offset_right = 155.0
 offset_bottom = 464.0
 
 [node name="resources" type="Panel" parent="."]
-offset_left = 444.0
-offset_top = 11.0
-offset_right = 527.0
-offset_bottom = 33.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -41.5
+offset_right = 41.5
+offset_bottom = 22.0
+grow_horizontal = 2
 scale = Vector2(5.21036, 1.91125)
+pivot_offset = Vector2(40, 0)
 
 [node name="gold" type="RichTextLabel" parent="resources"]
 layout_mode = 1

@@ -23,8 +23,6 @@ var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
 var ZOMBIE: PackedScene = preload("res://scenes/zombie.tscn")
 var TANK_ZOMBIE: PackedScene = preload("res://scenes/zombie_two.tscn")
 
-#var line_infantry_reloaded = true  
-#var circleselected = false
 var chest_looted = false  # To track if the mouse button is being held
 var is_ui_interacting = false  # To track if the mouse button is being held
 var is_rotating = false  # To track if the mouse button is being held
@@ -34,7 +32,7 @@ var rotation_angle: float
 func _ready() -> void:
 	for waypoint in waypoints:
 		waypoint.body_entered.connect(_on_waypoint_body_entered.bind(waypoint))
-
+	Globals.is_global_aiming = false
 	var custom_cursor = load("res://assets/mousepointer.png")
 	Input.set_custom_mouse_cursor(custom_cursor)
 	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(30, 30))  # Assuming 32x32 image
@@ -52,15 +50,17 @@ func _ready() -> void:
 	var column_height = 2  # Number of musketmen per column
 	ui.hide_map_ui(false)
 	for i in range(Globals.soldier_count):
-		var musketman_instance = musketman.instantiate()  # Assuming musketman is a scene or preloaded resource
-		# Calculate the row and column index
-		var row = i % column_height  # Alternates between 0 and `column_height - 1`
+		var musketman_instance = musketman.instantiate()
+		var row = i % column_height
 		var column = floori(float(i) / float(column_height))
 		musketman_instance.connect("soldier_died", Callable(self, "_on_soldier_died"))
-		# Set the position
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
-		# Add to the group
+		
+		# Set the correct aiming state before adding to scene
+		musketman_instance.is_aiming = Globals.is_global_aiming
+		
 		npcgroup.add_child(musketman_instance)
+
 
 func _process(_delta: float) -> void:
 	update_all_speeds()
@@ -259,6 +259,7 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_ch
 			#zombie.connect("death_signal", Callable(self, "_on_death_signal"))
 			zombiegroup.add_child(zombie)
 
+
 func _on_ui_aim_action():
 	# Toggle the global aiming state
 	Globals.is_global_aiming = !Globals.is_global_aiming
@@ -330,7 +331,8 @@ func _on_player_collect_item() -> void:
 	
 func _on_level_up():
 	#print('leveled up')
-	player.level_up(Globals.level)
+	if player:
+		player.level_up(Globals.level)
 	#$Tween.tween_property($LevelUpLabel, "modulate:a", 0, 1.5)
 
 var using_guns = true

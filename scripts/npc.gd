@@ -34,7 +34,7 @@ var weapon_in_use = "gun"  # Track the weapon being used ("gun" or "sabre")
 const ARM_POSITIONS = {
 	"right": Vector2(8, -30),
 	"left": Vector2(-6, -30),
-	"down": Vector2(-5, -30),
+	"down": Vector2(8, -30),
 	"idle": Vector2(-6, -28)
 }
 var reload_pumps := 0
@@ -73,15 +73,16 @@ func _process(_delta):
 			animated_sprite_2d.animation = "idle"
 			sprite_frame_direction()
 			rotate_weapon(forward_angle)
-			#gun.rotation = forward_angle
 			arm.visible = true
 	if is_aiming:
-		if target and is_instance_valid(target) &&  reloaded:
-			var direction_to_target = (target.global_position - global_position).normalized()
+		if target and is_instance_valid(target) and reloaded:
+			var predicted_position = predict_target_position(target)
+			var direction_to_target = (predicted_position - global_position).normalized()
 			var target_angle = direction_to_target.angle()
 			rotate_weapon(target_angle)
 		else:
 			find_zombies_in_area()
+
 
 	# This is the new part:
 	if weapon_in_use == "sabre" and melee_cd:
@@ -91,19 +92,31 @@ func _process(_delta):
 				apply_melee_damage()
 				break
 
+func predict_target_position(zombie: Node2D) -> Vector2:
+	if not is_instance_valid(zombie):
+		return zombie.global_position
+
+	var to_target = zombie.global_position - global_position
+	var bullet_speed = 500.0  # adjust to match your projectile speed
+	var zombie_velocity = Vector2.ZERO
+
+	if "velocity" in zombie:
+		zombie_velocity = zombie.velocity
+	elif zombie.has_method("get_velocity"):
+		zombie_velocity = zombie.get_velocity()
+	
+	# Time for bullet to reach the zombie
+	var distance = to_target.length()
+	var time_to_hit = distance / bullet_speed
+
+	# Predict future position
+	return zombie.global_position + zombie_velocity * time_to_hit
+
 var facing_right := true
 func sprite_frame_direction():
 	# No movement - idle
-	if direction == Vector2.ZERO:
-		#print('running')
-		animated_sprite_2d.animation = "idle"
-		animated_sprite_2d.play()
-		arm.position = ARM_POSITIONS["idle"]
-		arm.flip_h = false
-		arm.flip_v = false
-		arm.rotation = 0
-		arm.visible = true
-	elif abs(direction.x) > abs(direction.y):
+
+	if abs(direction.x) > abs(direction.y):
 		# Horizontal movement
 		animated_sprite_2d.animation = "walking"
 		animated_sprite_2d.play()
@@ -115,14 +128,14 @@ func sprite_frame_direction():
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["right"]
-		else:
-			print('running')
+		elif direction.x < 0:
 			facing_right = false
 			animated_sprite_2d.flip_h = true
 			arm.flip_h = true
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["left"]
+
 	elif abs(direction.y) > abs(direction.x):
 		# Vertical movement
 		animated_sprite_2d.flip_h = false
@@ -131,16 +144,27 @@ func sprite_frame_direction():
 			# Moving down
 			animated_sprite_2d.animation = "walking_toward"
 			animated_sprite_2d.play()
+			animated_sprite_2d.flip_h = true
 			arm.visible = true
-			arm.flip_h = false
+			arm.flip_h = true
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["down"]
-		else:
+		elif direction.y < 0:
 			# Moving up
 			animated_sprite_2d.animation = "walking_away"
 			animated_sprite_2d.play()
 			arm.visible = false  # Hide arm when walking away
+	else:
+		animated_sprite_2d.animation = "idle"
+		animated_sprite_2d.play()
+		animated_sprite_2d.flip_h = true
+		arm.visible = true
+		arm.flip_h = true
+		arm.flip_v = false
+		arm.rotation = 0
+		#arm.position = ARM_POSITIONS["idle"] 
+		arm.position = Vector2(10,-30)
 
 func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()

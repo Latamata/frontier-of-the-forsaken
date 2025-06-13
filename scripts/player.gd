@@ -7,6 +7,7 @@ var HEALTH = 100
 var base_reload_time = 6.0
 var SPEED = 0.10
 var reload_pumps = 0
+var golden_gun_buff = 0
 var sword_spec_damage_reduce = false
 var looting = false
 var gun_reloaded_stopped = true
@@ -42,6 +43,7 @@ func _ready():
 	if Globals.golden_sword:
 		toggle_golden_sword(true)
 	if Globals.golden_musket:
+		golden_gun_buff = 2
 		toggle_golden_gun(true)
 	weapons = [gun, sabre]
 	set_active_weapon(0)
@@ -297,7 +299,7 @@ func sword_attack():
 
 func player_shoot():
 	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
-	reload_pumps = 7 - gun_speed_level
+	reload_pumps = 7 - gun_speed_level - golden_gun_buff
 	gun_reloaded = false
 	$smoke_and_sword.rotation = gun.rotation
 	$smoke_and_sword.global_position = $Musket/Marker2D.global_position
@@ -326,17 +328,17 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 	if area.resource_type == 'health' :
 		if  HEALTH < 100:
 			area.collected()
-			HEALTH += 15 * mulitplier
+			HEALTH += 25 
 			update_healthbar()
 		else:
 			emit_signal('heal_npc')
 			area.collected()
 	if area.resource_type == 'gold':
 		area.collected()
-		Globals.add_gold(5* mulitplier)  
+		Globals.add_gold(10* mulitplier)  
 	elif area.resource_type == 'food':
 		area.collected()
-		Globals.add_food(5* mulitplier) 
+		Globals.add_food(10* mulitplier) 
 
 func change_melee_speed():
 	var max_level = 5
