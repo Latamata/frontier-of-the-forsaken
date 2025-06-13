@@ -301,7 +301,7 @@ var max_zombies = 64
 
 func _on_wave_timer_timeout() -> void:
 	ui.update_wave(Globals.wave_count)
-
+	ui.travel_mode = false
 	var green_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
 	var purple_amount = clamp( (Globals.wave_count * 0.1), 0.1, 2.0)  # Increases slowly, capped at 2.0
 
@@ -365,6 +365,7 @@ func _on_zombiegroup_child_exiting_tree(_node: Node) -> void:
 	await get_tree().create_timer(0.5).timeout  # waits ~1/10th of a second
 	
 	if $Enviorment/sorted/ZOMBIEGROUP.get_child_count() == 0:
+		ui.travel_mode = true
 		$wave_timer.start()
 		print("All zombies are dead! Spawning chest...")
 		spawn_treasure_chest()

@@ -11,7 +11,7 @@ signal ui_interaction_started()
 
 signal ui_interaction_ended()
 #@onready var food: RichTextLabel = $resources/food
-
+var travel_mode = false
 @onready var gold: RichTextLabel = $resources/gold
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
@@ -81,8 +81,9 @@ func _on_battlemap_ui_mouse_exited():
 	#print("mouse exited the ui thing")
 
 func _on_geomap_button_down() -> void:
-	$battlemapUI/campaign_map_timer.start()
-	$battlemapUI/RichTextLabel.visible = true
+	if travel_mode:
+		$battlemapUI/campaign_map_timer.start()
+		$battlemapUI/RichTextLabel.visible = true
 
 func _on_weapontoggle_button_down() -> void:
 	emit_signal("weapon_toggle") 
@@ -98,7 +99,7 @@ func _on_button_button_down() -> void:
 
 func _on_shop_bought_something() -> void:
 	update_resources() 
-	#print('rinngs')
+
 func update_wave(wave_number):
 	$battlemapUI/wave.text = "Wave: " + str(wave_number)
 
@@ -107,12 +108,12 @@ func _on_campaign_map_timer_timeout() -> void:
 
 func update_xp_talents() -> void:
 	$battlemapUI/talents.update_level_display() 
+
 func _on_talents_button_down() -> void:
 	if $battlemapUI/talents.visible:
 		$battlemapUI/talents.visible = false
 	else:
 		$battlemapUI/talents.visible = true
-	#$talents.visible = !$talents.visible
 
 func turn_screen_red():
 	$red_died_screen.visible = true

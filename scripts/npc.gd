@@ -116,9 +116,9 @@ func sprite_frame_direction():
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["right"]
 		else:
-			#print('running')
+			print('running')
 			facing_right = false
-			animated_sprite_2d.flip_h = false
+			animated_sprite_2d.flip_h = true
 			arm.flip_h = true
 			arm.flip_v = false
 			arm.rotation = 0

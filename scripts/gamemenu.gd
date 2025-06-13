@@ -60,6 +60,7 @@ func _on_load_pressed() -> void:
 			Globals.golden_musket = save_data.get("golden_musket", Globals.golden_musket)
 			Globals.golden_sword = save_data.get("golden_sword", Globals.golden_sword)
 			# Force all talent levels and max_levels to be integers
+			Globals.talent_tree = save_data.get("talent_tree", Globals.talent_tree)
 			for talent_key in Globals.talent_tree.keys():
 				var talent = Globals.talent_tree[talent_key]
 				talent["level"] = int(talent.get("level", 0))
