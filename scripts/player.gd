@@ -328,17 +328,17 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 	if area.resource_type == 'health' :
 		if  HEALTH < 100:
 			area.collected()
-			HEALTH += 25 
+			HEALTH += 15 
 			update_healthbar()
 		else:
 			emit_signal('heal_npc')
 			area.collected()
 	if area.resource_type == 'gold':
 		area.collected()
-		Globals.add_gold(10* mulitplier)  
+		Globals.add_gold(5* mulitplier)  
 	elif area.resource_type == 'food':
 		area.collected()
-		Globals.add_food(10* mulitplier) 
+		Globals.add_food(5* mulitplier) 
 
 func change_melee_speed():
 	var max_level = 5

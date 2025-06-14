@@ -150,7 +150,6 @@ mouse_force_pass_scroll_events = false
 text = "Talents"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
-visible = false
 layout_direction = 1
 anchors_preset = 4
 anchor_top = 0.5

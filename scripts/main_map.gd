@@ -25,8 +25,6 @@ var desert_points_by_line = [
 	[]       # max 23
 ]
 
-
-
 var path_connections = {
 	0: {  # Path2D
 		8: {"line": 1, "point": 0},  # Point 4 in Path2D connects to Path2D3, point 0
@@ -80,8 +78,8 @@ func _update_turn_button_visibility():
 
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
-	if current_path and current_path.curve && Globals.food > 0:
-		Globals.add_food(-10)
+	if current_path and current_path.curve && Globals.food > 25:
+		Globals.add_food(-25)
 		$UI.update_resources()
 		
 		var total_points = current_path.curve.get_point_count()
@@ -119,20 +117,19 @@ func _on_ui_camp_action():
 	else:
 		get_tree().change_scene_to_file("res://scenes/navscene.tscn")  # Fallback scene
 
-
 func _on_ui_turn_action() -> void:
 	_on_turn_button_down()
 
 func _check_for_events():
 	var rng = randi() % 100  # Random chance (0-99)
 	if rng < 10:  # 10% chance of a bandit attack
-		print("Bandits attack! Lose some gold.")
-		ui.update_event_UI("Bandits attack! Lose some gold.")
-		Globals.add_gold(-10)
+		print("Your are really hungry, -10 food.")
+		ui.update_event_UI("Your are really hungry, -10 food.")
+		Globals.add_food(-10)
 	elif rng < 20:  # 10% chance of finding supplies
 		print("You found food supplies!")
 		ui.update_event_UI("You found food supplies!")
-		Globals.add_food(30)
+		Globals.add_food(10)
 	elif rng < 30:  # 5% chance of wagon breaking down
 		print("Wagon wheel broke! The delay increases your wave amount by 1")
 		ui.update_event_UI("Wagon wheel broke! The delay increases your wave amount by 1")

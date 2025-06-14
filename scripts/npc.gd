@@ -91,6 +91,19 @@ func _process(_delta):
 			if body.is_in_group("zombie") and is_instance_valid(body):
 				apply_melee_damage()
 				break
+	# Auto-switch weapon based on enemy proximity
+	var has_close_enemy = false
+	for body in $Melee.get_overlapping_bodies():
+		if is_instance_valid(body) and body.is_in_group("zombie"):
+			has_close_enemy = true
+			break
+
+	if has_close_enemy:
+		if weapon_in_use != "sabre":
+			switch_weapon("sabre")
+	else:
+		if weapon_in_use != "gun":
+			switch_weapon("gun")
 
 func predict_target_position(zombie: Node2D) -> Vector2:
 	if not is_instance_valid(zombie):

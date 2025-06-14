@@ -146,8 +146,9 @@ height = 14.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_74v56"]
 radius = 336.121
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_axwvo"]
-radius = 23.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ycv6i"]
+radius = 15.0
+height = 38.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gx57"]
 radius = 11.0
@@ -187,8 +188,8 @@ shape = SubResource("CircleShape2D_74v56")
 [node name="Melee" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
-position = Vector2(0, -7)
-shape = SubResource("CircleShape2D_axwvo")
+position = Vector2(0, -6)
+shape = SubResource("CapsuleShape2D_ycv6i")
 
 [node name="Meleetimer" type="Timer" parent="."]
 wait_time = 2.277
