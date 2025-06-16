@@ -59,7 +59,9 @@ func _process(delta):
 		if time_since_last_path_update > path_update_interval:
 			#print('running')
 			navigation_agent_2d.target_position = target.global_position
-			time_since_last_path_update = 0.0  # Reset timer
+			var offset = randi() % 10 / 100.0  # Random 0-0.1s
+			await get_tree().create_timer(path_update_interval + offset).timeout
+
 			#if target.global_position.distance_to(global_position) > 200:  # or some logic
 			target = null
 	else:

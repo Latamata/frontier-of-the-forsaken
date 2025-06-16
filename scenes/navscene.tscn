@@ -2345,8 +2345,14 @@ stream = ExtResource("11_kthex")
 [node name="soldier_death" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_mnb8n")
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.776267, 0.734109, 0.917159, 1)
+
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="died" from="Enviorment/sorted/player" to="." method="_on_player_died"]
 [connection signal="heal_npc" from="Enviorment/sorted/player" to="." method="_on_player_heal_npc"]
+[connection signal="one_pump" from="Enviorment/sorted/player" to="." method="_on_player_one_pump"]
 [connection signal="child_exiting_tree" from="Enviorment/sorted/ZOMBIEGROUP" to="." method="_on_zombiegroup_child_exiting_tree"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="auto_shoot_action" from="UI" to="." method="_on_ui_auto_shoot_action"]
@@ -2354,9 +2360,6 @@ stream = ExtResource("12_mnb8n")
 [connection signal="ui_interaction_ended" from="UI" to="." method="_on_ui_ui_interaction_ended"]
 [connection signal="ui_interaction_started" from="UI" to="." method="_on_ui_ui_interaction_started"]
 [connection signal="weapon_toggle" from="UI" to="." method="_on_ui_weapon_toggle"]
-[connection signal="body_entered" from="waypoint1" to="." method="_on_waypoint_1_body_entered"]
-[connection signal="body_entered" from="waypoint2" to="." method="_on_waypoint_2_body_entered"]
-[connection signal="body_entered" from="waypoint3" to="." method="_on_waypoint_3_body_entered"]
-[connection signal="body_entered" from="waypoint4" to="." method="_on_waypoint_4_body_entered"]
 [connection signal="timeout" from="auto_shoot_timer" to="." method="_on_auto_shoot_timer_timeout"]
 [connection signal="timeout" from="wave_timer" to="." method="_on_wave_timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

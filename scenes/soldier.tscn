@@ -1,42 +1,42 @@
 [gd_scene load_steps=36 format=3 uid="uid://ds1svqdxxlh85"]
 
-[ext_resource type="Script" uid="uid://cw7t6pqiwxvx1" path="res://scripts/npc.gd" id="1_6lh2a"]
-[ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="2_wp1fx"]
-[ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="3_rsjd5"]
-[ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="4_7n8xq"]
-[ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="5_4wlns"]
-[ext_resource type="AudioStream" uid="uid://cwdkeaduorwkb" path="res://sound/sword_sound.mp3" id="6_tl2vt"]
+[ext_resource type="Script" uid="uid://cw7t6pqiwxvx1" path="res://scripts/soldier.gd" id="1_ajv6t"]
+[ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="2_50ktg"]
+[ext_resource type="Texture2D" uid="uid://dkesf4jdomoiv" path="res://assets/musket.png" id="3_8qfth"]
+[ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="4_8jak6"]
+[ext_resource type="Texture2D" uid="uid://dxg5nnpc0pyav" path="res://assets/sabre.png" id="5_kv0so"]
+[ext_resource type="AudioStream" uid="uid://cwdkeaduorwkb" path="res://sound/sword_sound.mp3" id="6_se1ou"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4r1p"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3v2ag"]
-atlas = ExtResource("4_7n8xq")
+atlas = ExtResource("2_50ktg")
 region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4wlns"]
@@ -95,43 +95,43 @@ atlas = SubResource("CompressedTexture2D_tu4jb")
 region = Rect2(0, 0, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmxk3"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(0, 50, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oceub"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(50, 50, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bgltx"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(100, 50, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8iyrn"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(150, 50, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_etdnh"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(150, 100, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xbbj1"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(0, 150, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i2dtp"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(50, 150, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s0gl2"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(0, 100, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_efydr"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(50, 100, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b2vy7"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 region = Rect2(100, 100, 50, 50)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p12vx"]
@@ -191,7 +191,7 @@ animations = [{
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4wlns"]
-atlas = ExtResource("3_rsjd5")
+atlas = ExtResource("4_8jak6")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_npa22"]
 radius = 40.0125
@@ -259,7 +259,7 @@ _data = {
 [node name="npc" type="CharacterBody2D" groups=["npc"]]
 y_sort_enabled = true
 collision_mask = 2
-script = ExtResource("1_6lh2a")
+script = ExtResource("1_ajv6t")
 
 [node name="attackanimation" type="AnimatedSprite2D" parent="."]
 position = Vector2(36, -22)
@@ -271,7 +271,7 @@ offset = Vector2(10, 0)
 [node name="Musket" type="Sprite2D" parent="."]
 position = Vector2(12, -23)
 rotation = -1.5708
-texture = ExtResource("2_wp1fx")
+texture = ExtResource("3_8qfth")
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]
 position = Vector2(28.0534, -1.00281)
@@ -330,7 +330,7 @@ path_postprocessing = 1
 [node name="sabre" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(11, -30)
-texture = ExtResource("5_4wlns")
+texture = ExtResource("5_kv0so")
 centered = false
 
 [node name="Marker2D" type="Marker2D" parent="sabre"]
@@ -340,7 +340,7 @@ position = Vector2(50, 4)
 wait_time = 2.277
 
 [node name="SwordSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_tl2vt")
+stream = ExtResource("6_se1ou")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -349,5 +349,6 @@ libraries = {
 
 [connection signal="body_exited" from="targeting" to="." method="_on_targeting_body_exited"]
 [connection signal="timeout" from="takedamage" to="." method="_on_takedamage_timeout"]
+[connection signal="body_entered" from="Melee" to="." method="_on_melee_body_entered"]
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

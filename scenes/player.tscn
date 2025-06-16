@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://dit4wkbv0e3nr"]
+[gd_scene load_steps=43 format=3 uid="uid://dit4wkbv0e3nr"]
 
 [ext_resource type="Script" uid="uid://cwv7rykqxjlnu" path="res://scripts/player.gd" id="1_y03rj"]
 [ext_resource type="Shader" uid="uid://crb282ik5xjor" path="res://shaders/goldenshader.gdshader" id="2_fjrip"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ludct6tk4mxm" path="res://assets/swish.png" id="5_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://1f1ubxptl1s3" path="res://assets/player.png" id="5_v052w"]
 [ext_resource type="AudioStream" uid="uid://cwdkeaduorwkb" path="res://sound/sword_sound.mp3" id="6_tuyoq"]
+[ext_resource type="Texture2D" uid="uid://dga3dvu8o1eqx" path="res://assets/circle_light.png" id="8_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lcexw"]
 atlas = ExtResource("5_v052w")
@@ -377,6 +378,7 @@ region_enabled = true
 region_rect = Rect2(106.998, 164.891, 18.4052, 23.3776)
 
 [node name="Musket" type="Sprite2D" parent="."]
+light_mask = 0
 material = SubResource("ShaderMaterial_smehm")
 position = Vector2(0, -30)
 texture = ExtResource("3_vos4w")
@@ -386,6 +388,7 @@ centered = false
 position = Vector2(56, 5)
 
 [node name="sabre" type="Sprite2D" parent="."]
+light_mask = 0
 material = SubResource("ShaderMaterial_fjrip")
 position = Vector2(4, -27)
 texture = ExtResource("4_cqufx")
@@ -449,6 +452,14 @@ text = "Level"
 libraries = {
 &"": SubResource("AnimationLibrary_ur7pv")
 }
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 2)
+scale = Vector2(6.84, 6.62)
+color = Color(1, 1, 1, 0.372549)
+energy = 0.14
+texture = ExtResource("8_smehm")
+height = 1.0
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]
 [connection signal="area_entered" from="collection_area" to="." method="_on_collection_area_area_entered"]

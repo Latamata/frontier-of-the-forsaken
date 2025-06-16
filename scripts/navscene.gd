@@ -9,14 +9,9 @@ extends Node2D
 @onready var camera_2d = $Camera2D
 @onready var wave_timer: Timer = $wave_timer
 @onready var chest_container: Node2D = $Enviorment/chests
-@onready var waypoints = [
-	$waypoint1,
-	$waypoint2,
-	$waypoint3,
-	$waypoint4
-]
+@onready var waypoints = [ $waypoint1, $waypoint2, $waypoint3, $waypoint4]
 
-var musketman: PackedScene = preload("res://scenes/npc.tscn")
+var musketman: PackedScene = preload("res://scenes/soldier.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
 var TREASURE_CHEST: PackedScene = preload("res://scenes/chest.tscn")
 var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
@@ -29,9 +24,10 @@ var is_rotating = false  # To track if the mouse button is being held
 var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
+
 func _ready() -> void:
 	for waypoint in waypoints:
-		waypoint.body_entered.connect(_on_waypoint_body_entered.bind(waypoint))
+		waypoint.zombie_entered.connect(_on_waypoint_body_entered.bind(waypoint))
 	Globals.is_global_aiming = false
 	var custom_cursor = load("res://assets/mousepointer.png")
 	Input.set_custom_mouse_cursor(custom_cursor)
@@ -42,8 +38,6 @@ func _ready() -> void:
 	Globals.connect("level_up", Callable(self, "_on_level_up"))
 	get_tree().paused = false
 	$wave_timer.start()
-	#spawn_zombies(2, 2, $waypoint1.position, 100.0)
-	# On ready spawn npcs
 	var starting_position = Vector2(-200, 50)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
 	var column_offset = Vector2(0, 50)  # Offset for moving to the next column
@@ -51,25 +45,30 @@ func _ready() -> void:
 	ui.hide_map_ui(false)
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()
+		npcgroup.add_child(musketman_instance)
+		if i == Globals.soldier_count / 2:
+			musketman_instance.add_point_light()
+			musketman_instance.light_holder = true
 		var row = i % column_height
 		var column = floori(float(i) / float(column_height))
 		musketman_instance.connect("soldier_died", Callable(self, "_on_soldier_died"))
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
-		
 		# Set the correct aiming state before adding to scene
 		musketman_instance.is_aiming = Globals.is_global_aiming
-		
-		npcgroup.add_child(musketman_instance)
 
-
-func _process(_delta: float) -> void:
-	update_all_speeds()
-	if player:
-		ui.get_child(0).get_node("reloadtimer").value = player.reload_pumps 
+var time_since_speed_update = 0.0
+const SPEED_UPDATE_INTERVAL = 0.5  # seconds
+func _process(delta):
+	
+	time_since_speed_update += delta
+	if time_since_speed_update >= SPEED_UPDATE_INTERVAL:
+		update_all_speeds()
+		#update_speed_based_on_tile(player)
+		time_since_speed_update = 0.0
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
-var update_interval = 100  # Minimum interval between updates (in seconds)
+var update_interval = 200  # Minimum interval between updates (in seconds)
 func _input(event):
 	if is_ui_interacting:
 		return
@@ -114,10 +113,8 @@ func _input(event):
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
 		return
-	
 	var entity_tile = tile_map.local_to_map(entity.global_position)  # Convert entity position to tile coordinates
 	var tile_data = tile_map.get_cell_tile_data(entity_tile)  # Fetch tile data
-
 	if tile_data and tile_data.get_custom_data("slow"):  # Check for custom data (adjust key as needed)
 		entity.slow_affect(true)
 	else:
@@ -211,54 +208,25 @@ func assign_npcs_to_indicators(forward_angle: float):
 		npc.forward_angle = forward_angle
 		npc.move_to_position(indicator.position)
 
-
 # Add the 'async' keyword to allow for await-based delays
 func fire_gun(firing_entity: Node2D):
 	if not is_instance_valid(firing_entity) or not firing_entity.has_node("Musket/Marker2D"):
 		print("Error: Invalid firing entity or missing Musket/Marker2D node.")
 		return
-
 	# 🔄 Add a small random delay before firing (e.g., simulate flintlock delay)
 	await get_tree().create_timer(randf_range(0.05, 0.5)).timeout
-
 	var musketBall = BULLET.instantiate()
 	var gun_marker = firing_entity.get_node("Musket/Marker2D")
-
 	# 🔊 Play sound at gun's position
 	_play_sound(preload("res://sound/Musket Single Shot Distant 3 - QuickSounds.com.mp3"),gun_marker.global_position)
-
 	musketBall.position = gun_marker.global_position
-
 	var gun_angle = gun_marker.global_rotation
 	var adjusted_angle = gun_angle + deg_to_rad(randf_range(-3, 3))
 	var direction = Vector2(cos(adjusted_angle), sin(adjusted_angle)).normalized()
-
 	musketBall.damage_bonus += Globals.talent_tree["gun_damage"]["level"]
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
-
-func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_chance: float = 0.2):
-	for _row in range(rows):
-		for _col in range(cols):
-			# Randomly decide whether to spawn a tank zombie
-			var zombie
-			if randf() < tank_chance:
-				
-				zombie = TANK_ZOMBIE.instantiate()
-				zombie.SPEED = 45
-			else:
-				zombie = ZOMBIE.instantiate()
-				
-			zombie.target = $waypoint1
-			# Spawn randomly within a circle around the center
-			var angle = randf() * TAU
-			var distance = randf_range(0, radius)
-			zombie.connect("zombie_died", Callable(self, "_on_zombie_died"))
-			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
-			#zombie.connect("death_signal", Callable(self, "_on_death_signal"))
-			zombiegroup.add_child(zombie)
-
 
 func _on_ui_aim_action():
 	# Toggle the global aiming state
@@ -275,12 +243,11 @@ func _on_ui_fire_action():
 			if npc.weapon_in_use == 'gun' and npc.fire_gun():
 				fire_gun(npc)
 
-
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
 	is_ui_interacting = true
 	is_rotating = false
-	
+
 func _on_ui_ui_interaction_ended() -> void:
 	is_ui_interacting = false
 
@@ -299,7 +266,6 @@ func _on_ui_auto_shoot_action() -> void:
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
 
 var max_zombies = 64
-
 func _on_wave_timer_timeout() -> void:
 	ui.update_wave(Globals.wave_count)
 	ui.travel_mode = false
@@ -318,22 +284,14 @@ func _on_wave_timer_timeout() -> void:
 		for i in purple_count:
 			var random_waypoint_purple = waypoints[randi() % waypoints.size()]
 			spawn_zombies(1, 1, random_waypoint_purple.position, 0.0, purple_amount)
-
 	Globals.wave_count += 1
-
-	
-func get_random_waypoint(exclude: Node) -> Node:
-	var available = waypoints.filter(func(wp): return wp != exclude)
-	return available[randi() % available.size()]
 
 func _on_player_collect_item() -> void:
 	ui.update_resources()
 	
 func _on_level_up():
-	#print('leveled up')
 	if player:
 		player.level_up(Globals.level)
-	#$Tween.tween_property($LevelUpLabel, "modulate:a", 0, 1.5)
 
 var using_guns = true
 func _on_ui_weapon_toggle() -> void:
@@ -343,7 +301,6 @@ func _on_ui_weapon_toggle() -> void:
 	for entity in npcgroup.get_children():
 		if entity.has_method("switch_weapon"):
 			entity.switch_weapon(weapon)
-
 
 func _on_player_heal_npc() -> void:
 	for npc in npcgroup.get_children():
@@ -363,9 +320,7 @@ func spawn_treasure_chest():
 
 func _on_zombiegroup_child_exiting_tree(_node: Node) -> void:
 	ui.update_xp_talents()
-	
 	await get_tree().create_timer(0.5).timeout  # waits ~1/10th of a second
-	
 	if $Enviorment/sorted/ZOMBIEGROUP.get_child_count() == 0:
 		ui.travel_mode = true
 		$wave_timer.start()
@@ -385,25 +340,67 @@ func _play_sound(stream: AudioStream, sound_position: Vector2):
 	add_child(sound_player)
 	sound_player.play()
 
-func _on_soldier_died():
+var light_reassign_in_progress := false
+func _on_soldier_died(light_holder: bool) -> void:
 	_play_sound(preload("res://sound/soldier_die.wav"), global_position)
+	if light_reassign_in_progress:
+		return
+	if light_holder:
+		light_reassign_in_progress = true
+		$Timer.start()
+		print("Light-carrying soldier has died!")
+
+func _on_timer_timeout() -> void:
+	create_light_bearer()
+	light_reassign_in_progress = false
+
+func create_light_bearer() -> void:
+	var npcs = npcgroup.get_children().filter(func(n): return n != self)
+	if npcs.size() == 0:
+		return
+	# Remove all existing lights and reset their status
+	for npc in npcs:
+		if npc.has_method("remove_point_light"):
+			npc.remove_point_light()
+		npc.light_holder = false
+	# Pick the middle NPC and give them the light
+	var middle_index = int(npcs.size() / 2)
+	var new_light_holder = npcs[middle_index]
+	new_light_holder.is_aiming = Globals.is_global_aiming
+	new_light_holder.light_holder = true
+	new_light_holder.add_point_light()
 
 func _on_zombie_died():
 	_play_sound(preload("res://sound/zombiedeath.wav"), global_position)
+	
+func get_random_waypoint(exclude: Node) -> Node:
+	var available = waypoints.filter(func(wp): return wp != exclude)
+	return available[randi() % available.size()]
 
-func _on_waypoint_body_entered(body: Node2D, waypoint: Node) -> void:
-	if body.is_in_group("zombie"):
-		# Disable monitoring for the current waypoint
-		waypoint.set_deferred("monitoring", false)
-		
-		# Enable monitoring for all other waypoints
-		for wp in waypoints:
-			if wp != waypoint:
-				wp.set_deferred("monitoring", true)
-		
-		# Pick a new waypoint for zombies to target (excluding the current)
-		var new_waypoint = get_random_waypoint(waypoint)
-		
-		# Update all zombies' targets to the new waypoint
-		for zombie in get_tree().get_nodes_in_group("zombie"):
-			zombie.target = new_waypoint
+func _on_waypoint_body_entered(waypoint: Node) -> void:
+	for zombie in zombiegroup.get_children():
+		await get_tree().create_timer(0.1).timeout
+		if is_instance_valid(zombie) and zombie.is_inside_tree():
+			zombie.target = get_random_waypoint(waypoint)
+
+func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_chance: float = 0.2) -> void:
+	for _row in range(rows):
+		for _col in range(cols):
+			var zombie
+			if randf() < tank_chance:
+				zombie = TANK_ZOMBIE.instantiate()
+				zombie.SPEED = 45
+			else:
+				zombie = ZOMBIE.instantiate()
+			#zombie.target = $waypoint1
+			var angle = randf() * TAU
+			var distance = randf_range(32, radius)  # Don't spawn closer than 32px
+			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
+			zombie.connect("zombie_died", Callable(self, "_on_zombie_died"))
+			zombiegroup.add_child(zombie)
+			# Add a tiny delay between each spawn
+			await get_tree().create_timer(0.2).timeout
+
+func _on_player_one_pump() -> void:
+	if player:
+		ui.get_child(0).get_node("reloadtimer").value = player.reload_pumps 

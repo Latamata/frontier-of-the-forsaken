@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 signal heal_npc
 signal died
+signal one_pump
 
 var HEALTH = 100
 var base_reload_time = 6.0
@@ -33,6 +34,7 @@ var last_weapon_position = Vector2.ZERO
 @onready var meleetimer: Timer = $Meleetimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+
 var weapons = []  # List to hold weapons
 var current_weapon_index = 0  # Index for switching
 
@@ -62,7 +64,7 @@ func _process(delta):
 		camera_2d.global_position = global_position
 		sprite_frame_direction()
 		velocity = direction * SPEED
-		move_and_collide(velocity * delta)
+		move_and_slide()
 	else:
 		# Player is idle
 		velocity = Vector2.ZERO
@@ -308,6 +310,7 @@ func player_shoot():
 
 func start_reload_if_needed():
 	if reload_pumps > 0 and current_weapon_index == 0:
+		
 		# Only start reloading if not already doing so
 		if !animation_player.is_playing():
 			await get_tree().create_timer(0.5).timeout
@@ -357,7 +360,7 @@ func toggle_golden_sword(enable_gold: bool):
 	sabre.material.set_shader_parameter("toggle_gold", enable_gold)
 
 func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
-
+	emit_signal('one_pump')
 	reload_pumps -= 1
 	if reload_pumps > 0 && current_weapon_index == 0:
 		#reload_pumps -= 1
@@ -373,5 +376,4 @@ func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 		var current_weapon = weapons[current_weapon_index]
 		rotate_weapon(current_weapon)
 		if reload_pumps == 0:
-			await get_tree().create_timer(0.4).timeout  
 			gun_reloaded = true

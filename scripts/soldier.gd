@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal soldier_died
+signal soldier_died(light_holder: bool)
 
 var direction = Vector2.RIGHT
 var melee_cd = true
@@ -8,6 +8,7 @@ var is_aiming = false
 #var is_attacking = false
 var moving = false
 var reloaded = true
+var light_holder = false
 
 var target_position: Vector2
 var speed = 19.0
@@ -91,19 +92,7 @@ func _process(_delta):
 			if body.is_in_group("zombie") and is_instance_valid(body):
 				apply_melee_damage()
 				break
-	# Auto-switch weapon based on enemy proximity
-	var has_close_enemy = false
-	for body in $Melee.get_overlapping_bodies():
-		if is_instance_valid(body) and body.is_in_group("zombie"):
-			has_close_enemy = true
-			break
 
-	if has_close_enemy:
-		if weapon_in_use != "sabre":
-			switch_weapon("sabre")
-	else:
-		if weapon_in_use != "gun":
-			switch_weapon("gun")
 
 func predict_target_position(zombie: Node2D) -> Vector2:
 	if not is_instance_valid(zombie):
@@ -222,12 +211,13 @@ func take_damage(amount: int):
 	if !$Healthbar.visible:
 		$Healthbar.visible = true
 	HEALTH -= amount
-	HEALTH = max(HEALTH, 0)  # Ensure health doesn't drop below 0
-	healthbar.value = HEALTH  # Update health bar
+	HEALTH = max(HEALTH, 0)
+	healthbar.value = HEALTH
 
 	if HEALTH <= 0:
-		emit_signal("soldier_died")
+		
 		die()
+		emit_signal("soldier_died", light_holder)
 
 func die():
 	animated_sprite_2d.stop()  # Stop movement animation
@@ -339,4 +329,37 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 			reload_pumps = 0
 			reloaded = true
 			rotate_weapon(forward_angle)
-			#gun.rotation = forward_angle
+var point_light: PointLight2D = null
+
+func add_point_light():
+	if point_light:  # Avoid creating multiple lights
+		return
+
+	point_light = PointLight2D.new()
+	point_light.texture = preload("res://assets/circle_light.png")
+	point_light.energy = 0.14
+	point_light.z_index = -1
+	point_light.position = Vector2(0, -10)
+	point_light.scale = Vector2(6.84, 6.62)
+	point_light.color = Color("#ffffff5f")
+	add_child(point_light)
+
+func remove_point_light():
+	if point_light and point_light.is_inside_tree():
+		point_light.queue_free()
+		point_light = null
+
+func _on_melee_body_entered(body: Node2D) -> void:
+	# Auto-switch weapon based on enemy proximity
+	var has_close_enemy = false
+	for zombie in $Melee.get_overlapping_bodies():
+		if is_instance_valid(zombie) and zombie.is_in_group("zombie"):
+			has_close_enemy = true
+			break
+
+	if has_close_enemy:
+		if weapon_in_use != "sabre":
+			switch_weapon("sabre")
+	else:
+		if weapon_in_use != "gun":
+			switch_weapon("gun")
