@@ -24,7 +24,6 @@ var is_rotating = false  # To track if the mouse button is being held
 var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
-
 func _ready() -> void:
 	for waypoint in waypoints:
 		waypoint.zombie_entered.connect(_on_waypoint_body_entered.bind(waypoint))
@@ -46,7 +45,7 @@ func _ready() -> void:
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()
 		npcgroup.add_child(musketman_instance)
-		if i == Globals.soldier_count / 2:
+		if i == Globals.soldier_count / 2.0:
 			musketman_instance.add_point_light()
 			musketman_instance.light_holder = true
 		var row = i % column_height
@@ -95,7 +94,6 @@ func _input(event):
 	else:
 		is_rotating = false
 		assign_npcs_to_indicators(rotation_angle)
-
 	if Input.is_action_just_pressed("collect") and player:
 		player.looting = true
 	if Input.is_action_just_released("collect") and player:
@@ -159,36 +157,27 @@ func spawn_double_line_at_position(start_position: Vector2, unit_rotation_angle:
 	# Clear previous indicators
 	for child in indicators.get_children():
 		child.queue_free()
-
 	var row_spacing = 20
 	var indicator_spacing = 60
 	var placed_positions = []
-
 	var unit_count = npcgroup.get_child_count()
 	var line_count = ceil(unit_count / 2.0)
 	var line_center_offset = -((line_count - 1) * indicator_spacing) / 2.0
-
 	# Directional vectors based on rotation
 	var forward_vector = Vector2(0, 1).rotated(unit_rotation_angle)
 	var side_vector = Vector2(1, 0).rotated(unit_rotation_angle)
-
 	for i in range(unit_count):
 		var indicator_instance = IndicatorScene.instantiate()
-
 		# Calculate the current position in line (this would be the "ideal" position without snapping)
 		var row = i % 2
 		var position_in_line = floor(i / 2.0)
-
 		var forward_offset = forward_vector * ((position_in_line * indicator_spacing) + line_center_offset)
 		var side_offset = side_vector * ((row * 2 - 1) * row_spacing)
 		var offset = forward_offset + side_offset
-
-		# Calculate the ideal indicator position
+		# Calculat the ideal indicator position
 		var indicator_position = start_position + offset
-		
-		# Get the nearest tile position to snap to
+		# Get he nearest tile position to snap to
 		var snapped_position = get_nearest_tile(indicator_position, placed_positions)
-
 		# Check if the distance to the snapped position is small enough to accept the tile snapping
 		if snapped_position.distance_to(indicator_position) < 10:  # threshold can be adjusted
 			indicator_instance.position = snapped_position
@@ -364,7 +353,7 @@ func create_light_bearer() -> void:
 			npc.remove_point_light()
 		npc.light_holder = false
 	# Pick the middle NPC and give them the light
-	var middle_index = int(npcs.size() / 2)
+	var middle_index = int(npcs.size() / 2.0)
 	var new_light_holder = npcs[middle_index]
 	new_light_holder.is_aiming = Globals.is_global_aiming
 	new_light_holder.light_holder = true

@@ -52,9 +52,8 @@ func _ready():
 	weapons[current_weapon_index].position = Vector2(0, -30)
 	update_healthbar()
 
-func _process(delta):
+func _process(_delta):
 	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
 	if direction != Vector2.ZERO:
 		# Player is moving
 		if Globals.talent_tree["gun_spec_standing_speed"]["level"] != 1:
@@ -261,39 +260,32 @@ func die():
 	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
 	#tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 1.0)  # Fade out
 	tween.tween_callback(queue_free)  # Remove after animation
-var original_sabre_rotation = 0.0  # Store original rotation before swinging
 
+var original_sabre_rotation = 0.0  # Store original rotation before swinging
 func sword_attack():
 	if not melee_reloaded:
 		return
-
 	sprite_frame_direction()
 	melee_reloaded = false
 	is_swinging = true  # Block rotation while swinging
 	$Meleetimer.start()
-
 	original_sabre_rotation = sabre.rotation
 	var attack_angle = (get_global_mouse_position() - global_position).normalized().angle()
 	var final_rotation = attack_angle + deg_to_rad(45)
-
 	var tween = get_tree().create_tween()
 	tween.tween_property(sabre, "rotation", final_rotation, 0.2) \
 		.set_ease(Tween.EASE_OUT) \
 		.set_trans(Tween.TRANS_QUAD)
-
 	tween.tween_property(sabre, "rotation", original_sabre_rotation, 0.2) \
 		.set_ease(Tween.EASE_IN) \
 		.set_trans(Tween.TRANS_QUAD)
-
 	tween.tween_callback(func(): is_swinging = false)  # Allow rotation again after swing finishes
-
 	# Calculate an offset vector pointing forward from the sword's position
 	var offset_distance = 25  # tweak this to move attack animation further out
 	var offset = Vector2(cos(sabre.rotation), sin(sabre.rotation)) * offset_distance
 	for entity in $sabre/Area2D.get_overlapping_bodies():
 		if entity.is_in_group('zombie'):
 			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
-
 	$smoke_and_sword.rotation = sabre.rotation
 	$smoke_and_sword.position = sabre.position + offset
 	$smoke_and_sword.play('default')
@@ -363,9 +355,6 @@ func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 	emit_signal('one_pump')
 	reload_pumps -= 1
 	if reload_pumps > 0 && current_weapon_index == 0:
-		#reload_pumps -= 1
-
-		#
 		if facing_left  :
 			animation_player.play("reload_leftfacing")
 		elif facing_right  :

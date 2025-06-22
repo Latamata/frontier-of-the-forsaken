@@ -63,13 +63,9 @@ func _process(_delta):
 	else:
 		# Handle per-idle-frame reload pumping
 		if weapon_in_use == "gun" and not reloaded and reload_pumps > 0:
-			#reload_tick_in_progress = true
-			#play_reload_animation(1)
 			animation_player.play("reload")
-
 		velocity = Vector2.ZERO
 		direction = Vector2.ZERO
-
 		if animated_sprite_2d.animation != "idle":
 			animated_sprite_2d.animation = "idle"
 			sprite_frame_direction()
@@ -83,15 +79,16 @@ func _process(_delta):
 			rotate_weapon(target_angle)
 		else:
 			find_zombies_in_area()
-
-
 	# This is the new part:
-	if weapon_in_use == "sabre" and melee_cd:
-		#print(weapon_in_use)
+# Check if melee is active but no zombies are nearby anymore
+	if weapon_in_use == "sabre":
+		var still_has_close_enemies := false
 		for body in $Melee.get_overlapping_bodies():
-			if body.is_in_group("zombie") and is_instance_valid(body):
-				apply_melee_damage()
+			if is_instance_valid(body) and body.is_in_group("zombie"):
+				still_has_close_enemies = true
 				break
+		if not still_has_close_enemies:
+			switch_weapon("gun")
 
 
 func predict_target_position(zombie: Node2D) -> Vector2:
@@ -278,48 +275,42 @@ func switch_weapon(weapon: String):
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
 func sword_attack():
 	original_sabre_rotation = sabre.rotation  # Save initial rotation
-	
 	#if target and is_instance_valid(target):
 	var attack_angle = (target.global_position - global_position).normalized().angle()
 	var final_rotation = attack_angle + deg_to_rad(45)  # Define target rotation
-	
 	# Create a tween for smooth rotation over time
 	var tween = get_tree().create_tween()
 	tween.tween_property(sabre, "rotation", final_rotation, 0.2) \
 		.set_ease(Tween.EASE_OUT) \
 		.set_trans(Tween.TRANS_QUAD)  # First tween
-
 	tween.tween_property(sabre, "rotation", original_sabre_rotation, 0.2) \
 		.set_ease(Tween.EASE_IN) \
 		.set_trans(Tween.TRANS_QUAD)  # Second tween (automatically runs after the first)
-
 	# Play attack animation at correct position
 	$attackanimation.rotation = sabre.rotation
-	$attackanimation.global_position = $sabre/Marker2D.global_position
+	var offset = Vector2(-50, -5)  # Adjust as needed
+	$attackanimation.global_position = $sabre/Marker2D.global_position + offset
+
 	$attackanimation.play('default')
 	$SwordSound.play()
 
-func apply_melee_damage():
+func apply_melee_damage(body):
 	if weapon_in_use == "sabre" and melee_cd:
 		rotate_weapon(forward_angle)
-		for body in $Melee.get_overlapping_bodies():
-			if is_instance_valid(body) and body.is_in_group("zombie"):
-				target = body
-				melee_cd = false
-				$Meleetimer.start()
-				#var forward_angle = (body.global_position - global_position).angle()
-				rotate_weapon(forward_angle)
-				sword_attack()
-				#is_attacking = true
-				body.take_damage(30)
-				break  # Exit after hitting one zombie
-
+		target = body
+		melee_cd = false
+		$Meleetimer.start()
+		#var forward_angle = (body.global_position - global_position).angle()
+		rotate_weapon(forward_angle)
+		sword_attack()
+		#is_attacking = true
+		body.take_damage(30)
 
 func _on_meleetimer_timeout() -> void:
-	apply_melee_damage()
-	#print('running')
+	for body in $Melee.get_overlapping_bodies():
+		if is_instance_valid(body) and body.is_in_group("zombie"):
+			apply_melee_damage(body)
 	melee_cd = true
-
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == 'reload':
@@ -334,7 +325,6 @@ var point_light: PointLight2D = null
 func add_point_light():
 	if point_light:  # Avoid creating multiple lights
 		return
-
 	point_light = PointLight2D.new()
 	point_light.texture = preload("res://assets/circle_light.png")
 	point_light.energy = 0.14
@@ -350,16 +340,14 @@ func remove_point_light():
 		point_light = null
 
 func _on_melee_body_entered(body: Node2D) -> void:
-	# Auto-switch weapon based on enemy proximity
-	var has_close_enemy = false
-	for zombie in $Melee.get_overlapping_bodies():
-		if is_instance_valid(zombie) and zombie.is_in_group("zombie"):
-			has_close_enemy = true
-			break
-
-	if has_close_enemy:
-		if weapon_in_use != "sabre":
-			switch_weapon("sabre")
-	else:
-		if weapon_in_use != "gun":
-			switch_weapon("gun")
+	if body.is_in_group("zombie"):
+		# Auto-switch weapon based on enemy proximity
+		var has_close_enemy = false
+		for zombie in $Melee.get_overlapping_bodies():
+			if is_instance_valid(zombie) and zombie.is_in_group("zombie"):
+				has_close_enemy = true
+				$Meleetimer.start()
+				break
+		if has_close_enemy:
+			if weapon_in_use != "sabre":
+				switch_weapon("sabre")
