@@ -134,9 +134,9 @@ allow_search = false
 wraparound_items = false
 item_count = 3
 item_0/icon = SubResource("AtlasTexture_m4ofw")
-item_1/text = "50"
+item_1/text = "100"
 item_1/icon = SubResource("AtlasTexture_heatd")
-item_2/text = "90"
+item_2/text = "180"
 item_2/icon = SubResource("AtlasTexture_1v8qu")
 
 [connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]

@@ -10,6 +10,7 @@ extends Node2D
 @onready var wave_timer: Timer = $wave_timer
 @onready var chest_container: Node2D = $Enviorment/chests
 @onready var waypoints = [ $waypoint1, $waypoint2, $waypoint3, $waypoint4]
+@onready var day_lighting: CanvasModulate = $day_lighting
 
 var musketman: PackedScene = preload("res://scenes/soldier.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
@@ -25,6 +26,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
+	day_lighting_setup()
 	for waypoint in waypoints:
 		waypoint.zombie_entered.connect(_on_waypoint_body_entered.bind(waypoint))
 	Globals.is_global_aiming = false
@@ -42,12 +44,12 @@ func _ready() -> void:
 	var column_offset = Vector2(0, 50)  # Offset for moving to the next column
 	var column_height = 2  # Number of musketmen per column
 	ui.hide_map_ui(false)
+	print(player.point_light_2d.energy)
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()
 		npcgroup.add_child(musketman_instance)
-		if i == Globals.soldier_count / 2.0:
-			musketman_instance.add_point_light()
-			musketman_instance.light_holder = true
+		musketman_instance.set_brightness = player.point_light_2d.energy
+		create_light_bearer()	
 		var row = i % column_height
 		var column = floori(float(i) / float(column_height))
 		musketman_instance.connect("soldier_died", Callable(self, "_on_soldier_died"))
@@ -58,7 +60,6 @@ func _ready() -> void:
 var time_since_speed_update = 0.0
 const SPEED_UPDATE_INTERVAL = 0.5  # seconds
 func _process(delta):
-	
 	time_since_speed_update += delta
 	if time_since_speed_update >= SPEED_UPDATE_INTERVAL:
 		update_all_speeds()
@@ -213,6 +214,7 @@ func fire_gun(firing_entity: Node2D):
 	var adjusted_angle = gun_angle + deg_to_rad(randf_range(-3, 3))
 	var direction = Vector2(cos(adjusted_angle), sin(adjusted_angle)).normalized()
 	musketBall.damage_bonus += Globals.talent_tree["gun_damage"]["level"]
+	musketBall.shooter = firing_entity
 	musketBall.direction = direction
 	musketBall.rotation = adjusted_angle
 	add_child(musketBall)
@@ -220,7 +222,6 @@ func fire_gun(firing_entity: Node2D):
 func _on_ui_aim_action():
 	# Toggle the global aiming state
 	Globals.is_global_aiming = !Globals.is_global_aiming
-	
 	# Apply the global aiming state to all NPCs
 	for npc in npcgroup.get_children():
 		npc.is_aiming = Globals.is_global_aiming
@@ -254,27 +255,6 @@ func _on_ui_auto_shoot_action() -> void:
 		$auto_shoot_timer.start()  # Start the timer if auto-shooting is off
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
 
-var max_zombies = 64
-func _on_wave_timer_timeout() -> void:
-	ui.update_wave(Globals.wave_count)
-	ui.travel_mode = false
-	var green_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
-	var purple_amount = clamp( (Globals.wave_count * 0.1), 0.1, 2.0)  # Increases slowly, capped at 2.0
-
-	# Spawn green zombies
-	var green_spawn_x = ceil(sqrt(green_amount))
-	var green_spawn_y = ceil(green_amount / green_spawn_x)
-	var random_waypoint_green = waypoints[randi() % waypoints.size()]
-	spawn_zombies(green_spawn_x, green_spawn_y, random_waypoint_green.position, 150.0)
-
-	# Spawn purple zombies
-	var purple_count = int(purple_amount)
-	if purple_count > 0:
-		for i in purple_count:
-			var random_waypoint_purple = waypoints[randi() % waypoints.size()]
-			spawn_zombies(1, 1, random_waypoint_purple.position, 0.0, purple_amount)
-	Globals.wave_count += 1
-
 func _on_player_collect_item() -> void:
 	ui.update_resources()
 	
@@ -286,7 +266,6 @@ var using_guns = true
 func _on_ui_weapon_toggle() -> void:
 	using_guns = !using_guns
 	var weapon = "gun" if using_guns else "sabre"
-
 	for entity in npcgroup.get_children():
 		if entity.has_method("switch_weapon"):
 			entity.switch_weapon(weapon)
@@ -306,15 +285,6 @@ func spawn_treasure_chest():
 		chest_instance.chest_amount = 5 * Globals.wave_count
 		chest_instance.position = Vector2(465, 364)
 		chest_container.add_child(chest_instance)
-
-func _on_zombiegroup_child_exiting_tree(_node: Node) -> void:
-	ui.update_xp_talents()
-	await get_tree().create_timer(0.5).timeout  # waits ~1/10th of a second
-	if $Enviorment/sorted/ZOMBIEGROUP.get_child_count() == 0:
-		ui.travel_mode = true
-		$wave_timer.start()
-		print("All zombies are dead! Spawning chest...")
-		spawn_treasure_chest()
 
 func _on_player_died() -> void:
 	ui.turn_screen_red()
@@ -344,9 +314,9 @@ func _on_timer_timeout() -> void:
 	light_reassign_in_progress = false
 
 func create_light_bearer() -> void:
-	var npcs = npcgroup.get_children().filter(func(n): return n != self)
+	var npcs = npcgroup.get_children()
 	if npcs.size() == 0:
-		return
+		return  # no one to assign the light to
 	# Remove all existing lights and reset their status
 	for npc in npcs:
 		if npc.has_method("remove_point_light"):
@@ -356,23 +326,53 @@ func create_light_bearer() -> void:
 	var middle_index = int(npcs.size() / 2.0)
 	var new_light_holder = npcs[middle_index]
 	new_light_holder.is_aiming = Globals.is_global_aiming
+	
 	new_light_holder.light_holder = true
 	new_light_holder.add_point_light()
 
 func _on_zombie_died():
 	_play_sound(preload("res://sound/zombiedeath.wav"), global_position)
-	
+	ui.update_xp_talents()
+	await get_tree().create_timer(0.6).timeout  # waits ~1/10th of a second
+	if zombiegroup.get_child_count() == 0:
+		ui.hide_or_show_wavecomplete(true)
+		ui.travel_mode = true
+		$wave_timer.start()
+		print("All zombies are dead! Spawning chest...")
+		spawn_treasure_chest()
+
 func get_random_waypoint(exclude: Node) -> Node:
 	var available = waypoints.filter(func(wp): return wp != exclude)
 	return available[randi() % available.size()]
 
 func _on_waypoint_body_entered(waypoint: Node) -> void:
+	await get_tree().create_timer(0.1).timeout
 	for zombie in zombiegroup.get_children():
 		await get_tree().create_timer(0.1).timeout
 		if is_instance_valid(zombie) and zombie.is_inside_tree():
 			zombie.target = get_random_waypoint(waypoint)
 
-func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_chance: float = 0.2) -> void:
+var max_zombies = 64
+func _on_wave_timer_timeout() -> void:
+	Globals.wave_count += 1
+	ui.update_wave(Globals.wave_count)
+	ui.hide_or_show_wavecomplete(false)
+	ui.travel_mode = false
+	var green_amount = min(8 + (Globals.wave_count * 2), max_zombies)  # Increases by 2 per wave
+	var purple_amount = clamp( (Globals.wave_count * 0.1), 0.1, 2.0)  # Increases slowly, capped at 2.0
+	# Green zombies
+	var green_spawn_x = ceil(sqrt(green_amount))
+	var green_spawn_y = ceil(green_amount / green_spawn_x)
+	var random_waypoint_green = waypoints[randi() % waypoints.size()]
+	spawn_zombies(green_spawn_x, green_spawn_y, random_waypoint_green.position, 150.0, random_waypoint_green)
+	# Purple zombies
+	var purple_count = int(purple_amount)
+	if purple_count > 0:
+		for i in purple_count:
+			var random_waypoint_purple = waypoints[randi() % waypoints.size()]
+			spawn_zombies(1, 1, random_waypoint_purple.position, 0.0, random_waypoint_purple)
+
+func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, exclude_waypoint: Node = null, tank_chance: float = 0.2) -> void:
 	for _row in range(rows):
 		for _col in range(cols):
 			var zombie
@@ -381,15 +381,29 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, tank_ch
 				zombie.SPEED = 45
 			else:
 				zombie = ZOMBIE.instantiate()
-			#zombie.target = $waypoint1
 			var angle = randf() * TAU
-			var distance = randf_range(32, radius)  # Don't spawn closer than 32px
+			var distance = randf_range(32, radius)
 			zombie.position = center + Vector2(cos(angle), sin(angle)) * distance
+			# Assign a target that's not the spawn waypoint
+			zombie.target = get_random_waypoint(exclude_waypoint)
 			zombie.connect("zombie_died", Callable(self, "_on_zombie_died"))
 			zombiegroup.add_child(zombie)
-			# Add a tiny delay between each spawn
 			await get_tree().create_timer(0.2).timeout
 
 func _on_player_one_pump() -> void:
 	if player:
 		ui.get_child(0).get_node("reloadtimer").value = player.reload_pumps 
+
+func day_lighting_setup():
+	if Globals.time_of_day == "night":
+		day_lighting.color = Color("224e9b") 
+		player.point_light_2d.energy = 1.0
+	elif Globals.time_of_day == "morning":
+		day_lighting.color = Color("e7817f")
+		player.point_light_2d.energy = 0.34
+	elif Globals.time_of_day == "evening":
+		day_lighting.color = Color("b95eb6") 
+		player.point_light_2d.energy = 0.34
+	else:
+		day_lighting.color = Color("ffffff") 
+		player.point_light_2d.energy = 0.0

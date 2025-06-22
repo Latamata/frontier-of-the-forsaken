@@ -5,6 +5,7 @@ signal died
 signal one_pump
 
 var HEALTH = 100
+var sword_damage = 20
 var base_reload_time = 6.0
 var SPEED = 0.10
 var reload_pumps = 0
@@ -33,6 +34,7 @@ var last_weapon_position = Vector2.ZERO
 @onready var arm: Sprite2D = $arm
 @onready var meleetimer: Timer = $Meleetimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var point_light_2d: PointLight2D = $PointLight2D
 
 
 var weapons = []  # List to hold weapons
@@ -44,6 +46,9 @@ func _ready():
 	#LastGunSPecperkreloadwhilemoving = Globals.talent_tree["gun_spec_standing_speed"]["level"] == 1
 	if Globals.golden_sword:
 		toggle_golden_sword(true)
+		sword_damage = 40
+	else:
+		sword_damage = 20
 	if Globals.golden_musket:
 		golden_gun_buff = 2
 		toggle_golden_gun(true)
@@ -62,6 +67,7 @@ func _process(_delta):
 				gun_reloaded_stopped = true  # Mark that reload was interrupted
 		camera_2d.global_position = global_position
 		sprite_frame_direction()
+		#print(direction)
 		velocity = direction * SPEED
 		move_and_slide()
 	else:
@@ -81,12 +87,9 @@ func _input(event):
 func sprite_frame_direction():
 	if is_swinging:
 		return  # Don't update sprite or weapon facing during a swing
-
 	# rest of your direction logic
-
 	var weapon_radius = 5.0
 	var offset = Vector2(0, -33)  # Unified Y-offset for both directions
-
 	# Handle horizontal movement (left-right)
 	if direction.x != 0:
 		animated_sprite_2d.animation = "walking_side"
@@ -102,12 +105,11 @@ func sprite_frame_direction():
 			arm.rotation = PI  # Reset gun rotation
 			weapons[current_weapon_index].flip_v = true  # Flip gun rotation
 			weapons[current_weapon_index].rotation = PI  # Flip gun rotation
-			weapons[current_weapon_index].position = Vector2(3, -15) 
+			weapons[current_weapon_index].position = Vector2(3, -10) 
 			weapons[current_weapon_index].position = Vector2(cos(PI), sin(PI)) * weapon_radius + offset
 			rotate_weapon(weapons[current_weapon_index])
 		elif direction.x > 0 and !facing_right:  # Moving right
 			set_facing("right")
-			
 			arm.offset = Vector2(3,10)
 			arm.flip_v = false
 			arm.rotation = 0.0  # Reset gun rotation
@@ -116,44 +118,36 @@ func sprite_frame_direction():
 			weapons[current_weapon_index].rotation = 0.0  # Reset gun rotation
 			weapons[current_weapon_index].position = Vector2(cos(0.0), sin(0.0)) * weapon_radius + offset
 			rotate_weapon(weapons[current_weapon_index])
-
 	# Handle vertical movement (up-down)
 	elif direction.y != 0:
 		if direction.y < 0:  # Moving up
 			if !facing_up:
 				set_facing("up")
-			
 			animated_sprite_2d.animation = "walking_away"
 			animated_sprite_2d.flip_h = false  # Optional: adjust if needed
 			animated_sprite_2d.play()
-
-			arm.offset = Vector2(0, -10)
 			arm.flip_v = false
 			arm.visible = false
 			weapons[current_weapon_index].show_behind_parent = true
-
 			weapons[current_weapon_index].flip_v = false
 			weapons[current_weapon_index].rotation = -PI / 2
 			#weapons[current_weapon_index].position = Vector2(0, -weapon_radius) + offset
-
 		elif direction.y > 0:  # Moving down
 			if !facing_down:
 				set_facing("down")
-			
 			animated_sprite_2d.animation = "walking_toward"
 			animated_sprite_2d.flip_h = false
 			animated_sprite_2d.play()
 			weapons[current_weapon_index].show_behind_parent = false
 			weapons[current_weapon_index].position = Vector2(-6,-33)
 			arm.rotation = PI / 3
-			arm.position = Vector2(-6,-33)
+			arm.position = Vector2(-6,-30)
 			arm.offset = Vector2(3,10)
 			arm.flip_v = false
 			arm.visible = true
 			weapons[current_weapon_index].flip_v = false
 			weapons[current_weapon_index].rotation = PI / 2
 			weapons[current_weapon_index].position = Vector2(0, weapon_radius) + offset
-
 
 func level_up(current_level):
 	$LevelUpLabel.text = "Level %s" % current_level
@@ -188,11 +182,11 @@ func rotate_weapon(current_weapon):
 		arm.rotation = angle
 		set_weapon_angle(current_weapon, angle, weapon_radius)
 
-	elif facing_up and mouse_position.y <= global_position.y:
+	if facing_up and mouse_position.y <= global_position.y:
 		arm.rotation = angle
 		current_weapon.rotation = angle
 		current_weapon.position = Vector2(0, -weapon_radius) + GUN_Y_OFFSET
-
+		
 	elif facing_down and mouse_position.y > global_position.y:
 		arm.rotation = angle
 		current_weapon.rotation = angle
@@ -285,7 +279,7 @@ func sword_attack():
 	var offset = Vector2(cos(sabre.rotation), sin(sabre.rotation)) * offset_distance
 	for entity in $sabre/Area2D.get_overlapping_bodies():
 		if entity.is_in_group('zombie'):
-			entity.take_damage(20 + Globals.talent_tree["sword_damage"]["level"])
+			entity.take_damage(sword_damage + Globals.talent_tree["sword_damage"]["level"])
 	$smoke_and_sword.rotation = sabre.rotation
 	$smoke_and_sword.position = sabre.position + offset
 	$smoke_and_sword.play('default')
@@ -312,8 +306,6 @@ func start_reload_if_needed():
 				animation_player.play("reload")
 			gun_reloaded_stopped = false
 
-
-
 func _on_collection_area_area_entered(area: Area2D) -> void:
 	var mulitplier
 	if Globals.double_resources:
@@ -333,7 +325,7 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 		Globals.add_gold(5* mulitplier)  
 	elif area.resource_type == 'food':
 		area.collected()
-		Globals.add_food(5* mulitplier) 
+		Globals.add_food(1* mulitplier) 
 
 func change_melee_speed():
 	var max_level = 5
@@ -352,8 +344,8 @@ func toggle_golden_sword(enable_gold: bool):
 	sabre.material.set_shader_parameter("toggle_gold", enable_gold)
 
 func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
-	emit_signal('one_pump')
 	reload_pumps -= 1
+	emit_signal('one_pump')
 	if reload_pumps > 0 && current_weapon_index == 0:
 		if facing_left  :
 			animation_player.play("reload_leftfacing")

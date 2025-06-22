@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=4 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=75 format=4 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" uid="uid://fgxtjtaduhe4" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Texture2D" uid="uid://cy01i81rii7b0" path="res://assets/survivalgame-terrian-water-32x32.png" id="2_xp418"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b4c46iy4ulmt4" path="res://scenes/waypoint.tscn" id="5_8g735"]
 [ext_resource type="PackedScene" uid="uid://dit4wkbv0e3nr" path="res://scenes/player.tscn" id="5_bbw0p"]
 [ext_resource type="PackedScene" uid="uid://d11nep0qfx3xu" path="res://scenes/ui.tscn" id="5_qn5ki"]
+[ext_resource type="Shader" uid="uid://eqw4wvihgs2t" path="res://shaders/tree_sway.gdshader" id="7_ql54t"]
 [ext_resource type="PackedScene" uid="uid://txoibxtqogig" path="res://scenes/playermenu.tscn" id="7_yw4ke"]
 [ext_resource type="AudioStream" uid="uid://vkgxost8sjw5" path="res://sound/zombiedeath.wav" id="11_kthex"]
 [ext_resource type="AudioStream" uid="uid://cvk02wailex3e" path="res://sound/soldier_die.wav" id="12_mnb8n"]
@@ -2230,6 +2231,8 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_rfvcw")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mnb8n"]
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3is0c"]
 texture = ExtResource("4_2nqij")
 texture_region_size = Vector2i(32, 32)
@@ -2246,35 +2249,71 @@ texture_region_size = Vector2i(32, 32)
 6:0/0/texture_origin = Vector2i(0, 15)
 10:1/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kna37"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ql54t"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 2.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uigwm"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 1.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wa2sj"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 1.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_roco3"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 1.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a6efp"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 1.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j1enq"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 2.0
+shader_parameter/sway_speed = 1.5
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uigwm"]
 texture = ExtResource("3_7y1ne")
 texture_region_size = Vector2i(32, 32)
 0:0/size_in_atlas = Vector2i(4, 4)
 0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 48)
+0:0/0/material = SubResource("ShaderMaterial_ql54t")
+0:0/0/y_sort_origin = 35
 4:0/size_in_atlas = Vector2i(4, 4)
 4:0/0 = 0
-4:0/0/texture_origin = Vector2i(0, 48)
+4:0/0/material = SubResource("ShaderMaterial_a6efp")
+4:0/0/y_sort_origin = 35
 8:0/size_in_atlas = Vector2i(2, 4)
 8:0/0 = 0
-8:0/0/texture_origin = Vector2i(0, 48)
-0:4/size_in_atlas = Vector2i(4, 4)
-0:4/0 = 0
-0:4/0/texture_origin = Vector2i(0, 48)
+8:0/0/material = SubResource("ShaderMaterial_j1enq")
+8:0/0/y_sort_origin = 35
 10:0/size_in_atlas = Vector2i(2, 3)
 10:0/0 = 0
-10:0/0/texture_origin = Vector2i(0, 32)
-10:7/0 = 0
-10:5/size_in_atlas = Vector2i(2, 1)
-10:5/0 = 0
-4:5/size_in_atlas = Vector2i(2, 3)
-4:5/0 = 0
-4:5/0/y_sort_origin = 25
+10:0/0/material = SubResource("ShaderMaterial_uigwm")
+10:0/0/y_sort_origin = 35
+12:0/size_in_atlas = Vector2i(3, 4)
+12:0/0 = 0
+12:0/0/material = SubResource("ShaderMaterial_wa2sj")
+12:0/0/y_sort_origin = 35
+15:1/size_in_atlas = Vector2i(3, 3)
+15:1/0 = 0
+15:1/0/material = SubResource("ShaderMaterial_roco3")
+15:1/0/y_sort_origin = 35
+18:1/size_in_atlas = Vector2i(2, 3)
+18:1/0 = 0
+18:1/0/y_sort_origin = 35
 
 [sub_resource type="TileSet" id="TileSet_koupd"]
 tile_size = Vector2i(32, 32)
-sources/1 = SubResource("TileSetAtlasSource_kna37")
 sources/0 = SubResource("TileSetAtlasSource_3is0c")
+sources/2 = SubResource("TileSetAtlasSource_uigwm")
 
 [node name="navscene" type="Node2D"]
 script = ExtResource("1_fg51v")
@@ -2310,8 +2349,10 @@ y_sort_enabled = true
 
 [node name="decoration" type="TileMapLayer" parent="Enviorment/sorted"]
 y_sort_enabled = true
+material = SubResource("ShaderMaterial_mnb8n")
 position = Vector2(-2, 0)
 tile_set = SubResource("TileSet_koupd")
+occlusion_enabled = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-321, 47)
@@ -2322,16 +2363,16 @@ visible = false
 [node name="playermenu" parent="." instance=ExtResource("7_yw4ke")]
 
 [node name="waypoint1" parent="." instance=ExtResource("5_8g735")]
-position = Vector2(-931, -273)
+position = Vector2(-966, -244)
 
 [node name="waypoint2" parent="." instance=ExtResource("5_8g735")]
-position = Vector2(-914, 862)
+position = Vector2(-955, 893)
 
 [node name="waypoint3" parent="." instance=ExtResource("5_8g735")]
-position = Vector2(1588, 846)
+position = Vector2(1688, 867)
 
 [node name="waypoint4" parent="." instance=ExtResource("5_8g735")]
-position = Vector2(1723, -201)
+position = Vector2(1716, -233)
 
 [node name="auto_shoot_timer" type="Timer" parent="."]
 
@@ -2345,15 +2386,14 @@ stream = ExtResource("11_kthex")
 [node name="soldier_death" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_mnb8n")
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.776267, 0.734109, 0.917159, 1)
+[node name="day_lighting" type="CanvasModulate" parent="."]
+color = Color(0.906309, 0.505555, 0.497534, 1)
 
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="died" from="Enviorment/sorted/player" to="." method="_on_player_died"]
 [connection signal="heal_npc" from="Enviorment/sorted/player" to="." method="_on_player_heal_npc"]
 [connection signal="one_pump" from="Enviorment/sorted/player" to="." method="_on_player_one_pump"]
-[connection signal="child_exiting_tree" from="Enviorment/sorted/ZOMBIEGROUP" to="." method="_on_zombiegroup_child_exiting_tree"]
 [connection signal="aim_action" from="UI" to="." method="_on_ui_aim_action"]
 [connection signal="auto_shoot_action" from="UI" to="." method="_on_ui_auto_shoot_action"]
 [connection signal="fire_action" from="UI" to="." method="_on_ui_fire_action"]

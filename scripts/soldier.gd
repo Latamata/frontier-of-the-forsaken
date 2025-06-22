@@ -57,6 +57,7 @@ func _process(_delta):
 			navigation_agent_2d.set_target_position(global_position)
 		else:
 			direction = (next_position - global_position).normalized()
+			#print(direction)
 			velocity = direction * speed
 			move_and_slide()
 			sprite_frame_direction()
@@ -90,31 +91,25 @@ func _process(_delta):
 		if not still_has_close_enemies:
 			switch_weapon("gun")
 
-
 func predict_target_position(zombie: Node2D) -> Vector2:
 	if not is_instance_valid(zombie):
 		return zombie.global_position
-
 	var to_target = zombie.global_position - global_position
 	var bullet_speed = 500.0  # adjust to match your projectile speed
 	var zombie_velocity = Vector2.ZERO
-
 	if "velocity" in zombie:
 		zombie_velocity = zombie.velocity
 	elif zombie.has_method("get_velocity"):
 		zombie_velocity = zombie.get_velocity()
-	
 	# Time for bullet to reach the zombie
 	var distance = to_target.length()
 	var time_to_hit = distance / bullet_speed
-
 	# Predict future position
 	return zombie.global_position + zombie_velocity * time_to_hit
 
 var facing_right := true
 func sprite_frame_direction():
 	# No movement - idle
-
 	if abs(direction.x) > abs(direction.y):
 		# Horizontal movement
 		animated_sprite_2d.animation = "walking"
@@ -134,11 +129,9 @@ func sprite_frame_direction():
 			arm.flip_v = false
 			arm.rotation = 0
 			arm.position = ARM_POSITIONS["left"]
-
 	elif abs(direction.y) > abs(direction.x):
 		# Vertical movement
 		animated_sprite_2d.flip_h = false
-
 		if direction.y > 0:
 			# Moving down
 			animated_sprite_2d.animation = "walking_toward"
@@ -261,7 +254,6 @@ func _start_reload_animation() -> void:
 
 func switch_weapon(weapon: String):
 	weapon_in_use = weapon
-
 	match weapon:
 		"gun":
 			gun.visible = true
@@ -275,22 +267,30 @@ func switch_weapon(weapon: String):
 var original_sabre_rotation = 0.0  # Store original rotation before swinging
 func sword_attack():
 	original_sabre_rotation = sabre.rotation  # Save initial rotation
-	#if target and is_instance_valid(target):
+	
 	var attack_angle = (target.global_position - global_position).normalized().angle()
-	var final_rotation = attack_angle + deg_to_rad(45)  # Define target rotation
+	var final_rotation = attack_angle + deg_to_rad(45)
+	forward_angle = final_rotation
+	rotate_weapon(final_rotation)
+
 	# Create a tween for smooth rotation over time
 	var tween = get_tree().create_tween()
 	tween.tween_property(sabre, "rotation", final_rotation, 0.2) \
 		.set_ease(Tween.EASE_OUT) \
-		.set_trans(Tween.TRANS_QUAD)  # First tween
+		.set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(sabre, "rotation", original_sabre_rotation, 0.2) \
 		.set_ease(Tween.EASE_IN) \
-		.set_trans(Tween.TRANS_QUAD)  # Second tween (automatically runs after the first)
-	# Play attack animation at correct position
-	$attackanimation.rotation = sabre.rotation
-	var offset = Vector2(-50, -5)  # Adjust as needed
-	$attackanimation.global_position = $sabre/Marker2D.global_position + offset
+		.set_trans(Tween.TRANS_QUAD)
 
+	# Set offset based on direction (left or right)
+	var offset = Vector2(50, -5)
+	if target.global_position.x > global_position.x:
+		offset.x *= -1  # Flip for left-facing
+	else:
+		offset = Vector2.ZERO
+	# Play attack animation at correct position and rotation
+	$attackanimation.rotation = sabre.rotation
+	$attackanimation.global_position = $sabre/Marker2D.global_position + offset
 	$attackanimation.play('default')
 	$SwordSound.play()
 
@@ -301,7 +301,7 @@ func apply_melee_damage(body):
 		melee_cd = false
 		$Meleetimer.start()
 		#var forward_angle = (body.global_position - global_position).angle()
-		rotate_weapon(forward_angle)
+		#rotate_weapon(forward_angle)
 		sword_attack()
 		#is_attacking = true
 		body.take_damage(30)
@@ -320,14 +320,15 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 			reload_pumps = 0
 			reloaded = true
 			rotate_weapon(forward_angle)
-var point_light: PointLight2D = null
 
+var set_brightness = 0.14
+var point_light: PointLight2D = null
 func add_point_light():
 	if point_light:  # Avoid creating multiple lights
 		return
 	point_light = PointLight2D.new()
 	point_light.texture = preload("res://assets/circle_light.png")
-	point_light.energy = 0.14
+	point_light.energy = set_brightness
 	point_light.z_index = -1
 	point_light.position = Vector2(0, -10)
 	point_light.scale = Vector2(6.84, 6.62)
@@ -346,7 +347,8 @@ func _on_melee_body_entered(body: Node2D) -> void:
 		for zombie in $Melee.get_overlapping_bodies():
 			if is_instance_valid(zombie) and zombie.is_in_group("zombie"):
 				has_close_enemy = true
-				$Meleetimer.start()
+				switch_weapon("sabre")
+				apply_melee_damage(body)
 				break
 		if has_close_enemy:
 			if weapon_in_use != "sabre":

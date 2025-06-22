@@ -2,8 +2,6 @@ extends Area2D
 
 signal zombie_entered()
 
-#var monitoring := true
-
 func _ready() -> void:
 	$waypoint_timout.start()
 
@@ -15,8 +13,6 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_waypoint_timout_timeout() -> void:
 	monitoring = true
-	#print("Timer timeout: monitoring enabled")
-
 	var zombies_found := false
 	for body in get_overlapping_bodies():
 		if is_instance_valid(body) and body.is_in_group("zombie"):

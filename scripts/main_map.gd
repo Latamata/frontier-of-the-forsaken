@@ -37,27 +37,29 @@ var path_connections = {
 		0: {"line": 0, "point": 12}   # Point 8 in Path2D2 connects to Path2D3, point 3
 	}
 }
+
 func _ready():
 	Globals.double_resources = false
 	ui.hide_map_ui(true)
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
+	update_current_biome_label()
+	ui.update_event_UI(Globals.current_event)
 
 func update_current_biome_label():
 	var line = Globals.current_line
 	var point = Globals.geo_map_camp
 	
+	var biome = "Unknown"
 	if point in mountain_points_by_line[line]:
-		#current_map.text = "[Mountain]"
-		ui.update_currentmap_UI('Mountain')
+		biome = "Mountain"
 	elif point in forest_points_by_line[line]:
-		ui.update_currentmap_UI('Forest')
-		#current_map.text = "[Forest]"
+		biome = "Forest"
 	elif point in desert_points_by_line[line]:
-		#current_map.text = "[Desert]"
-		ui.update_currentmap_UI('Desert')
-	else:
-		ui.update_currentmap_UI('Unknown')
+		biome = "Desert"
+	Globals.current_biome = biome
+	# Now combine both into one label:
+	ui.update_currentmap_UI("%s - %s" % [biome, Globals.time_of_day])
 
 func move_wagon_to_line(target_line: Path2D, line_point: int):
 	# Move the wagon to a specific point on the given path
@@ -68,27 +70,24 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	var point_position = target_line.curve.get_point_position(line_point)
 	wagonpin.global_position = target_line.global_position + point_position
 	_update_turn_button_visibility()
+	Globals.time_of_day = rand_time_day()
 	update_current_biome_label()
 
 func _update_turn_button_visibility():
 	var turn_button = $UI.get_node("mapgeoUI/turn")
 	var should_be_visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
-	
 	turn_button.visible = should_be_visible
 
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
-	if current_path and current_path.curve && Globals.food > 25:
+	if current_path and current_path.curve && Globals.food >= 25:
 		Globals.add_food(-25)
 		$UI.update_resources()
-		
 		var total_points = current_path.curve.get_point_count()
-		
 		# Check if the wagon is at the last point before moving
 		if Globals.geo_map_camp >= total_points - 1:
 			get_tree().change_scene_to_file("res://scenes/endscreen.tscn")
 			return
-		
 		Globals.geo_map_camp = (Globals.geo_map_camp + 1) % total_points
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 		_check_for_events()
@@ -120,25 +119,45 @@ func _on_ui_camp_action():
 func _on_ui_turn_action() -> void:
 	_on_turn_button_down()
 
+var event_texts = {
+	"hunger": "You are really hungry, -10 food.",
+	"found_food": "You found food supplies!",
+	"wagon_break": "Wagon wheel broke! The delay increases your wave amount by 1",
+	"bounty": "Plentiful bounty, all map resources are doubled"
+}
+
 func _check_for_events():
 	var rng = randi() % 100  # Random chance (0-99)
-	if rng < 10:  # 10% chance of a bandit attack
-		print("Your are really hungry, -10 food.")
-		ui.update_event_UI("Your are really hungry, -10 food.")
+
+	if rng < 10:
+		Globals.current_event = event_texts["hunger"]
+		print(Globals.current_event)
+		ui.update_event_UI(Globals.current_event)
 		Globals.add_food(-10)
-	elif rng < 20:  # 10% chance of finding supplies
-		print("You found food supplies!")
-		ui.update_event_UI("You found food supplies!")
+
+	elif rng < 20:
+		Globals.current_event = event_texts["found_food"]
+		print(Globals.current_event)
+		ui.update_event_UI(Globals.current_event)
 		Globals.add_food(10)
-	elif rng < 30:  # 5% chance of wagon breaking down
-		print("Wagon wheel broke! The delay increases your wave amount by 1")
-		ui.update_event_UI("Wagon wheel broke! The delay increases your wave amount by 1")
+
+	elif rng < 30:
+		Globals.current_event= event_texts["wagon_break"]
+		print(Globals.current_event)
+		ui.update_event_UI(Globals.current_event)
 		Globals.wave_count += 1
-	elif rng < 40:  # 5% chance of bounty
-		ui.update_event_UI("Plentiful bounty, all map resources are doubled")
+
+	elif rng < 40:
+		Globals.current_event = event_texts["bounty"]
+		print(Globals.current_event)
+		ui.update_event_UI(Globals.current_event)
 		Globals.double_resources = true
-		print("Plentiful bounty, all map resources are doubled")
-		# Add resource doubling logic here
+
 	else:
 		ui.update_event_UI("")
+
 	$UI.update_resources()
+
+func rand_time_day():
+	var times = [ "morning", "afternoon", "evening", "night"]
+	return times[randi() % times.size()]

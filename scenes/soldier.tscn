@@ -311,6 +311,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
+position = Vector2(4, 4)
 shape = SubResource("CircleShape2D_npa22")
 
 [node name="Healthbar" type="ProgressBar" parent="."]
@@ -325,7 +326,9 @@ offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_postprocessing = 1
+path_desired_distance = 32.0
+target_desired_distance = 32.0
+path_postprocessing = 2
 
 [node name="sabre" type="Sprite2D" parent="."]
 visible = false

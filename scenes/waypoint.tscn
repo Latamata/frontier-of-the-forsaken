@@ -14,7 +14,7 @@ script = ExtResource("1_omn23")
 shape = SubResource("CircleShape2D_u8y0o")
 
 [node name="waypoint_timout" type="Timer" parent="."]
-wait_time = 13.623
+wait_time = 15.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="waypoint_timout" to="." method="_on_waypoint_timout_timeout"]

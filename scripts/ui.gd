@@ -71,7 +71,6 @@ func _on_fire_button_down():
 func _reset_fire_cooldown():
 	can_fire = true
 
-
 func _on_battlemap_ui_mouse_entered():
 	emit_signal("ui_interaction_started") 
 	#print("mouse exited the ui thing")
@@ -117,3 +116,9 @@ func _on_talents_button_down() -> void:
 
 func turn_screen_red():
 	$red_died_screen.visible = true
+
+func hide_or_show_wavecomplete(show_it):
+	if show_it:
+		$battlemapUI/wavecomplete.visible = true
+	else:
+		$battlemapUI/wavecomplete.visible = false

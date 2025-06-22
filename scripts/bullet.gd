@@ -4,6 +4,8 @@ var direction: Vector2 = Vector2.ZERO
 var speed = 360 
 var damage_bonus = 0
 var pierced_through = false
+var shooter = CharacterBody2D
+
 func _ready() -> void:
 	if Globals.bullet_type == 'lead':
 		$Sprite2D.region_rect = Rect2(310, 43, 99, 78)  # Example dimensions
@@ -20,6 +22,7 @@ func _on_timer_timeout() -> void:
 func _on_area_entered(area: Area2D) -> void:
 	if area.name == 'zombie_hitbox':
 		var zombie = area.get_parent()
+		zombie.target = shooter
 		#if zombie.is_in_group('zombie'):
 		match Globals.bullet_type:
 			'holy_bullet':

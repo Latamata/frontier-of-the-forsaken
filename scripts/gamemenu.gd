@@ -28,7 +28,10 @@ func _on_save_pressed() -> void:
 		"experience": Globals.experience,        # ✅ XP Save
 		"wave_count": Globals.wave_count,                  # ✅ Level Save
 		"level": Globals.level,                  # ✅ Level Save
-		"xp_to_next": Globals.xp_to_next         # ✅ XP-to-next Save
+		"xp_to_next": Globals.xp_to_next,      # ✅ XP-to-next Save
+		"current_time": Globals.time_of_day,
+		"double_resources": Globals.double_resources,
+		"current_event": Globals.current_event
 	}
 
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -65,12 +68,13 @@ func _on_load_pressed() -> void:
 				var talent = Globals.talent_tree[talent_key]
 				talent["level"] = int(talent.get("level", 0))
 				talent["max_level"] = int(talent.get("max_level", 1))
-
 			Globals.experience = save_data.get("experience", Globals.experience)      # ✅ XP Load
 			Globals.wave_count = int(save_data.get("wave_count", Globals.wave_count))    # ✅ Level Load
 			Globals.level = save_data.get("level", Globals.level)                    # ✅ Level Load
 			Globals.xp_to_next = save_data.get("xp_to_next", Globals.xp_to_next)    # ✅ XP-to-next Load
-
+			Globals.time_of_day = save_data.get("current_time", Globals.time_of_day)
+			Globals.current_event = save_data.get("current_event", Globals.current_event)
+			Globals.double_resources = save_data.get("double_resources", Globals.double_resources)
 			print("Game Loaded!")
 			get_tree().change_scene_to_file("res://scenes/main_map.tscn")
 
