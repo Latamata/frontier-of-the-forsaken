@@ -42,7 +42,7 @@ var current_weapon_index = 0  # Index for switching
 
 func _ready():
 	change_melee_speed()
-	sword_spec_damage_reduce = Globals.talent_tree["sword_spec_damage_reduce"]["level"] == 1
+	#sword_spec_damage_reduce = Globals.talent_tree["sword_spec_damage_reduce"]["level"] == 1
 	#LastGunSPecperkreloadwhilemoving = Globals.talent_tree["gun_spec_standing_speed"]["level"] == 1
 	if Globals.golden_sword:
 		toggle_golden_sword(true)

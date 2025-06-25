@@ -2,6 +2,7 @@ extends Node
 
 var is_global_aiming = false
 signal collect_item()  # Define signal with a parameter
+signal sword_spec_dmgrdc()  # Define signal with a parameter
 
 var experience: int = 0
 var level: int = 1
@@ -9,7 +10,7 @@ var xp_to_next: int = 100
 signal level_up
 
 # Properties
-var skill_points: int =  0 # setget add_food, get_food
+var skill_points: int =  10 # setget add_food, get_food
 var food: int =  0 # setget add_food, get_food
 var gold: int =  200 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
@@ -77,6 +78,7 @@ func increase_talent_level(talent_name: String) -> void:
 		"sword_spec_damage_reduce":
 			if talent_tree["sword_speed"]["level"] < talent_tree["sword_speed"]["max_level"]:
 				print("Sword spec is locked. Max sword speed first.")
+				
 				return
 
 	if talent_tree.has(talent_name):
@@ -86,10 +88,10 @@ func increase_talent_level(talent_name: String) -> void:
 			skill_points -= 1
 			talent_tree[talent_name] = talent
 			print("%s increased to level %d" % [talent_name, talent["level"]])
-		else:
-			print("%s is already at max level!" % talent_name)
-	else:
-		print("Talent not found: %s" % talent_name)
+			
+			# ✅ Emit only if it's the sword spec
+			if talent_name == "sword_spec_damage_reduce" and talent["level"] > 0:
+				emit_signal("sword_spec_dmgrdc")
 
 func add_experience(amount: int) -> void:
 	experience += amount

@@ -36,6 +36,7 @@ func _ready() -> void:
 	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
+	Globals.connect( "sword_spec_dmgrdc", sword_spec_dmgcheck )
 	Globals.connect("level_up", Callable(self, "_on_level_up"))
 	get_tree().paused = false
 	$wave_timer.start()
@@ -394,6 +395,9 @@ func _on_player_one_pump() -> void:
 	if player:
 		ui.get_child(0).get_node("reloadtimer").value = player.reload_pumps 
 
+func sword_spec_dmgcheck():
+	player.sword_spec_damage_reduce = true
+	print('runnig')
 func day_lighting_setup():
 	if Globals.time_of_day == "night":
 		day_lighting.color = Color("224e9b") 
