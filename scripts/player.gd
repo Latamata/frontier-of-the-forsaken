@@ -87,67 +87,81 @@ func _input(event):
 func sprite_frame_direction():
 	if is_swinging:
 		return  # Don't update sprite or weapon facing during a swing
-	# rest of your direction logic
+
 	var weapon_radius = 5.0
-	var offset = Vector2(0, -33)  # Unified Y-offset for both directions
-	# Handle horizontal movement (left-right)
+	var offset = Vector2(0, -33)
+
+	# Handle horizontal movement
 	if direction.x != 0:
 		animated_sprite_2d.animation = "walking_side"
 		animated_sprite_2d.flip_h = direction.x < 0
-		animated_sprite_2d.play()
+		if !animated_sprite_2d.is_playing():
+			animated_sprite_2d.play()
+
 		weapons[current_weapon_index].show_behind_parent = false
 		arm.visible = true
 		arm.position = offset
-		if direction.x < 0 and !facing_left:  # Moving left
+
+		if direction.x < 0 and !facing_left:
 			set_facing("left")
-			arm.offset = Vector2(3,-10)
+			arm.offset = Vector2(3, -10)
 			arm.flip_v = true
-			arm.rotation = PI  # Reset gun rotation
-			weapons[current_weapon_index].flip_v = true  # Flip gun rotation
-			weapons[current_weapon_index].rotation = PI  # Flip gun rotation
-			weapons[current_weapon_index].position = Vector2(3, -10) 
+			arm.rotation = PI
+			weapons[current_weapon_index].flip_v = true
+			weapons[current_weapon_index].rotation = PI
 			weapons[current_weapon_index].position = Vector2(cos(PI), sin(PI)) * weapon_radius + offset
 			rotate_weapon(weapons[current_weapon_index])
-		elif direction.x > 0 and !facing_right:  # Moving right
+
+		elif direction.x > 0 and !facing_right:
 			set_facing("right")
-			arm.offset = Vector2(3,10)
+			arm.offset = Vector2(3, 10)
 			arm.flip_v = false
-			arm.rotation = 0.0  # Reset gun rotation
+			arm.rotation = 0.0
 			weapons[current_weapon_index].flip_h = false
-			weapons[current_weapon_index].flip_v = false  # Flip gun rotation
-			weapons[current_weapon_index].rotation = 0.0  # Reset gun rotation
+			weapons[current_weapon_index].flip_v = false
+			weapons[current_weapon_index].rotation = 0.0
 			weapons[current_weapon_index].position = Vector2(cos(0.0), sin(0.0)) * weapon_radius + offset
 			rotate_weapon(weapons[current_weapon_index])
-	# Handle vertical movement (up-down)
+
+	# Handle vertical movement
 	elif direction.y != 0:
-		if direction.y < 0:  # Moving up
+		if direction.y < 0:
 			if !facing_up:
 				set_facing("up")
 			animated_sprite_2d.animation = "walking_away"
-			animated_sprite_2d.flip_h = false  # Optional: adjust if needed
-			animated_sprite_2d.play()
+			animated_sprite_2d.flip_h = false
+			if !animated_sprite_2d.is_playing():
+				animated_sprite_2d.play()
+
 			arm.flip_v = false
 			arm.visible = false
 			weapons[current_weapon_index].show_behind_parent = true
 			weapons[current_weapon_index].flip_v = false
 			weapons[current_weapon_index].rotation = -PI / 2
-			#weapons[current_weapon_index].position = Vector2(0, -weapon_radius) + offset
-		elif direction.y > 0:  # Moving down
+
+		elif direction.y > 0:
 			if !facing_down:
 				set_facing("down")
 			animated_sprite_2d.animation = "walking_toward"
 			animated_sprite_2d.flip_h = false
-			animated_sprite_2d.play()
+			if !animated_sprite_2d.is_playing():
+				animated_sprite_2d.play()
+
 			weapons[current_weapon_index].show_behind_parent = false
-			weapons[current_weapon_index].position = Vector2(-6,-33)
+			weapons[current_weapon_index].position = Vector2(-6, -33)
 			arm.rotation = PI / 3
-			arm.position = Vector2(-6,-30)
-			arm.offset = Vector2(3,10)
+			arm.position = Vector2(-6, -30)
+			arm.offset = Vector2(3, 10)
 			arm.flip_v = false
 			arm.visible = true
 			weapons[current_weapon_index].flip_v = false
 			weapons[current_weapon_index].rotation = PI / 2
 			weapons[current_weapon_index].position = Vector2(0, weapon_radius) + offset
+
+	else:
+		# Player is idle
+		if animated_sprite_2d.is_playing():
+			animated_sprite_2d.stop()
 
 func level_up(current_level):
 	$LevelUpLabel.text = "Level %s" % current_level

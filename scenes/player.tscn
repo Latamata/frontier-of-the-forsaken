@@ -25,43 +25,43 @@ region = Rect2(100, 0, 50, 50)
 atlas = ExtResource("5_v052w")
 region = Rect2(0, 50, 50, 50)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oepqh"]
-atlas = ExtResource("5_v052w")
-region = Rect2(150, 100, 50, 50)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_3kybl"]
 atlas = ExtResource("5_v052w")
 region = Rect2(0, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oepqh"]
+atlas = ExtResource("5_v052w")
+region = Rect2(150, 100, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3l56g"]
 atlas = ExtResource("5_v052w")
 region = Rect2(50, 150, 50, 50)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2xng5"]
-atlas = ExtResource("5_v052w")
-region = Rect2(0, 50, 50, 50)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_thc8d"]
-atlas = ExtResource("5_v052w")
-region = Rect2(50, 50, 50, 50)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uadvf"]
-atlas = ExtResource("5_v052w")
-region = Rect2(100, 50, 50, 50)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ljsot"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ej7"]
 atlas = ExtResource("5_v052w")
 region = Rect2(150, 50, 50, 50)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gg5u3"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_oprun"]
 atlas = ExtResource("5_v052w")
-region = Rect2(0, 100, 50, 50)
+region = Rect2(100, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8ls1"]
+atlas = ExtResource("5_v052w")
+region = Rect2(50, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfm1y"]
+atlas = ExtResource("5_v052w")
+region = Rect2(0, 50, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j8ie6"]
 atlas = ExtResource("5_v052w")
 region = Rect2(50, 100, 50, 50)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4gdff"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fulsm"]
+atlas = ExtResource("5_v052w")
+region = Rect2(0, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
 atlas = ExtResource("5_v052w")
 region = Rect2(100, 100, 50, 50)
 
@@ -86,10 +86,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_oepqh")
+"texture": SubResource("AtlasTexture_3kybl")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3kybl")
+"texture": SubResource("AtlasTexture_oepqh")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3l56g")
@@ -100,16 +100,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2xng5")
+"texture": SubResource("AtlasTexture_f1ej7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_thc8d")
+"texture": SubResource("AtlasTexture_oprun")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_uadvf")
+"texture": SubResource("AtlasTexture_a8ls1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ljsot")
+"texture": SubResource("AtlasTexture_qfm1y")
 }],
 "loop": true,
 "name": &"walking_side",
@@ -117,13 +117,13 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gg5u3")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_j8ie6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4gdff")
+"texture": SubResource("AtlasTexture_fulsm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4r5pv")
 }],
 "loop": true,
 "name": &"walking_toward",
@@ -368,7 +368,8 @@ script = ExtResource("1_y03rj")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0.25, -23.25)
 sprite_frames = SubResource("SpriteFrames_5crhn")
-animation = &"walking_side"
+animation = &"walking_toward"
+frame_progress = 0.362359
 
 [node name="arm" type="Sprite2D" parent="."]
 position = Vector2(-1, -28)
