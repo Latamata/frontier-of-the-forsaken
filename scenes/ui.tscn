@@ -10,6 +10,7 @@ process_mode = 3
 script = ExtResource("1_eji1r")
 
 [node name="battlemapUI" type="ColorRect" parent="."]
+visible = false
 layout_direction = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -26,14 +27,6 @@ offset_top = 3.0
 offset_right = 1152.0
 offset_bottom = 67.0
 color = Color(0.839216, 0.607843, 0.466667, 0.788235)
-
-[node name="instructions" parent="battlemapUI" instance=ExtResource("2_gdt2y")]
-visible = false
-layout_mode = 1
-offset_left = 190.0
-offset_top = -551.0
-offset_right = 190.0
-offset_bottom = -551.0
 
 [node name="talents" parent="battlemapUI" instance=ExtResource("2_yev5y")]
 visible = false
@@ -269,7 +262,6 @@ offset_bottom = 13.5697
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
-text = "asd"
 
 [node name="infanty_amount" type="RichTextLabel" parent="resources"]
 layout_mode = 1
@@ -301,7 +293,6 @@ offset_bottom = 12.5233
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.244132, 0.809747)
-text = "asd"
 
 [node name="resourcelabel" type="RichTextLabel" parent="resources"]
 layout_mode = 1
@@ -336,6 +327,12 @@ grow_vertical = 2
 theme_override_colors/default_color = Color(0.882353, 0.0509804, 0, 1)
 theme_override_font_sizes/normal_font_size = 50
 text = "You Died!!"
+
+[node name="instructions" parent="." instance=ExtResource("2_gdt2y")]
+offset_left = 165.0
+offset_top = 3.0
+offset_right = 165.0
+offset_bottom = 3.0
 
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]

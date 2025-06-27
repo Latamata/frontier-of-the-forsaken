@@ -10,13 +10,14 @@ signal move_action
 signal ui_interaction_started()
 
 signal ui_interaction_ended()
-#@onready var food: RichTextLabel = $resources/food
-var travel_mode = false
+@onready var food: RichTextLabel = $resources/food
 @onready var gold: RichTextLabel = $resources/gold
 @onready var battlemap = $battlemapUI
 @onready var mapgeo = $mapgeoUI
 @onready var current_map: RichTextLabel = $mapgeoUI/current_map
 @onready var events: RichTextLabel = $mapgeoUI/Events
+@onready var tuts = $instructions
+var travel_mode = false
 
 func _ready() -> void:
 	update_resources()
@@ -37,8 +38,8 @@ func hide_map_ui(hideorshow):
 		battlemap.visible = true
 
 func update_resources() -> void:
-	$resources/food.text = str(Globals.food)
-	$resources/gold.text = str(Globals.gold)
+	food.text = str(Globals.food)
+	gold.text = str(Globals.gold)
 	$resources/infanty_amount.text = str(Globals.soldier_count) + '/' + str(Globals.soldier_total)
 
 #-----------------GEOGRAPHIC MAP UI----------------------
@@ -48,7 +49,7 @@ func _on_camp_button_down():
 
 func _on_move_button_down():
 	#print(Globals.food)
-	$resources/food.text = str(Globals.food)
+	food.text = str(Globals.food)
 	emit_signal("move_action")
 
 #-----------------BATTLE MAP UI----------------------

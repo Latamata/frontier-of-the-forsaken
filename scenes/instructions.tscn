@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://decn8ittmpton"]
+[gd_scene load_steps=5 format=3 uid="uid://decn8ittmpton"]
 
 [ext_resource type="Script" uid="uid://cousurpr7kngw" path="res://scripts/instructions.gd" id="1_dkfqi"]
 [ext_resource type="Texture2D" uid="uid://b2ucqlqr0d271" path="res://assets/controls_drawing.png" id="2_nisbi"]
+[ext_resource type="Texture2D" uid="uid://dydjnbtbw0m6m" path="res://assets/campaign_tut.png" id="3_njqp3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nisbi"]
 atlas = ExtResource("2_nisbi")
@@ -16,19 +17,25 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dkfqi")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="battlemapinstruction" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="battlemapinstruction"]
 layout_mode = 0
 offset_right = 425.0
 offset_bottom = 545.0
 color = Color(0.0705882, 1, 1, 0.321569)
 
-[node name="Button" type="Button" parent="ColorRect"]
+[node name="Button" type="Button" parent="battlemapinstruction/ColorRect"]
 layout_mode = 0
 offset_right = 38.0
 offset_bottom = 8.0
 text = "close"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
+[node name="RichTextLabel" type="RichTextLabel" parent="battlemapinstruction/ColorRect"]
 layout_mode = 0
 offset_left = 36.0
 offset_top = 59.0
@@ -42,9 +49,28 @@ text = "🕹️  Move — WASD / Arrow Keys
 
 🖱️ Click and hold, then drag to position your troops — the drag direction sets which way they face."
 
-[node name="ControlsDrawing" type="Sprite2D" parent="ColorRect"]
+[node name="ControlsDrawing" type="Sprite2D" parent="battlemapinstruction/ColorRect"]
 position = Vector2(206, 403)
 scale = Vector2(1.57042, 0.9125)
 texture = SubResource("AtlasTexture_nisbi")
 
-[connection signal="button_down" from="ColorRect/Button" to="." method="_on_button_button_down"]
+[node name="campaignmapinstruction" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CampaignTut" type="Sprite2D" parent="campaignmapinstruction"]
+position = Vector2(546, 316)
+texture = ExtResource("3_njqp3")
+
+[node name="closecmi" type="Button" parent="campaignmapinstruction"]
+layout_mode = 0
+offset_left = 307.0
+offset_top = 89.0
+offset_right = 315.0
+offset_bottom = 97.0
+text = "close"
+
+[connection signal="button_down" from="battlemapinstruction/ColorRect/Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="campaignmapinstruction/closecmi" to="." method="_on_closecmi_button_down"]

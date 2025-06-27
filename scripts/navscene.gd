@@ -26,6 +26,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
+	ui.tuts.hide_instruction("battle", true)
 	day_lighting_setup()
 	for waypoint in waypoints:
 		waypoint.zombie_entered.connect(_on_waypoint_body_entered.bind(waypoint))
@@ -397,7 +398,7 @@ func _on_player_one_pump() -> void:
 
 func sword_spec_dmgcheck():
 	player.sword_spec_damage_reduce = true
-	print('runnig')
+
 func day_lighting_setup():
 	if Globals.time_of_day == "night":
 		day_lighting.color = Color("224e9b") 

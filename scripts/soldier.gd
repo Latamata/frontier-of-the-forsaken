@@ -353,3 +353,7 @@ func _on_melee_body_entered(body: Node2D) -> void:
 		if has_close_enemy:
 			if weapon_in_use != "sabre":
 				switch_weapon("sabre")
+
+func _on_targeting_body_exited(body: Node2D) -> void:
+	if body == target:
+		target = null
