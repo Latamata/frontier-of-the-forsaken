@@ -2408,6 +2408,7 @@ color = Color(0.906309, 0.505555, 0.497534, 1)
 [connection signal="ui_interaction_ended" from="UI" to="." method="_on_ui_ui_interaction_ended"]
 [connection signal="ui_interaction_started" from="UI" to="." method="_on_ui_ui_interaction_started"]
 [connection signal="weapon_toggle" from="UI" to="." method="_on_ui_weapon_toggle"]
+[connection signal="show_tutorial_requested" from="playermenu" to="." method="_on_playermenu_show_tutorial_requested"]
 [connection signal="timeout" from="auto_shoot_timer" to="." method="_on_auto_shoot_timer_timeout"]
 [connection signal="timeout" from="wave_timer" to="." method="_on_wave_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

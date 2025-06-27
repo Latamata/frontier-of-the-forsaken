@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var load_button: Button = $menu_items/load
 @onready var save_button: Button = $menu_items/save
 const SAVE_PATH = "user://savegame.json"
+signal show_tutorial_requested
 
 func _ready() -> void:
 	save_button.connect("pressed", _on_save_pressed)
@@ -39,7 +40,6 @@ func _on_save_pressed() -> void:
 		file.store_string(JSON.stringify(save_data, "\t"))
 		file.close()
 		print("Game Saved!")
-
 
 func _on_load_pressed() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):
@@ -81,7 +81,6 @@ func _on_load_pressed() -> void:
 func _on_exit_button_down() -> void:
 	get_tree().quit()
 
-
 func _on_settings_button_button_down() -> void:
 	$settings.visible = true
 	$menu_items.visible = false
@@ -89,3 +88,6 @@ func _on_settings_button_button_down() -> void:
 func _on_settings_settings_closed() -> void:
 	$settings.visible = false
 	$menu_items.visible = true
+
+func _on_helpinstructions_button_down() -> void:
+	emit_signal("show_tutorial_requested")

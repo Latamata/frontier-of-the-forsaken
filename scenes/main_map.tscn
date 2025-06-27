@@ -66,3 +66,4 @@ texture = ExtResource("6_4synu")
 [connection signal="camp_action" from="UI" to="." method="_on_ui_camp_action"]
 [connection signal="move_action" from="UI" to="." method="_on_ui_move_action"]
 [connection signal="turn_action" from="UI" to="." method="_on_ui_turn_action"]
+[connection signal="show_tutorial_requested" from="playermenu" to="." method="_on_playermenu_show_tutorial_requested"]

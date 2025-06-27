@@ -26,7 +26,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
-	ui.tuts.hide_instruction("battle", true)
+	ui.tuts.hide_instruction("battle", Globals.show_battle_tut)
 	day_lighting_setup()
 	for waypoint in waypoints:
 		waypoint.zombie_entered.connect(_on_waypoint_body_entered.bind(waypoint))
@@ -412,3 +412,7 @@ func day_lighting_setup():
 	else:
 		day_lighting.color = Color("ffffff") 
 		player.point_light_2d.energy = 0.0
+
+
+func _on_playermenu_show_tutorial_requested() -> void:
+	ui.tuts.hide_instruction("battle", true)

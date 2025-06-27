@@ -1,13 +1,14 @@
 extends Node
 
-var is_global_aiming = false
+
 signal collect_item()  # Define signal with a parameter
 signal sword_spec_dmgrdc()  # Define signal with a parameter
+signal level_up
 
+var is_global_aiming = false
 var experience: int = 0
 var level: int = 1
 var xp_to_next: int = 100
-signal level_up
 
 # Properties
 var skill_points: int =  10 # setget add_food, get_food
@@ -28,6 +29,8 @@ var double_resources = false
 var golden_musket = false
 var golden_sword = false
 
+var show_campaign_tut = true
+var show_battle_tut = true
 # Globals.gd
 var talent_tree = {
 	"gun_damage": {
