@@ -180,3 +180,6 @@ func _on_golden_sword_mouse_entered() -> void:
 
 func _on_golden_musket_mouse_entered() -> void:
 	info.text = "Item: Golden Musket\nCost: 200g\nEffect: Toggles gold visuals on musket"
+
+func hide_or_show(hors):
+	visible = hors

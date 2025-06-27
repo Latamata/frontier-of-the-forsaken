@@ -18,10 +18,11 @@ signal ui_interaction_ended()
 @onready var events: RichTextLabel = $mapgeoUI/Events
 @onready var tuts = $instructions
 var travel_mode = false
+@onready var shop: Control = $shop
 
 func _ready() -> void:
 	update_resources()
-
+	print(shop)
 func _process(_delta: float) -> void:
 	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
 
@@ -74,11 +75,9 @@ func _reset_fire_cooldown():
 
 func _on_battlemap_ui_mouse_entered():
 	emit_signal("ui_interaction_started") 
-	#print("mouse exited the ui thing")
 
 func _on_battlemap_ui_mouse_exited():
 	emit_signal("ui_interaction_ended") 
-	#print("mouse exited the ui thing")
 
 func _on_geomap_button_down() -> void:
 	if travel_mode:
@@ -93,9 +92,6 @@ func _on_button_pressed() -> void:
 
 func _on_auto_shoot_button_down() -> void:
 	emit_signal("auto_shoot_action")
-
-func _on_button_button_down() -> void:
-	$mapgeoUI/shop.visible = !$mapgeoUI/shop.visible
 
 func _on_shop_bought_something() -> void:
 	update_resources() 
@@ -123,3 +119,6 @@ func hide_or_show_wavecomplete(show_it):
 		$battlemapUI/wavecomplete.visible = true
 	else:
 		$battlemapUI/wavecomplete.visible = false
+
+func _on_shop_button_button_down() -> void:
+	shop.hide_or_show(true) 

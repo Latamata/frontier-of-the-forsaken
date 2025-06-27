@@ -41,7 +41,7 @@ var path_connections = {
 func _ready():
 	Globals.double_resources = false
 	ui.hide_map_ui(true)
-	ui.tuts.hide_instruction("campaign", Globals.show_campaign_tut)
+	#ui.tuts.hide_instruction("campaign", Globals.show_campaign_tut)
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
 	update_current_biome_label()
@@ -129,31 +129,26 @@ var event_texts = {
 
 func _check_for_events():
 	var rng = randi() % 100  # Random chance (0-99)
-
 	if rng < 10:
 		Globals.current_event = event_texts["hunger"]
 		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.add_food(-10)
-
 	elif rng < 20:
 		Globals.current_event = event_texts["found_food"]
 		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.add_food(10)
-
 	elif rng < 30:
 		Globals.current_event= event_texts["wagon_break"]
 		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.wave_count += 1
-
 	elif rng < 40:
 		Globals.current_event = event_texts["bounty"]
 		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.double_resources = true
-
 	else:
 		ui.update_event_UI("")
 
@@ -162,7 +157,6 @@ func _check_for_events():
 func rand_time_day():
 	var times = [ "morning", "afternoon", "evening", "night"]
 	return times[randi() % times.size()]
-
 
 func _on_playermenu_show_tutorial_requested() -> void:
 	ui.tuts.hide_instruction("campaign", true)

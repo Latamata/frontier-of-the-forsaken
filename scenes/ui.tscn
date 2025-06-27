@@ -180,19 +180,6 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "turn"
 
-[node name="shop" parent="mapgeoUI" instance=ExtResource("3_yev5y")]
-visible = false
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 91.0
-offset_top = -240.0
-offset_right = 94.0
-offset_bottom = -240.0
-grow_horizontal = 0
-
 [node name="move" type="Button" parent="mapgeoUI"]
 layout_mode = 0
 offset_left = 34.0
@@ -214,7 +201,7 @@ focus_mode = 0
 text = "camp
 "
 
-[node name="Button" type="Button" parent="mapgeoUI"]
+[node name="shop_button" type="Button" parent="mapgeoUI"]
 layout_mode = 0
 offset_left = 34.0
 offset_top = 202.0
@@ -334,6 +321,8 @@ offset_top = 3.0
 offset_right = 165.0
 offset_bottom = 3.0
 
+[node name="shop" parent="." instance=ExtResource("3_yev5y")]
+
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="battlemapUI/aim" to="." method="_on_aim_button_down"]
@@ -346,7 +335,7 @@ offset_bottom = 3.0
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="pressed" from="mapgeoUI/turn" to="." method="_on_button_pressed"]
-[connection signal="bought_something" from="mapgeoUI/shop" to="." method="_on_shop_bought_something"]
 [connection signal="button_down" from="mapgeoUI/move" to="." method="_on_move_button_down"]
 [connection signal="button_down" from="mapgeoUI/camp" to="." method="_on_camp_button_down"]
-[connection signal="button_down" from="mapgeoUI/Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="mapgeoUI/shop_button" to="." method="_on_shop_button_button_down"]
+[connection signal="bought_something" from="shop" to="." method="_on_shop_bought_something"]
