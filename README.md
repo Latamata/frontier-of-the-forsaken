@@ -25,9 +25,8 @@ You'll guide your character through a **campaign map**, **set up infantry lines*
 ## 🎨 Tools & Tech
 
 - **Engine**: Godot 4.x  
-- **Art**: Custom + open pixel art  
-- **Audio**: [Add any sound/music credits]  
-- **Timeframe**: [If for a jam or just a personal project]
+- **Art**: Custom + Sora
+- **Audio**: freesound, bandlabs.com
 
 ---
 
