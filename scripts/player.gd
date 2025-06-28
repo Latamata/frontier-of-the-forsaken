@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal heal_npc
+signal heal_npc(area: Area2D)
 signal died
 signal one_pump
 
@@ -332,8 +332,7 @@ func _on_collection_area_area_entered(area: Area2D) -> void:
 			HEALTH += 15 
 			update_healthbar()
 		else:
-			emit_signal('heal_npc')
-			area.collected()
+			emit_signal('heal_npc', area)
 	if area.resource_type == 'gold':
 		area.collected()
 		Globals.add_gold(5* mulitplier)  

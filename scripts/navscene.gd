@@ -272,10 +272,11 @@ func _on_ui_weapon_toggle() -> void:
 		if entity.has_method("switch_weapon"):
 			entity.switch_weapon(weapon)
 
-func _on_player_heal_npc() -> void:
+func _on_player_heal_npc(area: Area2D) -> void:
 	for npc in npcgroup.get_children():
 		if npc.HEALTH < npc.MAX_HEALTH:
-			npc.take_damage(-1)
+			npc.take_damage(-5)
+			area.collected()  # Now the NPC collects it instead
 			return
 
 func spawn_treasure_chest():
