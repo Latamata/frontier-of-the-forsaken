@@ -41,7 +41,7 @@ var path_connections = {
 func _ready():
 	Globals.double_resources = false
 	ui.hide_map_ui(true)
-	#ui.tuts.hide_instruction("campaign", Globals.show_campaign_tut)
+	ui.tuts.hide_instruction("campaign", Globals.show_campaign_tut)
 	current_path = paths[Globals.current_line]
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
 	update_current_biome_label()

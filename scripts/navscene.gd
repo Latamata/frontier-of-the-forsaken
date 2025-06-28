@@ -402,7 +402,7 @@ func sword_spec_dmgcheck():
 func day_lighting_setup():
 	if Globals.time_of_day == "night":
 		day_lighting.color = Color("224e9b") 
-		player.point_light_2d.energy = 1.0
+		player.point_light_2d.energy = 0.50
 	elif Globals.time_of_day == "morning":
 		day_lighting.color = Color("e7817f")
 		player.point_light_2d.energy = 0.34
