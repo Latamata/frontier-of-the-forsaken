@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1lvr3ufbgctf"]
+
+[ext_resource type="Texture2D" uid="uid://grcde1k0rp06" path="res://assets/turn_sign_post.png" id="1_28b26"]
+[ext_resource type="Script" uid="uid://coek68qp5srcp" path="res://scripts/turn_sign_post.gd" id="1_r31ri"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r31ri"]
+atlas = ExtResource("1_28b26")
+region = Rect2(0, 0, 97, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt6h7"]
+atlas = ExtResource("1_28b26")
+region = Rect2(99, 0, 35, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lk162"]
+atlas = ExtResource("1_28b26")
+region = Rect2(100, 23, 30, 19)
+
+[node name="turn_sign_post" type="Node2D"]
+script = ExtResource("1_r31ri")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_r31ri")
+
+[node name="turn_right" type="Button" parent="."]
+offset_right = 43.0
+offset_bottom = 28.0
+focus_mode = 0
+theme_override_colors/icon_hover_color = Color(0.32549, 0.941176, 0.411765, 1)
+icon = SubResource("AtlasTexture_pt6h7")
+flat = true
+
+[node name="turn_left" type="Button" parent="."]
+visible = false
+offset_left = -42.0
+offset_top = 2.0
+offset_right = -4.0
+offset_bottom = 32.0
+focus_mode = 0
+theme_override_colors/icon_hover_color = Color(0.32549, 0.941176, 0.411765, 1)
+icon = SubResource("AtlasTexture_lk162")
+flat = true
+
+[connection signal="button_down" from="turn_right" to="." method="_on_turn_right_button_down"]
+[connection signal="button_down" from="turn_left" to="." method="_on_turn_left_button_down"]

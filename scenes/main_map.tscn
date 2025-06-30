@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://14knw1sb8mpu"]
+[gd_scene load_steps=11 format=3 uid="uid://14knw1sb8mpu"]
 
 [ext_resource type="Script" uid="uid://bg0sb7y5rjsbn" path="res://scripts/main_map.gd" id="1_hpxg0"]
 [ext_resource type="Texture2D" uid="uid://dapnug6dua22w" path="res://assets/mainmap.png" id="1_omdlb"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://txoibxtqogig" path="res://scenes/playermenu.tscn" id="3_qtsfq"]
 [ext_resource type="Texture2D" uid="uid://bx78mr26vavlo" path="res://assets/wagon.png" id="4_w7jjp"]
 [ext_resource type="Texture2D" uid="uid://dip355sfk6cj1" path="res://assets/fort.png" id="6_4synu"]
+[ext_resource type="PackedScene" uid="uid://b1lvr3ufbgctf" path="res://scenes/turn_sign_post.tscn" id="7_cyf2o"]
 
 [sub_resource type="Curve2D" id="Curve2D_3c7he"]
 _data = {
@@ -63,7 +64,14 @@ position = Vector2(357, -781)
 scale = Vector2(0.678683, 0.592857)
 texture = ExtResource("6_4synu")
 
+[node name="turn_sign_post" parent="." instance=ExtResource("7_cyf2o")]
+position = Vector2(399, 451)
+
+[node name="turn_sign_post2" parent="." instance=ExtResource("7_cyf2o")]
+position = Vector2(203, 238)
+
 [connection signal="camp_action" from="UI" to="." method="_on_ui_camp_action"]
 [connection signal="move_action" from="UI" to="." method="_on_ui_move_action"]
-[connection signal="turn_action" from="UI" to="." method="_on_ui_turn_action"]
 [connection signal="show_tutorial_requested" from="playermenu" to="." method="_on_playermenu_show_tutorial_requested"]
+[connection signal="direction_chosen" from="turn_sign_post" to="." method="_on_turn_sign_post_direction_chosen"]
+[connection signal="direction_chosen" from="turn_sign_post2" to="." method="_on_turn_sign_post_2_direction_chosen"]

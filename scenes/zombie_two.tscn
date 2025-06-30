@@ -167,24 +167,23 @@ simplify_path = true
 simplify_epsilon = 1.111
 
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
-position = Vector2(1, -19)
+position = Vector2(2, -18)
 sprite_frames = SubResource("SpriteFrames_4wia8")
 animation = &"walking_away"
 frame_progress = 0.915656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, -1)
 shape = SubResource("CapsuleShape2D_o3ox1")
 
 [node name="targeting" type="Area2D" parent="."]
-position = Vector2(0, -5)
+position = Vector2(1, -4)
 disable_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="targeting"]
 shape = SubResource("CircleShape2D_t0tcg")
 
 [node name="Melee" type="Area2D" parent="."]
-position = Vector2(0, -14)
+position = Vector2(1, -13)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
 shape = SubResource("CapsuleShape2D_acikk")
@@ -204,11 +203,11 @@ offset_bottom = -59.0
 metadata/_edit_use_anchors_ = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-position = Vector2(0, -5)
+position = Vector2(1, -4)
 stream = ExtResource("3_o3ox1")
 
 [node name="zombie_hitbox" type="Area2D" parent="."]
-position = Vector2(-1, -5)
+position = Vector2(0, -4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_hitbox"]
 position = Vector2(1, -8)

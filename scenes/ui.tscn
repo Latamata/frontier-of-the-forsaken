@@ -161,22 +161,6 @@ grow_vertical = 2
 size_flags_horizontal = 0
 color = Color(0.854102, 0.631888, 0.497276, 0.788235)
 
-[node name="turn" type="Button" parent="mapgeoUI"]
-visible = false
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = 416.0
-offset_top = -16.0
-offset_right = 453.0
-offset_bottom = 9.0
-grow_horizontal = 0
-grow_vertical = 2
-text = "turn"
-
 [node name="move" type="Button" parent="mapgeoUI"]
 layout_mode = 0
 offset_left = 34.0
@@ -331,7 +315,6 @@ offset_bottom = 3.0
 [connection signal="button_down" from="battlemapUI/weapontoggle" to="." method="_on_weapontoggle_button_down"]
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
-[connection signal="pressed" from="mapgeoUI/turn" to="." method="_on_button_pressed"]
 [connection signal="button_down" from="mapgeoUI/move" to="." method="_on_move_button_down"]
 [connection signal="button_down" from="mapgeoUI/camp" to="." method="_on_camp_button_down"]
 [connection signal="button_down" from="mapgeoUI/shop_button" to="." method="_on_shop_button_button_down"]

@@ -5,18 +5,17 @@ extends Node2D
 @onready var paths = [$Path2D, $Path2D2, $Path2D3]
 
 var current_path: Path2D
-var speed: float = 50  # Movement speed (pixels per second)
 
 var mountain_points_by_line = [
-	[  14, 16, 18, 20, 22, 24, 26, 28],  # No 2, max 29
+	[ 14, 16, 18, 20, 22, 24, 26, 28 ],  # No 2, max 29
 	[ 20, 22, 24 ],  # max 34
-	[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ] # max 23
+	[ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ] # max 23
 ]
 
 var forest_points_by_line = [
 	[ 8, 9, 10, 11, 12, 13, 15, 17, 19, 21, 23,25,27, 29 ],       # No 2, max 29
 	[ 0, 2, 4, 6, 8, 10, 12, 14, 15, 16, 17, 18, 19,21,23,25,28,29,30,31,32,33,34],  # max 34
-	[0, 1, 2, 3, 4, 21, 22, 23]        # max 23
+	[ 0, 1, 2, 3, 4, 21, 22, 23 ]        # max 23
 ]
 
 var desert_points_by_line = [
@@ -75,9 +74,30 @@ func move_wagon_to_line(target_line: Path2D, line_point: int):
 	update_current_biome_label()
 
 func _update_turn_button_visibility():
-	var turn_button = $UI.get_node("mapgeoUI/turn")
 	var should_be_visible = path_connections.get(Globals.current_line, {}).has(Globals.geo_map_camp)
-	turn_button.visible = should_be_visible
+
+	# Check for the specific location and show only the relevant sign
+	if should_be_visible:
+		if Globals.current_line == 0 and Globals.geo_map_camp == 8:
+			$turn_sign_post.deactivate_sign(true)
+			$turn_sign_post2.deactivate_sign(false)
+		elif Globals.current_line == 0 and Globals.geo_map_camp == 12:
+			$turn_sign_post2.deactivate_sign(true)
+			$turn_sign_post.deactivate_sign(false)
+		elif Globals.current_line == 1 and Globals.geo_map_camp == 0:
+			$turn_sign_post.deactivate_sign(true)
+			$turn_sign_post2.deactivate_sign(false)
+		elif Globals.current_line == 2 and Globals.geo_map_camp == 0:
+			$turn_sign_post2.deactivate_sign(true)
+			$turn_sign_post.deactivate_sign(false)
+		else:
+			# Fallback
+			$turn_sign_post.deactivate_sign(false)
+			$turn_sign_post2.deactivate_sign(false)
+	else:
+		# Hide both signs if no connections
+		$turn_sign_post.deactivate_sign(false)
+		$turn_sign_post2.deactivate_sign(false)
 
 func _on_ui_move_action():
 	# Move the wagon to the next point and check for connections
@@ -93,15 +113,6 @@ func _on_ui_move_action():
 		move_wagon_to_line(current_path, Globals.geo_map_camp)
 		_check_for_events()
 
-func _on_turn_button_down():
-	# Manually switch paths if the turn button is clicked
-	var connection = path_connections.get(Globals.current_line, {}).get(Globals.geo_map_camp, null)
-	if connection:
-		Globals.current_line = connection["line"]
-		Globals.geo_map_camp = connection["point"]
-		current_path = paths[Globals.current_line]
-		move_wagon_to_line(current_path, Globals.geo_map_camp)
-		_update_turn_button_visibility()
 
 func _on_ui_camp_action():
 	# Switch to the appropriate scene based on the current location
@@ -116,9 +127,6 @@ func _on_ui_camp_action():
 		get_tree().change_scene_to_file("res://scenes/desert.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/navscene.tscn")  # Fallback scene
-
-func _on_ui_turn_action() -> void:
-	_on_turn_button_down()
 
 var event_texts = {
 	"hunger": "You are really hungry, -10 food.",
@@ -160,3 +168,27 @@ func rand_time_day():
 
 func _on_playermenu_show_tutorial_requested() -> void:
 	ui.tuts.hide_instruction("campaign", true)
+
+func _on_turn_sign_post_direction_chosen(direction: String) -> void:
+	if direction == 'right':
+		Globals.current_line = 1
+		Globals.geo_map_camp = 0
+		current_path = paths[Globals.current_line]
+	else:
+		Globals.current_line = 0
+		Globals.geo_map_camp = 8
+		current_path = paths[Globals.current_line]
+
+	move_wagon_to_line(current_path, Globals.geo_map_camp)
+
+func _on_turn_sign_post_2_direction_chosen(direction: String) -> void:
+	if direction == 'right':
+		Globals.current_line = 2
+		Globals.geo_map_camp = 0
+		current_path = paths[Globals.current_line]
+	else:
+		Globals.current_line = 0
+		Globals.geo_map_camp = 12
+		current_path = paths[Globals.current_line]
+
+	move_wagon_to_line(current_path, Globals.geo_map_camp)

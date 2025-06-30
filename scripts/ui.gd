@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 signal fire_action
-signal turn_action
 signal weapon_toggle
 signal aim_action
 signal auto_shoot_action
@@ -86,9 +85,6 @@ func _on_geomap_button_down() -> void:
 
 func _on_weapontoggle_button_down() -> void:
 	emit_signal("weapon_toggle") 
-
-func _on_button_pressed() -> void:
-	emit_signal("turn_action")
 
 func _on_auto_shoot_button_down() -> void:
 	emit_signal("auto_shoot_action")

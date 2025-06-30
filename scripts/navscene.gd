@@ -41,12 +41,11 @@ func _ready() -> void:
 	Globals.connect("level_up", Callable(self, "_on_level_up"))
 	get_tree().paused = false
 	$wave_timer.start()
-	var starting_position = Vector2(-200, 50)  # Initial position of the first musketman
+	var starting_position = Vector2(-200, -90)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
 	var column_offset = Vector2(0, 50)  # Offset for moving to the next column
 	var column_height = 2  # Number of musketmen per column
 	ui.hide_map_ui(false)
-	print(player.point_light_2d.energy)
 	for i in range(Globals.soldier_count):
 		var musketman_instance = musketman.instantiate()
 		npcgroup.add_child(musketman_instance)
