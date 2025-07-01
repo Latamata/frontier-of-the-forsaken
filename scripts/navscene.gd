@@ -416,3 +416,7 @@ func day_lighting_setup():
 
 func _on_playermenu_show_tutorial_requested() -> void:
 	ui.tuts.hide_instruction("battle", true)
+
+
+func _on_ambience_finished() -> void:
+	$ambience.play()

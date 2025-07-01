@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=4 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=79 format=4 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" uid="uid://fgxtjtaduhe4" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Shader" uid="uid://c06yuhqyhjvuf" path="res://shaders/water.gdshader" id="2_uigwm"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://txoibxtqogig" path="res://scenes/playermenu.tscn" id="7_yw4ke"]
 [ext_resource type="AudioStream" uid="uid://vkgxost8sjw5" path="res://sound/zombiedeath.wav" id="11_kthex"]
 [ext_resource type="AudioStream" uid="uid://cvk02wailex3e" path="res://sound/soldier_die.wav" id="12_mnb8n"]
+[ext_resource type="AudioStream" uid="uid://reje2ao8ya57" path="res://sound/ambience.wav" id="15_a6efp"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_8g735"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -2399,6 +2400,10 @@ color = Color(0.906309, 0.505555, 0.497534, 1)
 
 [node name="Timer" type="Timer" parent="."]
 
+[node name="ambience" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_a6efp")
+autoplay = true
+
 [connection signal="died" from="Enviorment/sorted/player" to="." method="_on_player_died"]
 [connection signal="heal_npc" from="Enviorment/sorted/player" to="." method="_on_player_heal_npc"]
 [connection signal="one_pump" from="Enviorment/sorted/player" to="." method="_on_player_one_pump"]
@@ -2412,3 +2417,4 @@ color = Color(0.906309, 0.505555, 0.497534, 1)
 [connection signal="timeout" from="auto_shoot_timer" to="." method="_on_auto_shoot_timer_timeout"]
 [connection signal="timeout" from="wave_timer" to="." method="_on_wave_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="finished" from="ambience" to="." method="_on_ambience_finished"]

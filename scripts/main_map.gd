@@ -132,34 +132,34 @@ var event_texts = {
 	"hunger": "You are really hungry, -10 food.",
 	"found_food": "You found food supplies!",
 	"wagon_break": "Wagon wheel broke! The delay increases your wave amount by 1",
-	"bounty": "Plentiful bounty, all map resources are doubled"
+	"bounty": "Plentiful bounty, all map resources are doubled",
+	"soldier": "You have found a lost soldier."
 }
 
 func _check_for_events():
 	var rng = randi() % 100  # Random chance (0-99)
 	if rng < 10:
 		Globals.current_event = event_texts["hunger"]
-		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.add_food(-10)
 	elif rng < 20:
 		Globals.current_event = event_texts["found_food"]
-		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.add_food(10)
 	elif rng < 30:
 		Globals.current_event= event_texts["wagon_break"]
-		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.wave_count += 1
-	elif rng < 40:
+	elif rng < 35:
 		Globals.current_event = event_texts["bounty"]
-		print(Globals.current_event)
 		ui.update_event_UI(Globals.current_event)
 		Globals.double_resources = true
+	elif rng < 40:
+		Globals.current_event = event_texts["soldier"]
+		ui.update_event_UI(Globals.current_event)
+		Globals.soldier_count += 1
 	else:
-		ui.update_event_UI("")
-
+		ui.update_event_UI("Nothing interesting happened.")
 	$UI.update_resources()
 
 func rand_time_day():

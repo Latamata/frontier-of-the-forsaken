@@ -32,7 +32,7 @@ script = ExtResource("1_hpxg0")
 [node name="UI" parent="." instance=ExtResource("2_ewkh1")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(462, 304)
+position = Vector2(462, 141)
 scale = Vector2(1.77469, 1.81742)
 texture = ExtResource("1_omdlb")
 
@@ -60,7 +60,7 @@ curve = SubResource("Curve2D_3r0jk")
 [node name="playermenu" parent="." instance=ExtResource("3_qtsfq")]
 
 [node name="Fort" type="Sprite2D" parent="."]
-position = Vector2(357, -781)
+position = Vector2(357, -829)
 scale = Vector2(0.678683, 0.592857)
 texture = ExtResource("6_4synu")
 
