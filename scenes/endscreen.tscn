@@ -1,11 +1,25 @@
-[gd_scene format=3 uid="uid://dtffs12rmgqnn"]
+[gd_scene load_steps=3 format=3 uid="uid://dtffs12rmgqnn"]
+
+[ext_resource type="Script" uid="uid://c6ggd5lpf033c" path="res://scripts/endscreen.gd" id="1_cuen1"]
+[ext_resource type="Texture2D" uid="uid://c11xyupmnbp05" path="res://assets/assets_task_01jz25h5w4fj9srv0tp995apdh_1751345911_img_1.webp" id="1_dt0yg"]
 
 [node name="Endscreen" type="Node2D"]
+script = ExtResource("1_cuen1")
+
+[node name="MainMenu" type="Sprite2D" parent="."]
+scale = Vector2(1.125, 0.423828)
+texture = ExtResource("1_dt0yg")
+centered = false
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 211.0
-offset_top = 194.0
-offset_right = 1027.0
-offset_bottom = 418.0
-theme_override_font_sizes/normal_font_size = 50
-text = "You have reached the end"
+offset_left = 357.0
+offset_top = 186.0
+offset_right = 755.0
+offset_bottom = 358.0
+size_flags_horizontal = 0
+theme_override_colors/default_color = Color(0.905882, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 30
+text = "Made by Chance Webber 
+
+
+Press any key to continue..."

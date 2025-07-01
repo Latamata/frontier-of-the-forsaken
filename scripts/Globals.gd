@@ -9,6 +9,7 @@ var is_global_aiming = false
 var experience: int = 0
 var level: int = 1
 var xp_to_next: int = 100
+var master_volume: float = 0.0  # dB value, not linear
 
 # Properties
 var skill_points: int =  0 # setget add_food, get_food

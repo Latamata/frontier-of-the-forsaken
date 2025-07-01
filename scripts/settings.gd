@@ -6,7 +6,13 @@ signal settings_closed
 @onready var sound_label: RichTextLabel = $ColorRect/sound_label
 
 
+func _ready():
+	sound_setting.value = Globals.master_volume
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Globals.master_volume)
+	sound_label.text = "Volume: " + str(Globals.master_volume)
+
 func _on_sound_setting_value_changed(value: float) -> void:
+	Globals.master_volume = value
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), value)
 	sound_label.text = "Volume: " + str(value)
 
