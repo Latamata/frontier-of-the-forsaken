@@ -15,13 +15,13 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -67.0
-offset_right = 284.0
+offset_right = 186.0
 grow_vertical = 0
 color = Color(0.838856, 0.608445, 0.468178, 0.788235)
 
 [node name="ColorRect" type="ColorRect" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 773.0
+offset_left = 876.0
 offset_top = 3.0
 offset_right = 1152.0
 offset_bottom = 67.0
@@ -48,11 +48,12 @@ toggle_mode = true
 text = "Aim"
 
 [node name="geomap" type="Button" parent="battlemapUI"]
+visible = false
 layout_mode = 0
-offset_left = 1031.0
-offset_top = 8.0
-offset_right = 1136.0
-offset_bottom = 67.0
+offset_left = 460.0
+offset_top = -279.0
+offset_right = 565.0
+offset_bottom = -220.0
 focus_mode = 0
 text = "To the road"
 
@@ -68,9 +69,9 @@ text = "Fire"
 
 [node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 866.0
+offset_left = 897.0
 offset_top = 36.0
-offset_right = 1026.0
+offset_right = 1057.0
 offset_bottom = 63.0
 max_value = 7.0
 step = 1.0
@@ -90,9 +91,9 @@ text = "auto shoot"
 
 [node name="reload_label" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 864.0
+offset_left = 897.0
 offset_top = 13.0
-offset_right = 946.0
+offset_right = 979.0
 offset_bottom = 37.0
 text = "Reload"
 
@@ -122,9 +123,9 @@ one_shot = true
 
 [node name="Talents" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 780.0
+offset_left = 1075.0
 offset_top = 24.0
-offset_right = 845.0
+offset_right = 1140.0
 offset_bottom = 61.0
 focus_mode = 0
 mouse_filter = 1
@@ -140,14 +141,6 @@ offset_right = 852.0
 offset_bottom = -254.0
 theme_override_font_sizes/normal_font_size = 62
 text = "Wave complete!"
-
-[node name="weapontoggle" type="Button" parent="battlemapUI"]
-layout_mode = 0
-offset_left = 195.0
-offset_top = 4.0
-offset_right = 253.0
-offset_bottom = 35.0
-text = "weapon"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
 layout_direction = 1
@@ -312,7 +305,6 @@ offset_bottom = 3.0
 [connection signal="button_down" from="battlemapUI/auto_shoot" to="." method="_on_auto_shoot_button_down"]
 [connection signal="timeout" from="battlemapUI/campaign_map_timer" to="." method="_on_campaign_map_timer_timeout"]
 [connection signal="button_down" from="battlemapUI/Talents" to="." method="_on_talents_button_down"]
-[connection signal="button_down" from="battlemapUI/weapontoggle" to="." method="_on_weapontoggle_button_down"]
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="mapgeoUI/move" to="." method="_on_move_button_down"]

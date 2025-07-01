@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 signal fire_action
-signal weapon_toggle
 signal aim_action
 signal auto_shoot_action
 signal camp_action
@@ -18,10 +17,11 @@ signal ui_interaction_ended()
 @onready var tuts = $instructions
 var travel_mode = false
 @onready var shop: Control = $shop
+@onready var geomap: Button = $battlemapUI/geomap
 
 func _ready() -> void:
 	update_resources()
-	print(shop)
+
 func _process(_delta: float) -> void:
 	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
 
@@ -43,6 +43,9 @@ func update_resources() -> void:
 	$resources/infanty_amount.text = str(Globals.soldier_count) + '/' + str(Globals.soldier_total)
 
 #-----------------GEOGRAPHIC MAP UI----------------------
+func hide_show_camp_button(hideorshow):
+	geomap.visible = hideorshow
+
 func _on_camp_button_down():
 	emit_signal("camp_action")
 	#print("Camp button pressed - Signal emitted")
@@ -83,8 +86,6 @@ func _on_geomap_button_down() -> void:
 		$battlemapUI/campaign_map_timer.start()
 		$battlemapUI/RichTextLabel.visible = true
 
-func _on_weapontoggle_button_down() -> void:
-	emit_signal("weapon_toggle") 
 
 func _on_auto_shoot_button_down() -> void:
 	emit_signal("auto_shoot_action")
