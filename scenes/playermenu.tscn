@@ -10,10 +10,6 @@ script = ExtResource("1_3ipoq")
 
 [node name="settings" parent="." instance=ExtResource("2_0nwaf")]
 visible = false
-offset_left = 282.0
-offset_top = 122.0
-offset_right = 282.0
-offset_bottom = 122.0
 
 [node name="menu_items" type="Control" parent="."]
 layout_mode = 3

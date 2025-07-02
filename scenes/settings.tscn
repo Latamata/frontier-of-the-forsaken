@@ -2,20 +2,23 @@
 
 [ext_resource type="Script" uid="uid://dvbktl7oilru" path="res://scripts/settings.gd" id="1_5p8wc"]
 
-[node name="settings" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="settings" type="CanvasLayer"]
 script = ExtResource("1_5p8wc")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 521.0
-offset_bottom = 376.0
-color = Color(0.0705882, 1, 1, 0.321569)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.5
+offset_top = -188.0
+offset_right = 260.5
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+color = Color(0.854902, 0.631373, 0.498039, 0.890196)
 
 [node name="TItle" type="RichTextLabel" parent="ColorRect"]
 modulate = Color(0.516302, 0.391962, 0.118891, 1)

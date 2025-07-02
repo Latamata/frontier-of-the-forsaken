@@ -148,7 +148,7 @@ shader_parameter/tolerance = 0.1
 shader_parameter/toggle_gold = false
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qlg0r"]
-points = PackedVector2Array(0, 0, 47, 25, 47, -24)
+points = PackedVector2Array(0, 0, 47, 35, 47, -35)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("5_qlg0r")

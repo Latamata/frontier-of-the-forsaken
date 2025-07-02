@@ -21,8 +21,10 @@ script = ExtResource("1_dkfqi")
 [node name="battlemapinstruction" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 205.0
+offset_top = 56.0
+offset_right = 245.0
+offset_bottom = 96.0
 
 [node name="ColorRect" type="ColorRect" parent="battlemapinstruction"]
 layout_mode = 0
@@ -58,19 +60,21 @@ texture = SubResource("AtlasTexture_nisbi")
 [node name="campaignmapinstruction" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 201.0
+offset_top = 60.0
+offset_right = 201.0
+offset_bottom = 60.0
 
 [node name="CampaignTut" type="Sprite2D" parent="campaignmapinstruction"]
-position = Vector2(546, 316)
+position = Vector2(243, 229)
 texture = ExtResource("3_njqp3")
 
 [node name="closecmi" type="Button" parent="campaignmapinstruction"]
 layout_mode = 0
-offset_left = 307.0
-offset_top = 89.0
-offset_right = 315.0
-offset_bottom = 97.0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 52.0
+offset_bottom = 33.0
 text = "close"
 
 [connection signal="button_down" from="battlemapinstruction/ColorRect/Button" to="." method="_on_button_button_down"]

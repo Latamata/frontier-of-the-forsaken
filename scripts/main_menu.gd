@@ -8,11 +8,11 @@ func _on_quit_button_down() -> void:
 
 func _on_options_button_down() -> void:
 	$settings.visible = true
-	$main_screen.visible = false
+	#$main_screen.visible = false
 
 func _on_settings_settings_closed() -> void:
 	$settings.visible = false
-	$main_screen.visible = true
+	#$main_screen.visible = true
 
 func _on_audio_stream_player_2d_finished() -> void:
 	$AudioStreamPlayer2D.play()

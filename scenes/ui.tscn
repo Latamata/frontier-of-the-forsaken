@@ -14,33 +14,32 @@ layout_direction = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -67.0
+offset_top = -75.0
 offset_right = 186.0
 grow_vertical = 0
 color = Color(0.838856, 0.608445, 0.468178, 0.788235)
 
 [node name="ColorRect" type="ColorRect" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 876.0
-offset_top = 3.0
+offset_left = 885.0
 offset_right = 1152.0
-offset_bottom = 67.0
+offset_bottom = 75.0
 color = Color(0.839216, 0.607843, 0.466667, 0.788235)
 
 [node name="talents" parent="battlemapUI" instance=ExtResource("2_yev5y")]
 visible = false
 layout_mode = 1
-offset_left = 802.0
-offset_top = -185.0
-offset_right = 802.0
-offset_bottom = -185.0
+offset_left = 967.0
+offset_top = -187.0
+offset_right = 967.0
+offset_bottom = -187.0
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 34.0
-offset_right = 101.0
-offset_bottom = 65.0
+offset_left = 6.0
+offset_top = 38.0
+offset_right = 97.0
+offset_bottom = 69.0
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 theme_override_colors/font_pressed_color = Color(0.913725, 0, 0, 1)
@@ -59,10 +58,10 @@ text = "To the road"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 104.0
-offset_top = 3.0
-offset_right = 176.0
-offset_bottom = 65.0
+offset_left = 105.0
+offset_top = 8.0
+offset_right = 177.0
+offset_bottom = 70.0
 focus_mode = 0
 mouse_filter = 1
 text = "Fire"
@@ -79,10 +78,10 @@ show_percentage = false
 
 [node name="auto_shoot" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 1.0
-offset_right = 102.0
-offset_bottom = 32.0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 98.0
+offset_bottom = 36.0
 focus_mode = 0
 mouse_filter = 1
 theme_override_colors/font_pressed_color = Color(0.94902, 0, 0, 1)
@@ -143,6 +142,7 @@ theme_override_font_sizes/normal_font_size = 62
 text = "Wave complete!"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
+visible = false
 layout_direction = 1
 anchors_preset = 4
 anchor_top = 0.5
