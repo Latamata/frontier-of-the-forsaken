@@ -61,13 +61,10 @@ func _process(delta):
 			navigation_agent_2d.target_position = target.global_position
 			var offset = randi() % 10 / 100.0  # Random 0-0.1s
 			await get_tree().create_timer(path_update_interval + offset).timeout
-
 			#if target.global_position.distance_to(global_position) > 200:  # or some logic
 			target = null
 	else:
 		find_target()  # Look for a new target
-	#print(target)
-	
 
 func find_target():
 	var bodies_in_area = targeting.get_overlapping_bodies()

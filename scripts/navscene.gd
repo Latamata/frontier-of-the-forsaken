@@ -352,7 +352,7 @@ func _on_waypoint_body_entered(waypoint: Node) -> void:
 	await get_tree().create_timer(0.1).timeout
 	for zombie in zombiegroup.get_children():
 		await get_tree().create_timer(0.1).timeout
-		if is_instance_valid(zombie) and zombie.is_inside_tree():
+		if is_instance_valid(zombie) and zombie.is_inside_tree() :
 			zombie.target = get_random_waypoint(waypoint)
 
 var max_zombies = 64

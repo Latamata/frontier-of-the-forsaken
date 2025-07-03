@@ -9,15 +9,15 @@ var is_global_aiming = false
 var experience: int = 0
 var level: int = 1
 var xp_to_next: int = 100
-var master_volume: float = 0.0  # dB value, not linear
+var master_volume: float = 0.5  # dB value, not linear
 
 # Properties
 var skill_points: int =  0 # setget add_food, get_food
-var food: int =  2000 # setget add_food, get_food
+var food: int =  0 # setget add_food, get_food
 var gold: int =  200 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
-var wave_count = 0
+var wave_count = 64
 var current_line: int = 0
 var soldier_count: int = 0 # setget add_soldier_count, get_soldier_count
 var soldier_total: int = 12 # setget add_soldier_count, get_soldier_count
