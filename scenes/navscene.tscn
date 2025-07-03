@@ -2256,15 +2256,15 @@ texture_region_size = Vector2i(32, 32)
 6:0/0/texture_origin = Vector2i(0, 15)
 10:1/0 = 0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ql54t"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a6efp"]
 shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
-shader_parameter/sway_speed = 2.5
+shader_parameter/sway_speed = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uigwm"]
 shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
-shader_parameter/sway_speed = 1.5
+shader_parameter/sway_speed = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wa2sj"]
 shader = ExtResource("7_ql54t")
@@ -2276,26 +2276,26 @@ shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
 shader_parameter/sway_speed = 1.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a6efp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ybonv"]
 shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
-shader_parameter/sway_speed = 1.5
+shader_parameter/sway_speed = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j1enq"]
 shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
-shader_parameter/sway_speed = 1.5
+shader_parameter/sway_speed = 1.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uigwm"]
 texture = ExtResource("3_7y1ne")
 texture_region_size = Vector2i(32, 32)
 0:0/size_in_atlas = Vector2i(4, 4)
 0:0/0 = 0
-0:0/0/material = SubResource("ShaderMaterial_ql54t")
+0:0/0/material = SubResource("ShaderMaterial_a6efp")
 0:0/0/y_sort_origin = 35
 4:0/size_in_atlas = Vector2i(4, 4)
 4:0/0 = 0
-4:0/0/material = SubResource("ShaderMaterial_a6efp")
+4:0/0/material = SubResource("ShaderMaterial_ybonv")
 4:0/0/y_sort_origin = 35
 8:0/size_in_atlas = Vector2i(2, 4)
 8:0/0 = 0
