@@ -47,7 +47,6 @@ toggle_mode = true
 text = "Aim"
 
 [node name="geomap" type="Button" parent="battlemapUI"]
-visible = false
 layout_mode = 0
 offset_left = 460.0
 offset_top = -279.0

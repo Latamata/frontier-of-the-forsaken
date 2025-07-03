@@ -1,8 +1,7 @@
 extends Node2D
 
 func _ready() -> void:
-	Globals.geo_map_camp = 0
-	Globals.current_line = 0
+	Globals.reset()
 
 func _unhandled_input(event):
 	if event.is_pressed():

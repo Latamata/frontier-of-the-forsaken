@@ -18,6 +18,8 @@ signal ui_interaction_ended()
 var travel_mode = false
 @onready var shop: Control = $shop
 @onready var geomap: Button = $battlemapUI/geomap
+@onready var reload_timer: ProgressBar = $battlemapUI/reloadtimer
+
 
 func _ready() -> void:
 	update_resources()
@@ -82,6 +84,7 @@ func _on_battlemap_ui_mouse_exited():
 	emit_signal("ui_interaction_ended") 
 
 func _on_geomap_button_down() -> void:
+	hide_show_camp_button(false)
 	if travel_mode:
 		$battlemapUI/campaign_map_timer.start()
 		$battlemapUI/RichTextLabel.visible = true
@@ -119,3 +122,7 @@ func hide_or_show_wavecomplete(show_it):
 
 func _on_shop_button_button_down() -> void:
 	shop.hide_or_show(true) 
+
+func set_reload(value: float, max_reload: float) -> void:
+	reload_timer.value = value
+	reload_timer.max_value = max_reload # Start with remaining time

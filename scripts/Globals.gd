@@ -12,12 +12,12 @@ var xp_to_next: int = 100
 var master_volume: float = 0.5  # dB value, not linear
 
 # Properties
-var skill_points: int =  0 # setget add_food, get_food
-var food: int =  2000 # setget add_food, get_food
+var skill_points: int =  10 # setget add_food, get_food
+var food: int =  0 # setget add_food, get_food
 var gold: int =  200 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
 # In a global script or main game manager:
-var wave_count = 0
+var wave_count = 1
 var current_line: int = 0
 var soldier_count: int = 0 # setget add_soldier_count, get_soldier_count
 var soldier_total: int = 12 # setget add_soldier_count, get_soldier_count
@@ -59,6 +59,39 @@ var talent_tree = {
 		"max_level": 1	
 	}
 }
+
+func reset() -> void:
+	is_global_aiming = false
+	experience = 0
+	level = 1
+	xp_to_next = 100
+	skill_points = 0
+	food = 2020
+	gold = 200
+	geo_map_camp = 0
+	wave_count = 0
+	current_line = 0
+	soldier_count = 0
+	soldier_total = 12
+	bullet_type = "lead"
+	time_of_day = ""
+	current_biome = ""
+	current_event = ""
+	bullets_unlocked = ['lead']
+	double_resources = false
+	golden_musket = false
+	golden_sword = false
+	show_campaign_tut = true
+	show_battle_tut = true
+
+	talent_tree = {
+		"gun_damage": {"level": 0, "max_level": 5},
+		"sword_damage": {"level": 0, "max_level": 5},
+		"gun_speed": {"level": 0, "max_level": 3},
+		"sword_speed": {"level": 0, "max_level": 3},
+		"sword_spec_damage_reduce": {"level": 0, "max_level": 1},
+		"gun_spec_standing_speed": {"level": 0, "max_level": 1}
+	}
 
 func increase_talent_level(talent_name: String) -> void:
 	if skill_points <= 0:

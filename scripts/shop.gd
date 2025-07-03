@@ -63,11 +63,11 @@ func get_bullet_damage(bullet_type: String) -> int:
 func _on_buy_soldier_mouse_entered() -> void:
 	info.text = "
 	Item: Soldier
-	Cost: 20g"
+	Cost: 30g"
 
 func _on_buy_soldier_button_down() -> void:
-	if Globals.gold >= 20 && Globals.soldier_count < Globals.soldier_total:
-		Globals.gold -= 20
+	if Globals.gold >= 30 && Globals.soldier_count < Globals.soldier_total:
+		Globals.gold -= 30
 		Globals.soldier_count += 1
 		emit_signal("bought_something")
 

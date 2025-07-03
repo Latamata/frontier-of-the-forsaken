@@ -22,9 +22,9 @@ centered = false
 [node name="Title" type="RichTextLabel" parent="main_screen"]
 modulate = Color(1, 0.545098, 0.247059, 1)
 layout_mode = 0
-offset_left = 180.0
+offset_left = 197.0
 offset_top = 17.0
-offset_right = 934.0
+offset_right = 951.0
 offset_bottom = 158.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_outline_size = 21

@@ -2,11 +2,12 @@ extends CharacterBody2D
 
 signal heal_npc(area: Area2D)
 signal died
-signal one_pump
+signal one_pump(total_time: int)
+
 
 var HEALTH = 100
 var sword_damage = 20
-var base_reload_time = 6.0
+var base_reload_pumps = 7
 var SPEED = 0.10
 var reload_pumps = 0
 var golden_gun_buff = 0
@@ -301,7 +302,7 @@ func sword_attack():
 
 func player_shoot():
 	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
-	reload_pumps = 7 - gun_speed_level - golden_gun_buff
+	reload_pumps = base_reload_pumps - gun_speed_level - golden_gun_buff
 	gun_reloaded = false
 	$smoke_and_sword.rotation = gun.rotation
 	$smoke_and_sword.global_position = $Musket/Marker2D.global_position
@@ -353,12 +354,15 @@ func _on_meleetimer_timeout() -> void:
 
 func toggle_golden_gun(enable_gold: bool):
 	gun.material.set_shader_parameter("toggle_gold", enable_gold)
+
 func toggle_golden_sword(enable_gold: bool):
 	sabre.material.set_shader_parameter("toggle_gold", enable_gold)
 
 func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
+	var gun_speed_level = Globals.talent_tree["gun_speed"]["level"]
+	var total_time = base_reload_pumps - gun_speed_level - golden_gun_buff
 	reload_pumps -= 1
-	emit_signal('one_pump')
+	emit_signal("one_pump", total_time)
 	if reload_pumps > 0 && current_weapon_index == 0:
 		if facing_left  :
 			animation_player.play("reload_leftfacing")

@@ -335,14 +335,17 @@ func create_light_bearer() -> void:
 func _on_zombie_died():
 	_play_sound(preload("res://sound/zombiedeath.wav"), global_position)
 	ui.update_xp_talents()
-	await get_tree().create_timer(0.6).timeout  # waits ~1/10th of a second
+	await get_tree().create_timer(0.6).timeout
 	if zombiegroup.get_child_count() == 0:
+		Globals.wave_count += 1
+		ui.update_wave(Globals.wave_count)  # Make sure this reflects the updated count
 		ui.hide_or_show_wavecomplete(true)
 		ui.hide_show_camp_button(true)
 		ui.travel_mode = true
 		$wave_timer.start()
 		print("All zombies are dead! Spawning chest...")
 		spawn_treasure_chest()
+
 
 func get_random_waypoint(exclude: Node) -> Node:
 	var available = waypoints.filter(func(wp): return wp != exclude)
@@ -357,7 +360,6 @@ func _on_waypoint_body_entered(waypoint: Node) -> void:
 
 var max_zombies = 64
 func _on_wave_timer_timeout() -> void:
-	Globals.wave_count += 1
 	ui.update_wave(Globals.wave_count)
 	ui.hide_or_show_wavecomplete(false)
 	ui.hide_show_camp_button(false)
@@ -394,9 +396,9 @@ func spawn_zombies(rows: int, cols: int, center: Vector2, radius: float, exclude
 			zombiegroup.add_child(zombie)
 			await get_tree().create_timer(0.2).timeout
 
-func _on_player_one_pump() -> void:
+func _on_player_one_pump(total_pumps) -> void:
 	if player:
-		ui.get_child(0).get_node("reloadtimer").value = player.reload_pumps 
+		ui.set_reload(player.reload_pumps, total_pumps)
 
 func sword_spec_dmgcheck():
 	player.sword_spec_damage_reduce = true
