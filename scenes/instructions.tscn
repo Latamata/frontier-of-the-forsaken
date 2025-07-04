@@ -15,7 +15,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("1_dkfqi")
 
 [node name="battlemapinstruction" type="Control" parent="."]
@@ -75,6 +74,7 @@ offset_left = 4.0
 offset_top = 2.0
 offset_right = 52.0
 offset_bottom = 33.0
+action_mode = 0
 text = "close"
 
 [connection signal="button_down" from="battlemapinstruction/ColorRect/Button" to="." method="_on_button_button_down"]

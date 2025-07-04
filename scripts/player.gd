@@ -76,14 +76,19 @@ func _process(_delta):
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
 		# Resume reload if it was interrupted
-		if gun_reloaded_stopped and reload_pumps > 0:
-			gun_reloaded_stopped = false
-			start_reload_if_needed()
+		#if gun_reloaded_stopped and reload_pumps > 0:
+			#gun_reloaded_stopped = false
+			#start_reload_if_needed()
 
 func _input(event):
 	if event is InputEventMouseMotion:
 		var current_weapon = weapons[current_weapon_index]
-		rotate_weapon(current_weapon)  # Rotate the active weapon normally
+		rotate_weapon(current_weapon)
+
+	if event.is_action_pressed("reload"):
+		if not gun_reloaded and reload_pumps > 0:
+			start_reload_if_needed()
+
 
 func sprite_frame_direction():
 	if is_swinging:
@@ -217,7 +222,7 @@ func switch_weapon():
 
 	current_weapon_index = (current_weapon_index + 1) % weapons.size()
 	set_active_weapon(current_weapon_index)
-	start_reload_if_needed()
+	#start_reload_if_needed()
 
 	var current_weapon = weapons[current_weapon_index]  # Get the new weapon
 	rotate_weapon(current_weapon)  # Now rotate it to match mouse
@@ -305,13 +310,14 @@ func player_shoot():
 	reload_pumps = base_reload_pumps - gun_speed_level - golden_gun_buff
 	gun_reloaded = false
 	$smoke_and_sword.rotation = gun.rotation
-	$smoke_and_sword.global_position = $Musket/Marker2D.global_position
+	var offset = Vector2(50, 0).rotated($Musket.global_rotation)
+	$smoke_and_sword.global_position = $Musket.global_position + offset
+
 	$smoke_and_sword.play('smoke')
 	start_reload_if_needed()
 
 func start_reload_if_needed():
 	if reload_pumps > 0 and current_weapon_index == 0:
-		
 		# Only start reloading if not already doing so
 		if !animation_player.is_playing():
 			await get_tree().create_timer(0.5).timeout

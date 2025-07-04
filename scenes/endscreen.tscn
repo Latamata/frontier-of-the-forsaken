@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtffs12rmgqnn"]
+[gd_scene load_steps=6 format=3 uid="uid://dtffs12rmgqnn"]
 
 [ext_resource type="Script" uid="uid://c6ggd5lpf033c" path="res://scripts/endscreen.gd" id="1_cuen1"]
 [ext_resource type="Texture2D" uid="uid://c11xyupmnbp05" path="res://assets/assets_task_01jz25h5w4fj9srv0tp995apdh_1751345911_img_1.webp" id="1_dt0yg"]
+[ext_resource type="PackedScene" uid="uid://p4gbh7sdk7lh" path="res://scenes/firework.tscn" id="3_5j82o"]
+[ext_resource type="FontFile" uid="uid://cp1adn75ne8dl" path="res://assets/BitcountGridDouble_Cursive-Black.ttf" id="3_7s65u"]
+[ext_resource type="AudioStream" uid="uid://dui5cqibtreme" path="res://sound/firworks-freesounds.wav" id="5_jev7x"]
 
 [node name="Endscreen" type="Node2D"]
 script = ExtResource("1_cuen1")
@@ -12,14 +15,31 @@ texture = ExtResource("1_dt0yg")
 centered = false
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 711.0
-offset_top = 177.0
-offset_right = 1109.0
-offset_bottom = 349.0
+offset_left = 640.0
+offset_top = 168.0
+offset_right = 1121.0
+offset_bottom = 337.0
 size_flags_horizontal = 0
 theme_override_colors/default_color = Color(1, 0.545098, 0.247059, 1)
-theme_override_font_sizes/normal_font_size = 30
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/normal_font = ExtResource("3_7s65u")
+theme_override_font_sizes/normal_font_size = 31
 text = "Made by Chance Webber 
 
-
 Press any key to continue..."
+
+[node name="firework" parent="." instance=ExtResource("3_5j82o")]
+position = Vector2(131, 19)
+
+[node name="firework2" parent="." instance=ExtResource("3_5j82o")]
+position = Vector2(453, 16)
+
+[node name="firework3" parent="." instance=ExtResource("3_5j82o")]
+position = Vector2(856, 14)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_jev7x")
+autoplay = true
+
+[connection signal="finished" from="AudioStreamPlayer2D" to="." method="_on_audio_stream_player_2d_finished"]

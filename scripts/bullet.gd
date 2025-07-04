@@ -1,7 +1,7 @@
 extends Area2D
 
 var direction: Vector2 = Vector2.ZERO 
-var speed = 360 
+var speed = 400 
 var damage_bonus = 0
 var pierced_through = false
 var shooter = CharacterBody2D

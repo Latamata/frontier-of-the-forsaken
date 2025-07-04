@@ -23,7 +23,8 @@ var travel_mode = false
 
 func _ready() -> void:
 	update_resources()
-
+	#_on_aim_button_down()
+	#_on_auto_shoot_button_down()
 func _process(_delta: float) -> void:
 	$battlemapUI/RichTextLabel.text = str(int($battlemapUI/campaign_map_timer.time_left))
 

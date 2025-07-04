@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://p4gbh7sdk7lh"]
+
+[sub_resource type="Curve" id="Curve_67a48"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="firework" type="Node2D"]
+
+[node name="fireworks" type="CPUParticles2D" parent="."]
+position = Vector2(135, 41)
+amount = 16
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 47.9
+initial_velocity_min = 200.0
+initial_velocity_max = 300.0
+scale_amount_min = 0.1
+scale_amount_max = 3.0
+color = Color(0.290196, 0.152941, 0.929412, 1)
+hue_variation_min = 0.13
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("Curve_67a48")

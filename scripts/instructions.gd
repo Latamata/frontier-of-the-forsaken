@@ -5,7 +5,7 @@ extends Control
 
 func _on_button_button_down() -> void:
 	hide_instruction("battle", false)
-
+	get_tree().paused = false
 func _on_closecmi_button_down() -> void:
 	hide_instruction("campaign", false)
 

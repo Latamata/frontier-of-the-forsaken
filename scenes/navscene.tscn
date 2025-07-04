@@ -1,7 +1,6 @@
-[gd_scene load_steps=79 format=4 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=76 format=4 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" uid="uid://fgxtjtaduhe4" path="res://scripts/navscene.gd" id="1_fg51v"]
-[ext_resource type="Shader" uid="uid://c06yuhqyhjvuf" path="res://shaders/water.gdshader" id="2_uigwm"]
 [ext_resource type="Texture2D" uid="uid://cy01i81rii7b0" path="res://assets/survivalgame-terrian-water-32x32.png" id="2_xp418"]
 [ext_resource type="Texture2D" uid="uid://c5ak1mmopr0jw" path="res://assets/trees.png" id="3_7y1ne"]
 [ext_resource type="Texture2D" uid="uid://bm1n0js5cyey4" path="res://assets/Tilemap_Flat_32.png" id="3_x4cqo"]
@@ -81,22 +80,6 @@ vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
 agent_radius = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ntny"]
-shader = ExtResource("2_uigwm")
-shader_parameter/speed = 1.0
-shader_parameter/strength = 5.0
-shader_parameter/frequency = 20.0
-shader_parameter/noise_scale = 60.0
-shader_parameter/noise_strength = 0.02
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p1uan"]
-shader = ExtResource("2_uigwm")
-shader_parameter/speed = 1.0
-shader_parameter/strength = 5.0
-shader_parameter/frequency = 20.0
-shader_parameter/noise_scale = 60.0
-shader_parameter/noise_strength = 0.02
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5oslp"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -444,7 +427,6 @@ texture_region_size = Vector2i(32, 32)
 13:1/0 = 0
 13:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 14:1/0 = 0
-14:1/0/material = SubResource("ShaderMaterial_4ntny")
 14:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 15:1/0 = 0
 15:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -533,7 +515,6 @@ texture_region_size = Vector2i(32, 32)
 13:2/0 = 0
 13:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 14:2/0 = 0
-14:2/0/material = SubResource("ShaderMaterial_p1uan")
 14:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 15:2/0 = 0
 15:2/0/terrain_set = 0

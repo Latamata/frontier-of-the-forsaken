@@ -47,11 +47,12 @@ toggle_mode = true
 text = "Aim"
 
 [node name="geomap" type="Button" parent="battlemapUI"]
+visible = false
 layout_mode = 0
-offset_left = 460.0
-offset_top = -279.0
-offset_right = 565.0
-offset_bottom = -220.0
+offset_left = 500.0
+offset_top = -296.0
+offset_right = 605.0
+offset_bottom = -237.0
 focus_mode = 0
 text = "To the road"
 
@@ -85,7 +86,7 @@ focus_mode = 0
 mouse_filter = 1
 theme_override_colors/font_pressed_color = Color(0.94902, 0, 0, 1)
 toggle_mode = true
-text = "auto shoot"
+text = "Auto shoot"
 
 [node name="reload_label" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0

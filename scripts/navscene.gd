@@ -26,6 +26,7 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
+	#
 	ui.tuts.hide_instruction("battle", Globals.show_battle_tut)
 	day_lighting_setup()
 	for waypoint in waypoints:
@@ -39,7 +40,7 @@ func _ready() -> void:
 	Globals.connect( "collect_item", _on_player_collect_item )
 	Globals.connect( "sword_spec_dmgrdc", sword_spec_dmgcheck )
 	Globals.connect("level_up", Callable(self, "_on_level_up"))
-	get_tree().paused = false
+	get_tree().paused = true
 	$wave_timer.start()
 	var starting_position = Vector2(-200, -90)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -57,7 +58,7 @@ func _ready() -> void:
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
 		# Set the correct aiming state before adding to scene
 		musketman_instance.is_aiming = Globals.is_global_aiming
-
+	_on_ui_aim_action()
 var time_since_speed_update = 0.0
 const SPEED_UPDATE_INTERVAL = 0.5  # seconds
 func _process(delta):
@@ -83,6 +84,14 @@ func _input(event):
 					camera_2d.zoom *= 1.1  # Zoom out
 			MOUSE_BUTTON_LEFT:
 				if event.pressed:
+					var current_weapon = player.get_current_weapon()
+					if current_weapon == player.gun and player.gun_reloaded: 
+						fire_gun(player)
+						player.player_shoot()
+					elif current_weapon == player.sabre and player.melee_reloaded:
+						player.sword_attack()
+			MOUSE_BUTTON_RIGHT:
+				if event.pressed:
 					is_rotating = true
 					initial_click_position = get_local_mouse_position()
 				else:
@@ -102,13 +111,7 @@ func _input(event):
 		player.looting = false
 	if Input.is_action_just_pressed("one_key") and player:
 		player.switch_weapon()
-	if Input.is_action_just_pressed("ui_accept") and is_instance_valid(player):
-		var current_weapon = player.get_current_weapon()
-		if current_weapon == player.gun && player.gun_reloaded: 
-			fire_gun(player)
-			player.player_shoot()
-		elif current_weapon == player.sabre && player.melee_reloaded:
-			player.sword_attack()
+
 
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):

@@ -386,7 +386,7 @@ texture = ExtResource("3_vos4w")
 centered = false
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]
-position = Vector2(56, 5)
+position = Vector2(36, 3)
 
 [node name="sabre" type="Sprite2D" parent="."]
 light_mask = 0

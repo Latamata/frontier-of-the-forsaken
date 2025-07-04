@@ -27,13 +27,13 @@ var desert_points_by_line = [
 var path_connections = {
 	0: {  # Path2D
 		8: {"line": 1, "point": 0},  # Point 4 in Path2D connects to Path2D3, point 0
-		12: {"line": 2, "point": 0}   # Point 8 in Path2D connects to Path2D2, point 0
+		11: {"line": 2, "point": 0}   # Point 8 in Path2D connects to Path2D2, point 0
 	},
 	1: {  # Path2D3
 		0: {"line": 0, "point": 8},  # Point 0 in Path2D3 connects back to Path2D, point 4
 	},
 	2: {  # Path2D2
-		0: {"line": 0, "point": 12}   # Point 8 in Path2D2 connects to Path2D3, point 3
+		0: {"line": 0, "point": 11}   # Point 8 in Path2D2 connects to Path2D3, point 3
 	}
 }
 
@@ -81,7 +81,7 @@ func _update_turn_button_visibility():
 		if Globals.current_line == 0 and Globals.geo_map_camp == 8:
 			$turn_sign_post.deactivate_sign(true)
 			$turn_sign_post2.deactivate_sign(false)
-		elif Globals.current_line == 0 and Globals.geo_map_camp == 12:
+		elif Globals.current_line == 0 and Globals.geo_map_camp == 11:
 			$turn_sign_post2.deactivate_sign(true)
 			$turn_sign_post.deactivate_sign(false)
 		elif Globals.current_line == 1 and Globals.geo_map_camp == 0:
@@ -188,7 +188,7 @@ func _on_turn_sign_post_2_direction_chosen(direction: String) -> void:
 		current_path = paths[Globals.current_line]
 	else:
 		Globals.current_line = 0
-		Globals.geo_map_camp = 12
+		Globals.geo_map_camp = 11
 		current_path = paths[Globals.current_line]
 
 	move_wagon_to_line(current_path, Globals.geo_map_camp)
