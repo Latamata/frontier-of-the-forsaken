@@ -26,7 +26,6 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
-	#
 	ui.tuts.hide_instruction("battle", Globals.show_battle_tut)
 	day_lighting_setup()
 	for waypoint in waypoints:
@@ -40,7 +39,7 @@ func _ready() -> void:
 	Globals.connect( "collect_item", _on_player_collect_item )
 	Globals.connect( "sword_spec_dmgrdc", sword_spec_dmgcheck )
 	Globals.connect("level_up", Callable(self, "_on_level_up"))
-	get_tree().paused = true
+	#get_tree().paused = true
 	$wave_timer.start()
 	var starting_position = Vector2(-200, -90)  # Initial position of the first musketman
 	var row_offset = Vector2(50, 0)  # Offset for moving down within a column
@@ -65,13 +64,13 @@ func _process(delta):
 	time_since_speed_update += delta
 	if time_since_speed_update >= SPEED_UPDATE_INTERVAL:
 		update_all_speeds()
-		#update_speed_based_on_tile(player)
 		time_since_speed_update = 0.0
 
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
 var update_interval = 200  # Minimum interval between updates (in seconds)
 func _input(event):
+	#print(is_ui_interacting)
 	if is_ui_interacting:
 		return
 	if event is InputEventMouseButton:
@@ -239,6 +238,7 @@ func _on_ui_fire_action():
 
 #prevent unit selection when ai is hovered
 func _on_ui_ui_interaction_started():
+	#print('asdfasdf')
 	is_ui_interacting = true
 	is_rotating = false
 

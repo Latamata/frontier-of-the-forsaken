@@ -3,47 +3,40 @@
 [ext_resource type="Script" uid="uid://drmbfdea550jn" path="res://scripts/skill_tree.gd" id="1_tnam6"]
 [ext_resource type="Texture2D" uid="uid://cw8r1qd08c4wi" path="res://assets/inventoryicons.png" id="2_a302t"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tyjg3"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ty3n3"]
 atlas = ExtResource("2_a302t")
 region = Rect2(1.56273, 1.88958, 47.9163, 47.476)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_51bdh"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_tnam6"]
 atlas = ExtResource("2_a302t")
 region = Rect2(50.2291, 0.556047, 49.3794, 49.444)
 
-[node name="Control" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_tnam6")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
+[node name="ColorRect" type="ColorRect"]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -305.0
-offset_top = -253.0
-offset_bottom = 143.0
+offset_left = -313.0
+offset_top = -197.5
+offset_right = -8.0
+offset_bottom = 198.5
 grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.408329, 0.408329, 0.408329, 1)
+script = ExtResource("1_tnam6")
 
-[node name="Button" type="Button" parent="ColorRect"]
+[node name="Button" type="Button" parent="."]
 layout_mode = 0
 offset_left = 66.0
 offset_top = 44.0
 offset_right = 121.0
 offset_bottom = 99.0
 focus_mode = 0
-icon = SubResource("AtlasTexture_tyjg3")
+mouse_filter = 1
+icon = SubResource("AtlasTexture_ty3n3")
 
-[node name="Button2" type="Button" parent="ColorRect"]
+[node name="Button2" type="Button" parent="."]
 layout_mode = 0
 offset_left = 194.0
 offset_top = 45.0
@@ -52,18 +45,20 @@ offset_bottom = 102.0
 tooltip_text = "Sword Specializtion
 ++ damage"
 focus_mode = 0
-icon = SubResource("AtlasTexture_51bdh")
+mouse_filter = 1
+icon = SubResource("AtlasTexture_tnam6")
 
-[node name="Button3" type="Button" parent="ColorRect"]
+[node name="Button3" type="Button" parent="."]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 147.0
 offset_right = 119.0
 offset_bottom = 202.0
 focus_mode = 0
-icon = SubResource("AtlasTexture_tyjg3")
+mouse_filter = 1
+icon = SubResource("AtlasTexture_ty3n3")
 
-[node name="Button4" type="Button" parent="ColorRect"]
+[node name="Button4" type="Button" parent="."]
 layout_mode = 0
 offset_left = 192.0
 offset_top = 148.0
@@ -72,18 +67,20 @@ offset_bottom = 205.0
 tooltip_text = "Sword Specializtion
 ++ damage"
 focus_mode = 0
-icon = SubResource("AtlasTexture_51bdh")
+mouse_filter = 1
+icon = SubResource("AtlasTexture_tnam6")
 
-[node name="Button5" type="Button" parent="ColorRect"]
+[node name="Button5" type="Button" parent="."]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 254.0
 offset_right = 119.0
 offset_bottom = 309.0
 focus_mode = 0
-icon = SubResource("AtlasTexture_tyjg3")
+mouse_filter = 1
+icon = SubResource("AtlasTexture_ty3n3")
 
-[node name="Button6" type="Button" parent="ColorRect"]
+[node name="Button6" type="Button" parent="."]
 layout_mode = 0
 offset_left = 192.0
 offset_top = 255.0
@@ -92,121 +89,124 @@ offset_bottom = 312.0
 tooltip_text = "Sword Specializtion
 ++ damage"
 focus_mode = 0
-icon = SubResource("AtlasTexture_51bdh")
+mouse_filter = 1
+icon = SubResource("AtlasTexture_tnam6")
 
-[node name="level_experience" type="RichTextLabel" parent="ColorRect"]
+[node name="level_experience" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 50.0
-offset_top = 310.0
-offset_right = 234.0
-offset_bottom = 384.0
+offset_left = 67.0
+offset_top = 315.5
+offset_right = 251.0
+offset_bottom = 389.5
+mouse_filter = 1
 
-[node name="exit" type="Button" parent="ColorRect"]
+[node name="exit" type="Button" parent="."]
 layout_mode = 1
 offset_right = 48.0
 offset_bottom = 31.0
+mouse_filter = 1
 text = "close"
 
-[node name="outercolor" type="Polygon2D" parent="ColorRect"]
+[node name="outercolor" type="Polygon2D" parent="."]
 position = Vector2(71, 89)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.00351916, 0.00351917, 0.00351917, 1)
 polygon = PackedVector2Array(13.2766, 27.1304, 22.4043, 27.1304, 22.4043, 64.4348, 33.1915, 64.4348, 18.2554, 84.7826, 3.31915, 64.4348, 13.2766, 64.4348)
 
-[node name="innercoloer" type="Polygon2D" parent="ColorRect"]
+[node name="innercoloer" type="Polygon2D" parent="."]
 position = Vector2(71, 89)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.270222, 0.270222, 0.270222, 1)
 polygon = PackedVector2Array(14.1064, 28.8261, 21.5745, 28.8261, 21.5745, 53.0606, 21.5745, 66.1304, 30.7021, 66.1304, 18.2553, 83.0869, 5.80853, 66.1304, 14.1064, 66.1304)
 
-[node name="outercolor2" type="Polygon2D" parent="ColorRect"]
+[node name="outercolor2" type="Polygon2D" parent="."]
 position = Vector2(200, 91)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.00351916, 0.00351917, 0.00351917, 1)
 polygon = PackedVector2Array(13.2766, 27.1304, 22.4043, 27.1304, 22.4043, 64.4348, 33.1915, 64.4348, 18.2554, 84.7826, 3.31915, 64.4348, 13.2766, 64.4348)
 
-[node name="innercoloer2" type="Polygon2D" parent="ColorRect"]
+[node name="innercoloer2" type="Polygon2D" parent="."]
 position = Vector2(200, 91)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.270222, 0.270222, 0.270222, 1)
 polygon = PackedVector2Array(14.1064, 28.8261, 21.5745, 28.8261, 21.5745, 53.0606, 21.5745, 66.1304, 30.7021, 66.1304, 18.2553, 83.0869, 5.80853, 66.1304, 14.1064, 66.1304)
 
-[node name="outercolor3" type="Polygon2D" parent="ColorRect"]
+[node name="outercolor3" type="Polygon2D" parent="."]
 position = Vector2(70, 195)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.00351916, 0.00351917, 0.00351917, 1)
 polygon = PackedVector2Array(13.2766, 27.1304, 22.4043, 27.1304, 22.4043, 64.4348, 33.1915, 64.4348, 18.2554, 84.7826, 3.31915, 64.4348, 13.2766, 64.4348)
 
-[node name="innercoloer3" type="Polygon2D" parent="ColorRect"]
+[node name="innercoloer3" type="Polygon2D" parent="."]
 position = Vector2(70, 195)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.270222, 0.270222, 0.270222, 1)
 polygon = PackedVector2Array(14.1064, 28.8261, 21.5745, 28.8261, 21.5745, 53.0606, 21.5745, 66.1304, 30.7021, 66.1304, 18.2553, 83.0869, 5.80853, 66.1304, 14.1064, 66.1304)
 
-[node name="outercolor4" type="Polygon2D" parent="ColorRect"]
+[node name="outercolor4" type="Polygon2D" parent="."]
 position = Vector2(198, 196)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.00351916, 0.00351917, 0.00351917, 1)
 polygon = PackedVector2Array(13.2766, 27.1304, 22.4043, 27.1304, 22.4043, 64.4348, 33.1915, 64.4348, 18.2554, 84.7826, 3.31915, 64.4348, 13.2766, 64.4348)
 
-[node name="innercoloer4" type="Polygon2D" parent="ColorRect"]
+[node name="innercoloer4" type="Polygon2D" parent="."]
 position = Vector2(198, 196)
 scale = Vector2(1.20513, 0.589744)
 color = Color(0.270222, 0.270222, 0.270222, 1)
 polygon = PackedVector2Array(14.1064, 28.8261, 21.5745, 28.8261, 21.5745, 53.0606, 21.5745, 66.1304, 30.7021, 66.1304, 18.2553, 83.0869, 5.80853, 66.1304, 14.1064, 66.1304)
 
-[node name="gun_damage_level" type="RichTextLabel" parent="ColorRect"]
+[node name="gun_damage_level" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 122.0
 offset_top = 75.0
 offset_right = 134.0
 offset_bottom = 98.0
+mouse_filter = 1
 text = "1"
 
-[node name="gun_speed_level" type="RichTextLabel" parent="ColorRect"]
+[node name="gun_speed_level" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 120.0
 offset_top = 178.0
 offset_right = 132.0
 offset_bottom = 201.0
+mouse_filter = 1
 text = "1"
 
-[node name="gun_specialty_skill" type="RichTextLabel" parent="ColorRect"]
+[node name="gun_specialty_skill" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 121.0
 offset_top = 285.0
 offset_right = 133.0
 offset_bottom = 308.0
+mouse_filter = 1
 text = "1"
 
-[node name="sword_specialty_skill" type="RichTextLabel" parent="ColorRect"]
+[node name="sword_specialty_skill" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 250.0
 offset_top = 289.0
 offset_right = 262.0
 offset_bottom = 312.0
+mouse_filter = 1
 text = "1"
 
-[node name="sword_speed_level" type="RichTextLabel" parent="ColorRect"]
+[node name="sword_speed_level" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 250.0
 offset_top = 182.0
 offset_right = 262.0
 offset_bottom = 205.0
+mouse_filter = 1
 text = "1"
 
-[node name="sword_damage_level" type="RichTextLabel" parent="ColorRect"]
+[node name="sword_damage_level" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 252.0
 offset_top = 77.0
 offset_right = 264.0
 offset_bottom = 100.0
+mouse_filter = 1
 text = "1"
 
-[connection signal="button_down" from="ColorRect/Button" to="." method="_on_button_button_down"]
-[connection signal="button_down" from="ColorRect/Button2" to="." method="_on_button_2_button_down"]
-[connection signal="button_down" from="ColorRect/Button3" to="." method="_on_button_3_button_down"]
-[connection signal="button_down" from="ColorRect/Button4" to="." method="_on_button_4_button_down"]
-[connection signal="button_down" from="ColorRect/Button5" to="." method="_on_button_5_button_down"]
-[connection signal="button_down" from="ColorRect/Button6" to="." method="_on_button_6_button_down"]
-[connection signal="button_down" from="ColorRect/exit" to="." method="_on_exit_button_down"]
+[connection signal="button_down" from="exit" to="." method="_on_exit_button_down"]

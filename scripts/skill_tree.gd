@@ -1,21 +1,21 @@
-extends Control
+extends ColorRect
 
-@onready var level_experience: RichTextLabel = $ColorRect/level_experience
-@onready var gun_damage_level: RichTextLabel = $ColorRect/gun_damage_level
-@onready var sword_damage_level: RichTextLabel = $ColorRect/sword_damage_level
-@onready var gun_speed_level: RichTextLabel = $ColorRect/gun_speed_level
-@onready var sword_speed_level: RichTextLabel = $ColorRect/sword_speed_level
-@onready var sword_specialty_skill: RichTextLabel = $ColorRect/sword_specialty_skill
-@onready var gun_specialty_skill: RichTextLabel = $ColorRect/gun_specialty_skill
+@onready var level_experience: RichTextLabel = $level_experience
+@onready var gun_damage_level: RichTextLabel = $gun_damage_level
+@onready var sword_damage_level: RichTextLabel = $sword_damage_level
+@onready var gun_speed_level: RichTextLabel = $gun_speed_level
+@onready var sword_speed_level: RichTextLabel = $sword_speed_level
+@onready var sword_specialty_skill: RichTextLabel = $sword_specialty_skill
+@onready var gun_specialty_skill: RichTextLabel = $gun_specialty_skill
 
 # Map buttons to their talent names
 @onready var talent_buttons := {
-	"gun_damage": $ColorRect/Button,
-	"sword_damage": $ColorRect/Button2,
-	"gun_speed": $ColorRect/Button3,
-	"sword_speed": $ColorRect/Button4,
-	"gun_spec_standing_speed": $ColorRect/Button5,
-	"sword_spec_damage_reduce": $ColorRect/Button6,
+	"gun_damage": $Button,
+	"sword_damage": $Button2,
+	"gun_speed": $Button3,
+	"sword_speed": $Button4,
+	"gun_spec_standing_speed": $Button5,
+	"sword_spec_damage_reduce": $Button6,
 }
 
 func _ready() -> void:
@@ -105,4 +105,5 @@ func _on_button_6_button_down() -> void:
 
 
 func _on_exit_button_down() -> void:
+	#print('runing') 
 	visible = false

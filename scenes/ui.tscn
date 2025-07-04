@@ -15,24 +15,16 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -75.0
-offset_right = 186.0
+offset_right = 191.0
 grow_vertical = 0
-color = Color(0.838856, 0.608445, 0.468178, 0.788235)
+color = Color(0.839216, 0.607843, 0.466667, 0.788235)
 
-[node name="ColorRect" type="ColorRect" parent="battlemapUI"]
+[node name="playerUI" type="ColorRect" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 885.0
 offset_right = 1152.0
 offset_bottom = 75.0
 color = Color(0.839216, 0.607843, 0.466667, 0.788235)
-
-[node name="talents" parent="battlemapUI" instance=ExtResource("2_yev5y")]
-visible = false
-layout_mode = 1
-offset_left = 967.0
-offset_top = -187.0
-offset_right = 967.0
-offset_bottom = -187.0
 
 [node name="aim" type="Button" parent="battlemapUI"]
 layout_mode = 0
@@ -41,6 +33,7 @@ offset_top = 38.0
 offset_right = 97.0
 offset_bottom = 69.0
 focus_mode = 0
+mouse_filter = 1
 mouse_force_pass_scroll_events = false
 theme_override_colors/font_pressed_color = Color(0.913725, 0, 0, 1)
 toggle_mode = true
@@ -68,10 +61,11 @@ text = "Fire"
 
 [node name="reloadtimer" type="ProgressBar" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 897.0
-offset_top = 36.0
-offset_right = 1057.0
-offset_bottom = 63.0
+offset_left = 891.0
+offset_top = 32.0
+offset_right = 1051.0
+offset_bottom = 59.0
+mouse_filter = 1
 max_value = 7.0
 step = 1.0
 show_percentage = false
@@ -90,10 +84,11 @@ text = "Auto shoot"
 
 [node name="reload_label" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 897.0
-offset_top = 13.0
-offset_right = 979.0
-offset_bottom = 37.0
+offset_left = 891.0
+offset_top = 8.0
+offset_right = 973.0
+offset_bottom = 32.0
+mouse_filter = 1
 text = "Reload"
 
 [node name="wave" type="RichTextLabel" parent="battlemapUI"]
@@ -120,17 +115,6 @@ text = "test"
 wait_time = 10.0
 one_shot = true
 
-[node name="Talents" type="Button" parent="battlemapUI"]
-layout_mode = 0
-offset_left = 1075.0
-offset_top = 24.0
-offset_right = 1140.0
-offset_bottom = 61.0
-focus_mode = 0
-mouse_filter = 1
-mouse_force_pass_scroll_events = false
-text = "Talents"
-
 [node name="wavecomplete" type="RichTextLabel" parent="battlemapUI"]
 visible = false
 layout_mode = 0
@@ -140,6 +124,30 @@ offset_right = 852.0
 offset_bottom = -254.0
 theme_override_font_sizes/normal_font_size = 62
 text = "Wave complete!"
+
+[node name="talents" parent="battlemapUI" instance=ExtResource("2_yev5y")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 4.424
+anchor_top = -6.667
+anchor_right = 6.063
+anchor_bottom = -1.493
+offset_left = 0.0159302
+offset_top = 0.0250244
+offset_right = -0.0330811
+offset_bottom = -0.0249939
+mouse_filter = 1
+
+[node name="Talents" type="Button" parent="battlemapUI"]
+layout_mode = 0
+offset_left = 1060.0
+offset_top = 5.0
+offset_right = 1138.0
+offset_bottom = 36.0
+focus_mode = 0
+mouse_filter = 1
+text = "Skill Tree"
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
 visible = false
@@ -290,24 +298,27 @@ theme_override_font_sizes/normal_font_size = 50
 text = "You Died!!"
 
 [node name="instructions" parent="." instance=ExtResource("2_gdt2y")]
-offset_left = 165.0
-offset_top = 3.0
-offset_right = 165.0
-offset_bottom = 3.0
+offset_top = 4.0
 
 [node name="shop" parent="." instance=ExtResource("3_yev5y")]
 
 [connection signal="mouse_entered" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="battlemapUI" to="." method="_on_battlemap_ui_mouse_exited"]
+[connection signal="mouse_entered" from="battlemapUI/playerUI" to="." method="_on_player_ui_mouse_entered"]
+[connection signal="mouse_exited" from="battlemapUI/playerUI" to="." method="_on_player_ui_mouse_exited"]
 [connection signal="button_down" from="battlemapUI/aim" to="." method="_on_aim_button_down"]
 [connection signal="button_down" from="battlemapUI/geomap" to="." method="_on_geomap_button_down"]
 [connection signal="button_down" from="battlemapUI/Fire" to="." method="_on_fire_button_down"]
 [connection signal="button_down" from="battlemapUI/auto_shoot" to="." method="_on_auto_shoot_button_down"]
 [connection signal="timeout" from="battlemapUI/campaign_map_timer" to="." method="_on_campaign_map_timer_timeout"]
+[connection signal="mouse_entered" from="battlemapUI/talents" to="." method="_on_talents_mouse_entered"]
+[connection signal="mouse_exited" from="battlemapUI/talents" to="." method="_on_talents_mouse_exited"]
 [connection signal="button_down" from="battlemapUI/Talents" to="." method="_on_talents_button_down"]
 [connection signal="mouse_entered" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_entered"]
 [connection signal="mouse_exited" from="mapgeoUI" to="." method="_on_battlemap_ui_mouse_exited"]
 [connection signal="button_down" from="mapgeoUI/move" to="." method="_on_move_button_down"]
 [connection signal="button_down" from="mapgeoUI/camp" to="." method="_on_camp_button_down"]
 [connection signal="button_down" from="mapgeoUI/shop_button" to="." method="_on_shop_button_button_down"]
+[connection signal="mouse_entered" from="instructions" to="." method="_on_instructions_mouse_entered"]
+[connection signal="mouse_exited" from="instructions" to="." method="_on_instructions_mouse_exited"]
 [connection signal="bought_something" from="shop" to="." method="_on_shop_bought_something"]

@@ -19,6 +19,7 @@ var travel_mode = false
 @onready var shop: Control = $shop
 @onready var geomap: Button = $battlemapUI/geomap
 @onready var reload_timer: ProgressBar = $battlemapUI/reloadtimer
+@onready var talents: Control = $battlemapUI/talents
 
 
 func _ready() -> void:
@@ -104,13 +105,14 @@ func _on_campaign_map_timer_timeout() -> void:
 	get_tree().change_scene_to_file( "res://scenes/main_map.tscn" )
 
 func update_xp_talents() -> void:
-	$battlemapUI/talents.update_level_display() 
+	talents.update_level_display() 
 
 func _on_talents_button_down() -> void:
-	if $battlemapUI/talents.visible:
-		$battlemapUI/talents.visible = false
+	#print('running')
+	if talents.visible:
+		talents.visible = false
 	else:
-		$battlemapUI/talents.visible = true
+		talents.visible = true
 
 func turn_screen_red():
 	$red_died_screen.visible = true
@@ -127,3 +129,24 @@ func _on_shop_button_button_down() -> void:
 func set_reload(value: float, max_reload: float) -> void:
 	reload_timer.value = value
 	reload_timer.max_value = max_reload # Start with remaining time
+
+func _on_player_ui_mouse_entered() -> void:
+	emit_signal("ui_interaction_started") 
+
+func _on_player_ui_mouse_exited() -> void:
+	emit_signal("ui_interaction_ended") 
+
+func _on_instructions_mouse_entered() -> void:
+	emit_signal("ui_interaction_ended") 
+
+func _on_instructions_mouse_exited() -> void:
+	emit_signal("ui_interaction_started") 
+
+
+func _on_talents_mouse_entered() -> void:
+	#print('runinng'
+	emit_signal("ui_interaction_started") 
+
+
+func _on_talents_mouse_exited() -> void:
+	emit_signal("ui_interaction_ended") 
