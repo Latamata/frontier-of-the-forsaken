@@ -13,36 +13,48 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 362.0
+offset_top = 98.0
+offset_right = -359.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dkfqi")
 
 [node name="battlemapinstruction" type="Control" parent="."]
 visible = false
-anchors_preset = 0
-offset_left = 369.0
-offset_top = 48.0
-offset_right = 409.0
-offset_bottom = 88.0
+layout_mode = 1
+anchor_left = 0.03
+anchor_top = -0.017
+anchor_right = 0.993
+anchor_bottom = 1.009
+offset_left = -10.93
+offset_top = 2.01
+offset_right = -10.65
+offset_bottom = 2.22998
+mouse_filter = 1
 
 [node name="ColorRect" type="ColorRect" parent="battlemapinstruction"]
 layout_mode = 0
 offset_right = 425.0
 offset_bottom = 545.0
+mouse_filter = 1
 color = Color(0.0705882, 1, 1, 0.321569)
 
 [node name="Button" type="Button" parent="battlemapinstruction/ColorRect"]
 layout_mode = 0
 offset_right = 38.0
 offset_bottom = 8.0
+mouse_filter = 1
 text = "close"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="battlemapinstruction/ColorRect"]
 layout_mode = 0
-offset_left = 36.0
-offset_top = 59.0
-offset_right = 338.0
-offset_bottom = 305.0
+offset_left = 47.0
+offset_top = 43.0
+offset_right = 349.0
+offset_bottom = 289.0
+mouse_filter = 1
 text = "🕹️  Move — WASD / Arrow Keys  
 🧨  Shoot — Spacebar 
 💰  Buy Units — Click buttons in the shop  
@@ -59,10 +71,10 @@ texture = SubResource("AtlasTexture_nisbi")
 [node name="campaignmapinstruction" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_left = 328.0
-offset_top = 81.0
-offset_right = 328.0
-offset_bottom = 81.0
+offset_left = -19.0
+offset_top = -6.0
+offset_right = -19.0
+offset_bottom = -6.0
 
 [node name="CampaignTut" type="Sprite2D" parent="campaignmapinstruction"]
 position = Vector2(243, 229)

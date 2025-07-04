@@ -5,7 +5,7 @@ signal collect_item()  # Define signal with a parameter
 signal sword_spec_dmgrdc()  # Define signal with a parameter
 signal level_up
 
-var is_global_aiming = false
+var is_global_aiming = true
 var experience: int = 0
 var level: int = 1
 var xp_to_next: int = 100

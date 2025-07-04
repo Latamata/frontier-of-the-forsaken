@@ -2347,7 +2347,6 @@ occlusion_enabled = false
 position = Vector2(-321, 47)
 
 [node name="UI" parent="." instance=ExtResource("5_qn5ki")]
-visible = false
 
 [node name="playermenu" parent="." instance=ExtResource("7_yw4ke")]
 
@@ -2364,6 +2363,7 @@ position = Vector2(1688, 867)
 position = Vector2(1716, -233)
 
 [node name="auto_shoot_timer" type="Timer" parent="."]
+autostart = true
 
 [node name="wave_timer" type="Timer" parent="."]
 wait_time = 10.0

@@ -68,17 +68,13 @@ func _process(_delta):
 				gun_reloaded_stopped = true  # Mark that reload was interrupted
 		camera_2d.global_position = global_position
 		sprite_frame_direction()
-		#print(direction)
 		velocity = direction * SPEED
 		move_and_slide()
 	else:
 		# Player is idle
 		velocity = Vector2.ZERO
 		animated_sprite_2d.stop()
-		# Resume reload if it was interrupted
-		#if gun_reloaded_stopped and reload_pumps > 0:
-			#gun_reloaded_stopped = false
-			#start_reload_if_needed()
+
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -88,7 +84,6 @@ func _input(event):
 	if event.is_action_pressed("reload"):
 		if not gun_reloaded and reload_pumps > 0:
 			start_reload_if_needed()
-
 
 func sprite_frame_direction():
 	if is_swinging:
@@ -282,6 +277,7 @@ func sword_attack():
 	sprite_frame_direction()
 	melee_reloaded = false
 	is_swinging = true  # Block rotation while swinging
+	$sabre/Polygon2D.visible = false
 	$Meleetimer.start()
 	original_sabre_rotation = sabre.rotation
 	var attack_angle = (get_global_mouse_position() - global_position).normalized().angle()
@@ -357,6 +353,7 @@ func change_melee_speed():
 
 func _on_meleetimer_timeout() -> void:
 	melee_reloaded = true
+	$sabre/Polygon2D.visible = true
 
 func toggle_golden_gun(enable_gold: bool):
 	gun.material.set_shader_parameter("toggle_gold", enable_gold)

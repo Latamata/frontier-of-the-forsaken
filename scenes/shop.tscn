@@ -62,33 +62,33 @@ stream = ExtResource("2_032fp")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -341.0
-offset_top = -167.5
-offset_right = 341.0
-offset_bottom = 167.5
+anchors_preset = -1
+anchor_left = 0.204
+anchor_top = 0.242
+anchor_right = 0.796
+anchor_bottom = 0.758
+offset_left = -0.00801086
+offset_top = -0.31601
+offset_right = 0.00793457
+offset_bottom = 0.315979
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="buy_soldier" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 238.0
-offset_top = 39.0
-offset_right = 363.0
-offset_bottom = 155.0
+offset_left = 173.0
+offset_top = 57.0
+offset_right = 298.0
+offset_bottom = 173.0
 focus_mode = 0
 icon = SubResource("AtlasTexture_xfvoa")
 
 [node name="buy_food" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 240.0
-offset_top = 168.0
-offset_right = 365.0
-offset_bottom = 289.0
+offset_left = 173.0
+offset_top = 188.5
+offset_right = 298.0
+offset_bottom = 309.5
 focus_mode = 0
 icon = SubResource("AtlasTexture_1l46r")
 
@@ -103,10 +103,10 @@ text = "close
 [node name="golden_musket" type="Button" parent="Panel"]
 material = SubResource("ShaderMaterial_032fp")
 layout_mode = 0
-offset_left = 387.0
-offset_top = 179.0
-offset_right = 494.0
-offset_bottom = 286.0
+offset_left = 538.0
+offset_top = 200.5
+offset_right = 645.0
+offset_bottom = 307.5
 focus_mode = 0
 icon = SubResource("AtlasTexture_ajxib")
 flat = true
@@ -135,10 +135,10 @@ flat = true
 
 [node name="ItemList" type="ItemList" parent="Panel"]
 layout_mode = 0
-offset_left = 373.0
-offset_top = 50.0
-offset_right = 512.0
-offset_bottom = 148.0
+offset_left = 358.0
+offset_top = 49.5
+offset_right = 497.0
+offset_bottom = 308.5
 focus_mode = 0
 allow_search = false
 wraparound_items = false
@@ -148,6 +148,31 @@ item_1/text = "100"
 item_1/icon = SubResource("AtlasTexture_heatd")
 item_2/text = "180"
 item_2/icon = SubResource("AtlasTexture_1v8qu")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 6.5
+offset_right = 333.0
+offset_bottom = 46.5
+text = "Resources
+"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 363.0
+offset_top = 3.5
+offset_right = 506.0
+offset_bottom = 43.5
+text = "Bullets"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 519.0
+offset_top = 6.5
+offset_right = 679.0
+offset_bottom = 46.5
+text = "Weapon Upgrades"
 
 [connection signal="button_down" from="Panel/buy_soldier" to="." method="_on_buy_soldier_button_down"]
 [connection signal="mouse_entered" from="Panel/buy_soldier" to="." method="_on_buy_soldier_mouse_entered"]

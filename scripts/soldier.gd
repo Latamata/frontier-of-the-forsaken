@@ -4,7 +4,7 @@ signal soldier_died(light_holder: bool)
 
 var direction = Vector2.RIGHT
 var melee_cd = true
-var is_aiming = false
+var is_aiming = true
 #var is_attacking = false
 var moving = false
 var reloaded = true
@@ -94,22 +94,15 @@ func _process(_delta):
 func predict_target_position(zombie: Node2D) -> Vector2:
 	if not is_instance_valid(zombie):
 		return zombie.global_position
-	var to_target = zombie.global_position - global_position
-	var bullet_speed = 500.0  # adjust to match your projectile speed
-	var zombie_velocity = Vector2.ZERO
+	var _zombie_velocity = Vector2.ZERO
 	if "velocity" in zombie:
-		zombie_velocity = zombie.velocity
+		_zombie_velocity = zombie.velocity
 	elif zombie.has_method("get_velocity"):
-		zombie_velocity = zombie.get_velocity()
-	# Time for bullet to reach the zombie
-	var distance = to_target.length()
-	var time_to_hit = distance / bullet_speed
-	# Predict future position
-	return zombie.global_position + zombie_velocity * time_to_hit
+		_zombie_velocity = zombie.get_velocity()
+	return zombie.global_position 
 
 var facing_right := true
 func sprite_frame_direction():
-	# No movement - idle
 	if abs(direction.x) > abs(direction.y):
 		# Horizontal movement
 		animated_sprite_2d.animation = "walking"
@@ -162,7 +155,7 @@ func find_zombies_in_area():
 	var bodies_in_area = targeting.get_overlapping_bodies()
 	if bodies_in_area.size() == 0:
 		target = null
-		is_aiming = false
+		#is_aiming = false
 		return
 
 	var closest_distance = INF
@@ -234,9 +227,6 @@ func move_to_position(new_target_position: Vector2):
 func fire_gun():
 	#print(reloaded)
 	if reloaded and not moving:
-		
-#if not reloaded and reload_pumps > 0 and not reload_tick_in_progress:
-		# 🔫 Immediate fire
 		$attackanimation.global_position = $Musket/Marker2D.global_position
 		$attackanimation.rotation = gun.rotation
 		$attackanimation.play("smoke")

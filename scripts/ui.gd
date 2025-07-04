@@ -24,6 +24,7 @@ var travel_mode = false
 
 func _ready() -> void:
 	update_resources()
+	$instructions.visible = false
 	#_on_aim_button_down()
 	#_on_auto_shoot_button_down()
 func _process(_delta: float) -> void:
@@ -137,10 +138,10 @@ func _on_player_ui_mouse_exited() -> void:
 	emit_signal("ui_interaction_ended") 
 
 func _on_instructions_mouse_entered() -> void:
-	emit_signal("ui_interaction_ended") 
+	emit_signal("ui_interaction_started") 
 
 func _on_instructions_mouse_exited() -> void:
-	emit_signal("ui_interaction_started") 
+	emit_signal("ui_interaction_ended") 
 
 
 func _on_talents_mouse_entered() -> void:

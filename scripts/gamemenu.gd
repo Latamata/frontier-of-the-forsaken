@@ -91,3 +91,7 @@ func _on_settings_settings_closed() -> void:
 
 func _on_helpinstructions_button_down() -> void:
 	emit_signal("show_tutorial_requested")
+
+func _on_restart_button_down() -> void:
+	get_tree().paused = false  # Unpause the game
+	get_tree().reload_current_scene()

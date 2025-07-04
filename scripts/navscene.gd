@@ -33,7 +33,7 @@ func _ready() -> void:
 	Globals.is_global_aiming = false
 	var custom_cursor = load("res://assets/mousepointer.png")
 	Input.set_custom_mouse_cursor(custom_cursor)
-	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(30, 30))  # Assuming 32x32 image
+	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(35, 35))  # Assuming 32x32 image
 	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
@@ -55,9 +55,8 @@ func _ready() -> void:
 		var column = floori(float(i) / float(column_height))
 		musketman_instance.connect("soldier_died", Callable(self, "_on_soldier_died"))
 		musketman_instance.global_position = starting_position + column * column_offset + row * row_offset
-		# Set the correct aiming state before adding to scene
-		musketman_instance.is_aiming = Globals.is_global_aiming
-	_on_ui_aim_action()
+
+
 var time_since_speed_update = 0.0
 const SPEED_UPDATE_INTERVAL = 0.5  # seconds
 func _process(delta):
@@ -65,7 +64,7 @@ func _process(delta):
 	if time_since_speed_update >= SPEED_UPDATE_INTERVAL:
 		update_all_speeds()
 		time_since_speed_update = 0.0
-
+	
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
 var update_interval = 200  # Minimum interval between updates (in seconds)
@@ -73,7 +72,7 @@ func _input(event):
 	#print(is_ui_interacting)
 	if is_ui_interacting:
 		return
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton && is_instance_valid(player):
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if event.pressed:
@@ -110,7 +109,6 @@ func _input(event):
 		player.looting = false
 	if Input.is_action_just_pressed("one_key") and player:
 		player.switch_weapon()
-
 
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):
@@ -201,21 +199,25 @@ func assign_npcs_to_indicators(forward_angle: float):
 		npc.forward_angle = forward_angle
 		npc.move_to_position(indicator.position)
 
-# Add the 'async' keyword to allow for await-based delays
-func fire_gun(firing_entity: Node2D):
+func fire_gun(firing_entity: Node2D) -> void:
 	if not is_instance_valid(firing_entity) or not firing_entity.has_node("Musket/Marker2D"):
 		print("Error: Invalid firing entity or missing Musket/Marker2D node.")
 		return
-	# 🔄 Add a small random delay before firing (e.g., simulate flintlock delay)
+
 	await get_tree().create_timer(randf_range(0.05, 0.5)).timeout
+
 	var musketBall = BULLET.instantiate()
 	var gun_marker = firing_entity.get_node("Musket/Marker2D")
+
 	# 🔊 Play sound at gun's position
-	_play_sound(preload("res://sound/Musket Single Shot Distant 3 - QuickSounds.com.mp3"),gun_marker.global_position)
+	_play_sound(preload("res://sound/Musket Single Shot Distant 3 - QuickSounds.com.mp3"), gun_marker.global_position)
+
 	musketBall.position = gun_marker.global_position
+
 	var gun_angle = gun_marker.global_rotation
 	var adjusted_angle = gun_angle + deg_to_rad(randf_range(-3, 3))
 	var direction = Vector2(cos(adjusted_angle), sin(adjusted_angle)).normalized()
+
 	musketBall.damage_bonus += Globals.talent_tree["gun_damage"]["level"]
 	musketBall.shooter = firing_entity
 	musketBall.direction = direction
@@ -227,10 +229,10 @@ func _on_ui_aim_action():
 	Globals.is_global_aiming = !Globals.is_global_aiming
 	# Apply the global aiming state to all NPCs
 	for npc in npcgroup.get_children():
-		npc.is_aiming = Globals.is_global_aiming
+		npc.is_aiming = !Globals.is_global_aiming
+		#print(npc.is_aiming)
 
 func _on_ui_fire_action():
-	#if line_infantry_reloaded:
 	for npc in npcgroup.get_children():
 		if is_instance_valid(npc) and not npc.moving:  # Ensure NPC is not moving
 			if npc.weapon_in_use == 'gun' and npc.fire_gun():
@@ -247,11 +249,11 @@ func _on_ui_ui_interaction_ended() -> void:
 
 func _on_auto_shoot_timer_timeout() -> void:
 	for npc in npcgroup.get_children():
-		if is_instance_valid(npc) and not npc.moving && npc.target != null:  # Ensure NPC is not moving
-			if npc.weapon_in_use == 'gun' && npc.fire_gun():
+		if is_instance_valid(npc) and not npc.moving and npc.target != null:
+			if npc.weapon_in_use == 'gun' and npc.fire_gun():
 				fire_gun(npc)
 
-var is_auto_shooting_enabled = false  # To track if auto shooting is on or off
+var is_auto_shooting_enabled = true  # To track if auto shooting is on or off
 func _on_ui_auto_shoot_action() -> void:
 	if is_auto_shooting_enabled:
 		$auto_shoot_timer.stop()  # Stop the timer if auto-shooting is already enabled
@@ -330,7 +332,7 @@ func create_light_bearer() -> void:
 	# Pick the middle NPC and give them the light
 	var middle_index = int(npcs.size() / 2.0)
 	var new_light_holder = npcs[middle_index]
-	new_light_holder.is_aiming = Globals.is_global_aiming
+	#new_light_holder.is_aiming = Globals.is_global_aiming
 	
 	new_light_holder.light_holder = true
 	new_light_holder.add_point_light()
@@ -420,10 +422,8 @@ func day_lighting_setup():
 		day_lighting.color = Color("ffffff") 
 		player.point_light_2d.energy = 0.0
 
-
 func _on_playermenu_show_tutorial_requested() -> void:
 	ui.tuts.hide_instruction("battle", true)
-
 
 func _on_ambience_finished() -> void:
 	$ambience.play()
