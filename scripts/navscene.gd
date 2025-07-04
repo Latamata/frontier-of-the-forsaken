@@ -348,7 +348,7 @@ func _on_zombie_died():
 		var reward_ui = preload("res://scenes/reward_ui.tscn").instantiate()
 		reward_ui.set_rewards(Globals.wave_count * 5, Globals.wave_count * 10)  # Example reward scaling
 		add_child(reward_ui)
-		reward_ui.global_position = ui.global_position + Vector2(0, -100)  # Optional: float it near top of UI
+		#reward_ui.global_position = ui.global_position + Vector2(0, -100)  # Optional: float it near top of UI
 
 
 func get_random_waypoint(exclude: Node) -> Node:
