@@ -209,4 +209,10 @@ offset_bottom = 100.0
 mouse_filter = 1
 text = "1"
 
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="Button2" to="." method="_on_button_2_button_down"]
+[connection signal="button_down" from="Button3" to="." method="_on_button_3_button_down"]
+[connection signal="button_down" from="Button4" to="." method="_on_button_4_button_down"]
+[connection signal="button_down" from="Button5" to="." method="_on_button_5_button_down"]
+[connection signal="button_down" from="Button6" to="." method="_on_button_6_button_down"]
 [connection signal="button_down" from="exit" to="." method="_on_exit_button_down"]

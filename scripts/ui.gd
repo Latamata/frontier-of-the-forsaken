@@ -151,3 +151,9 @@ func _on_talents_mouse_entered() -> void:
 
 func _on_talents_mouse_exited() -> void:
 	emit_signal("ui_interaction_ended") 
+
+func update_zombies_left(zombie_count):
+	$battlemapUI/zombies_left.text = 'Zombies left: ' + str(zombie_count)
+
+func hide_or_show_skills_indicator(hide_or_show):
+	$battlemapUI/skills_indicator.visible = hide_or_show

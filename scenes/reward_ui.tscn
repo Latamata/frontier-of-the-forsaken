@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct81ynx3grse3"]
+
+[ext_resource type="Script" uid="uid://rrqmsjlbn6fg" path="res://scripts/reward_ui.gd" id="1_sy5e1"]
+
+[node name="Items" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_sy5e1")
+
+[node name="Panel" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 144.0
+offset_bottom = 68.0
+color = Color(0.839216, 0.607843, 0.466667, 0.788235)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 38.0
+offset_right = 110.0
+offset_bottom = 24.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 17
+text = "Reward
+"
+horizontal_alignment = 1
+
+[node name="Rewards" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 21.0
+offset_right = 113.0
+offset_bottom = 67.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "Food:
+Gold:"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

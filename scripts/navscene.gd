@@ -14,7 +14,6 @@ extends Node2D
 
 var musketman: PackedScene = preload("res://scenes/soldier.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
-var TREASURE_CHEST: PackedScene = preload("res://scenes/chest.tscn")
 var BULLET: PackedScene = preload("res://scenes/bullet.tscn")
 var ZOMBIE: PackedScene = preload("res://scenes/zombie.tscn")
 var TANK_ZOMBIE: PackedScene = preload("res://scenes/zombie_two.tscn")
@@ -26,6 +25,8 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
+	if Globals.skill_points > 0:
+		ui.hide_or_show_skills_indicator(true)
 	ui.tuts.hide_instruction("battle", Globals.show_battle_tut)
 	day_lighting_setup()
 	for waypoint in waypoints:
@@ -37,6 +38,7 @@ func _ready() -> void:
 	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
+	Globals.connect( "out_of_skills", update_skills_ui )
 	Globals.connect( "sword_spec_dmgrdc", sword_spec_dmgcheck )
 	Globals.connect("level_up", Callable(self, "_on_level_up"))
 	#get_tree().paused = true
@@ -261,11 +263,16 @@ func _on_ui_auto_shoot_action() -> void:
 		$auto_shoot_timer.start()  # Start the timer if auto-shooting is off
 	is_auto_shooting_enabled = !is_auto_shooting_enabled  # Toggle the state
 
+func update_skills_ui() -> void:
+	print('out of skills')
+	ui.hide_or_show_skills_indicator(false)
+
 func _on_player_collect_item() -> void:
 	ui.update_resources()
 	
 func _on_level_up():
 	if player:
+		ui.hide_or_show_skills_indicator(true)
 		player.level_up(Globals.level)
 
 var using_guns = true
@@ -282,16 +289,6 @@ func _on_player_heal_npc(area: Area2D) -> void:
 			npc.take_damage(-5)
 			area.collected()  # Now the NPC collects it instead
 			return
-
-func spawn_treasure_chest():
-	if chest_container.get_child_count() > 0:
-		var chest = chest_container.get_child(0)
-		chest.chest_amount += 5 * Globals.wave_count
-	else:
-		var chest_instance = TREASURE_CHEST.instantiate()
-		chest_instance.chest_amount = 5 * Globals.wave_count
-		chest_instance.position = Vector2(465, 364)
-		chest_container.add_child(chest_instance)
 
 func _on_player_died() -> void:
 	ui.turn_screen_red()
@@ -332,8 +329,6 @@ func create_light_bearer() -> void:
 	# Pick the middle NPC and give them the light
 	var middle_index = int(npcs.size() / 2.0)
 	var new_light_holder = npcs[middle_index]
-	#new_light_holder.is_aiming = Globals.is_global_aiming
-	
 	new_light_holder.light_holder = true
 	new_light_holder.add_point_light()
 
@@ -341,6 +336,8 @@ func _on_zombie_died():
 	_play_sound(preload("res://sound/zombiedeath.wav"), global_position)
 	ui.update_xp_talents()
 	await get_tree().create_timer(0.6).timeout
+	#print(zombiegroup.get_child_count())
+	ui.update_zombies_left(zombiegroup.get_child_count())
 	if zombiegroup.get_child_count() == 0:
 		Globals.wave_count += 1
 		ui.update_wave(Globals.wave_count)  # Make sure this reflects the updated count
@@ -348,8 +345,10 @@ func _on_zombie_died():
 		ui.hide_show_camp_button(true)
 		ui.travel_mode = true
 		$wave_timer.start()
-		print("All zombies are dead! Spawning chest...")
-		spawn_treasure_chest()
+		var reward_ui = preload("res://scenes/reward_ui.tscn").instantiate()
+		reward_ui.set_rewards(Globals.wave_count * 5, Globals.wave_count * 10)  # Example reward scaling
+		add_child(reward_ui)
+		reward_ui.global_position = ui.global_position + Vector2(0, -100)  # Optional: float it near top of UI
 
 
 func get_random_waypoint(exclude: Node) -> Node:

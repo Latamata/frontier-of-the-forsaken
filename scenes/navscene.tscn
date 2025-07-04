@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=4 uid="uid://cpma71hojt8wy"]
+[gd_scene load_steps=77 format=4 uid="uid://cpma71hojt8wy"]
 
 [ext_resource type="Script" uid="uid://fgxtjtaduhe4" path="res://scripts/navscene.gd" id="1_fg51v"]
 [ext_resource type="Texture2D" uid="uid://cy01i81rii7b0" path="res://assets/survivalgame-terrian-water-32x32.png" id="2_xp418"]
@@ -2257,6 +2257,11 @@ shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
 shader_parameter/sway_speed = 1.5
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ntny"]
+shader = ExtResource("7_ql54t")
+shader_parameter/sway_strength = 0.3
+shader_parameter/sway_speed = 1.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ybonv"]
 shader = ExtResource("7_ql54t")
 shader_parameter/sway_strength = 2.0
@@ -2297,6 +2302,8 @@ texture_region_size = Vector2i(32, 32)
 18:1/size_in_atlas = Vector2i(2, 3)
 18:1/0 = 0
 18:1/0/y_sort_origin = 35
+22:1/0 = 0
+22:1/0/material = SubResource("ShaderMaterial_4ntny")
 
 [sub_resource type="TileSet" id="TileSet_koupd"]
 tile_size = Vector2i(32, 32)

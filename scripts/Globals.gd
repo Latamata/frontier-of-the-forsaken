@@ -4,6 +4,7 @@ extends Node
 signal collect_item()  # Define signal with a parameter
 signal sword_spec_dmgrdc()  # Define signal with a parameter
 signal level_up
+signal out_of_skills
 
 var is_global_aiming = true
 var experience: int = 0
@@ -12,7 +13,7 @@ var xp_to_next: int = 100
 var master_volume: float = 0.5  # dB value, not linear
 
 # Properties
-var skill_points: int =  0 # setget add_food, get_food
+var skill_points: int =  5 # setget add_food, get_food
 var food: int =  0 # setget add_food, get_food
 var gold: int =  200 # setget add_food, get_food
 var geo_map_camp: int = 0 # setget add_geo_map_camp, get_geo_map_camp
@@ -123,6 +124,9 @@ func increase_talent_level(talent_name: String) -> void:
 		if talent["level"] < talent["max_level"]:
 			talent["level"] += 1
 			skill_points -= 1
+			if skill_points == 0:
+				#print('out of skills')
+				emit_signal("out_of_skills")
 			talent_tree[talent_name] = talent
 			print("%s increased to level %d" % [talent_name, talent["level"]])
 			
@@ -139,6 +143,7 @@ func add_experience(amount: int) -> void:
 		xp_to_next = int(xp_to_next * 1.2) # Scale as needed
 		print("Level up! Now level %d" % level)
 		emit_signal("level_up")
+		
 
 func set_current_line(value ) -> void:
 	current_line = value

@@ -148,7 +148,7 @@ radius = 407.208
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_acikk"]
 radius = 21.0
-height = 44.0
+height = 48.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vx5f"]
 radius = 11.0
@@ -186,6 +186,7 @@ shape = SubResource("CircleShape2D_t0tcg")
 position = Vector2(1, -13)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
+position = Vector2(-1, -6)
 shape = SubResource("CapsuleShape2D_acikk")
 
 [node name="Meleetimer" type="Timer" parent="."]

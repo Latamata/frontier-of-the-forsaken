@@ -143,13 +143,28 @@ mouse_filter = 1
 
 [node name="Talents" type="Button" parent="battlemapUI"]
 layout_mode = 0
-offset_left = 1060.0
-offset_top = 5.0
-offset_right = 1138.0
-offset_bottom = 36.0
+offset_left = 1064.0
+offset_top = 29.0
+offset_right = 1142.0
+offset_bottom = 60.0
 focus_mode = 0
 mouse_filter = 1
 text = "Skill Tree"
+
+[node name="zombies_left" type="RichTextLabel" parent="battlemapUI"]
+modulate = Color(1, 0.121569, 0, 1)
+layout_mode = 0
+offset_left = 808.0
+offset_top = -549.0
+offset_right = 942.0
+offset_bottom = -509.0
+text = "Zombies left"
+
+[node name="skills_indicator" type="Polygon2D" parent="battlemapUI"]
+visible = false
+position = Vector2(1100, 5)
+color = Color(1, 0, 0, 1)
+polygon = PackedVector2Array(-1, 0, -1, 8, -9, 8, -9, 11, -1, 11, -1, 19, 2, 19, 2, 11, 10, 11, 10, 8, 2, 8, 2, 0)
 
 [node name="mapgeoUI" type="ColorRect" parent="."]
 visible = false
