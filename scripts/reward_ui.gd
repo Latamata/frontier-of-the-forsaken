@@ -14,11 +14,7 @@ func _ready() -> void:
 	Globals.add_food(food_reward)
 	Globals.add_gold(gold_reward)
 	rewards.text = "Food: " + str(food_reward) + "\nGold: " + str(gold_reward)
-	timer.start()
-
-func _on_Timer_timeout() -> void:
-	queue_free()
-
+	#timer.start()
 
 func _on_timer_timeout() -> void:
-	pass # Replace with function body.
+	queue_free()

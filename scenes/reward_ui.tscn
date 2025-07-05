@@ -5,6 +5,10 @@
 [node name="Items" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+offset_left = 489.0
+offset_top = 286.0
+offset_right = 489.0
+offset_bottom = 286.0
 script = ExtResource("1_sy5e1")
 
 [node name="Panel" type="ColorRect" parent="."]
