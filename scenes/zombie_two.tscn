@@ -147,11 +147,12 @@ height = 16.0
 radius = 407.208
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_acikk"]
-radius = 21.0
-height = 48.0
+radius = 25.0
+height = 50.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3vx5f"]
-radius = 11.0
+radius = 13.0
+height = 48.0
 
 [node name="zombie_two" type="CharacterBody2D" groups=["zombie"]]
 slide_on_ceiling = false
@@ -176,6 +177,7 @@ frame_progress = 0.915656
 shape = SubResource("CapsuleShape2D_o3ox1")
 
 [node name="targeting" type="Area2D" parent="."]
+visible = false
 position = Vector2(1, -4)
 disable_mode = 2
 
@@ -186,7 +188,7 @@ shape = SubResource("CircleShape2D_t0tcg")
 position = Vector2(1, -13)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
-position = Vector2(-1, -6)
+position = Vector2(-1, -3)
 shape = SubResource("CapsuleShape2D_acikk")
 
 [node name="Meleetimer" type="Timer" parent="."]
@@ -211,7 +213,7 @@ stream = ExtResource("3_o3ox1")
 position = Vector2(0, -4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_hitbox"]
-position = Vector2(1, -8)
+position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_3vx5f")
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

@@ -74,7 +74,7 @@ func _process(_delta):
 			arm.visible = true
 	if is_aiming:
 		if target and is_instance_valid(target) and reloaded:
-			var predicted_position = predict_target_position(target)
+			var predicted_position = predict_target_position()
 			var direction_to_target = (predicted_position - global_position).normalized()
 			var target_angle = direction_to_target.angle()
 			rotate_weapon(target_angle)
@@ -91,15 +91,17 @@ func _process(_delta):
 		if not still_has_close_enemies:
 			switch_weapon("gun")
 
-func predict_target_position(zombie: Node2D) -> Vector2:
-	if not is_instance_valid(zombie):
-		return zombie.global_position
-	var _zombie_velocity = Vector2.ZERO
-	if "velocity" in zombie:
-		_zombie_velocity = zombie.velocity
-	elif zombie.has_method("get_velocity"):
-		_zombie_velocity = zombie.get_velocity()
-	return zombie.global_position 
+func predict_target_position() -> Vector2:
+	var to_target = target.global_position - global_position
+	var distance = to_target.length()
+	var bullet_speed = 400.0  # Change this to match your actual bullet speed
+	var travel_time = distance / bullet_speed
+
+	var target_velocity = Vector2.ZERO
+
+	target_velocity = target.velocity
+
+	return target.global_position + target_velocity * travel_time
 
 var facing_right := true
 func sprite_frame_direction():

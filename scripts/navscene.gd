@@ -34,7 +34,7 @@ func _ready() -> void:
 	Globals.is_global_aiming = false
 	var custom_cursor = load("res://assets/mousepointer.png")
 	Input.set_custom_mouse_cursor(custom_cursor)
-	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(35, 35))  # Assuming 32x32 image
+	Input.set_custom_mouse_cursor(custom_cursor, Input.CURSOR_ARROW, Vector2(15, 35))  # Assuming 32x32 image
 	ui.visible = true
 	#sets up UI to change when the global stat changes
 	Globals.connect( "collect_item", _on_player_collect_item )
@@ -346,11 +346,8 @@ func _on_zombie_died():
 		ui.travel_mode = true
 		$wave_timer.start()
 		var reward_ui = preload("res://scenes/reward_ui.tscn").instantiate()
-		reward_ui.set_rewards(Globals.wave_count * 5, Globals.wave_count * 10)  # Example reward scaling
+		reward_ui.set_rewards(Globals.wave_count * 3, Globals.wave_count * 4)  # Example reward scaling
 		ui.add_child(reward_ui)  # Instead of just add_child(reward_ui)
-
-		#reward_ui.global_position = ui.global_position + Vector2(0, -100)  # Optional: float it near top of UI
-
 
 func get_random_waypoint(exclude: Node) -> Node:
 	var available = waypoints.filter(func(wp): return wp != exclude)

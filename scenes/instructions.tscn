@@ -1,12 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://decn8ittmpton"]
+[gd_scene load_steps=4 format=3 uid="uid://decn8ittmpton"]
 
 [ext_resource type="Script" uid="uid://cousurpr7kngw" path="res://scripts/instructions.gd" id="1_dkfqi"]
 [ext_resource type="Texture2D" uid="uid://b2ucqlqr0d271" path="res://assets/controls_drawing.png" id="2_nisbi"]
 [ext_resource type="Texture2D" uid="uid://dydjnbtbw0m6m" path="res://assets/campaign_tut.png" id="3_njqp3"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_nisbi"]
-atlas = ExtResource("2_nisbi")
-region = Rect2(17.5, 63, 209.273, 273)
 
 [node name="instructions" type="Control"]
 layout_mode = 3
@@ -22,7 +18,6 @@ grow_vertical = 2
 script = ExtResource("1_dkfqi")
 
 [node name="battlemapinstruction" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchor_left = 0.03
 anchor_top = -0.017
@@ -36,8 +31,8 @@ mouse_filter = 1
 
 [node name="ColorRect" type="ColorRect" parent="battlemapinstruction"]
 layout_mode = 0
-offset_right = 425.0
-offset_bottom = 545.0
+offset_right = 409.0
+offset_bottom = 428.0
 mouse_filter = 1
 color = Color(0.0705882, 1, 1, 0.321569)
 
@@ -53,20 +48,19 @@ layout_mode = 0
 offset_left = 47.0
 offset_top = 43.0
 offset_right = 349.0
-offset_bottom = 289.0
+offset_bottom = 175.0
 mouse_filter = 1
 text = "🕹️  Move — WASD / Arrow Keys  
-🧨  Shoot — Spacebar 
-💰  Buy Units — Click buttons in the shop  
-🥫  Need food to move along
+🧨  Shoot — Left Mouse Click  
+🔁  Reload — R  
 🌊  Survive as many waves as you can!
 
-🖱️ Click and hold, then drag to position your troops — the drag direction sets which way they face."
+"
 
 [node name="ControlsDrawing" type="Sprite2D" parent="battlemapinstruction/ColorRect"]
-position = Vector2(199, 416)
+position = Vector2(198, 283)
 scale = Vector2(1.57042, 0.9125)
-texture = SubResource("AtlasTexture_nisbi")
+texture = ExtResource("2_nisbi")
 
 [node name="campaignmapinstruction" type="Control" parent="."]
 visible = false

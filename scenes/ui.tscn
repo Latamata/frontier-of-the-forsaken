@@ -43,12 +43,12 @@ text = "Aim"
 [node name="geomap" type="Button" parent="battlemapUI"]
 visible = false
 layout_mode = 0
-offset_left = 500.0
-offset_top = -296.0
-offset_right = 605.0
-offset_bottom = -237.0
+offset_left = 488.0
+offset_top = -216.0
+offset_right = 593.0
+offset_bottom = -157.0
 focus_mode = 0
-text = "To the road"
+text = "To the road?"
 
 [node name="Fire" type="Button" parent="battlemapUI"]
 layout_mode = 0
@@ -144,7 +144,7 @@ mouse_filter = 1
 [node name="Talents" type="Button" parent="battlemapUI"]
 layout_mode = 0
 offset_left = 1064.0
-offset_top = 29.0
+offset_top = 24.0
 offset_right = 1142.0
 offset_bottom = 60.0
 focus_mode = 0

@@ -386,7 +386,7 @@ texture = ExtResource("3_vos4w")
 centered = false
 
 [node name="Marker2D" type="Marker2D" parent="Musket"]
-position = Vector2(35, 8)
+position = Vector2(29, 7)
 
 [node name="sabre" type="Sprite2D" parent="."]
 light_mask = 0
@@ -406,7 +406,7 @@ shape = SubResource("ConvexPolygonShape2D_qlg0r")
 
 [node name="Polygon2D" type="Polygon2D" parent="sabre"]
 position = Vector2(14, 0)
-color = Color(1, 1, 1, 0.360784)
+color = Color(0.611765, 0.992157, 0.698039, 0.32549)
 polygon = PackedVector2Array(-1, 0, 47, -35, 47, 35)
 
 [node name="smoke_and_sword" type="AnimatedSprite2D" parent="."]

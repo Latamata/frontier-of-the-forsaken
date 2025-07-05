@@ -147,11 +147,12 @@ height = 14.0
 radius = 336.121
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ycv6i"]
-radius = 11.0
+radius = 24.0
 height = 52.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gx57"]
-radius = 11.0
+radius = 12.0
+height = 48.0
 
 [node name="zombie" type="CharacterBody2D" groups=["zombie"]]
 collision_layer = 3
@@ -170,7 +171,7 @@ simplify_path = true
 simplify_epsilon = 1.111
 
 [node name="Spritesheet" type="AnimatedSprite2D" parent="."]
-position = Vector2(5, -19)
+position = Vector2(6, -19)
 sprite_frames = SubResource("SpriteFrames_11mes")
 animation = &"attack"
 
@@ -188,7 +189,7 @@ shape = SubResource("CircleShape2D_74v56")
 position = Vector2(0, -6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
-position = Vector2(0, -12)
+position = Vector2(-1, -12)
 shape = SubResource("CapsuleShape2D_ycv6i")
 
 [node name="Meleetimer" type="Timer" parent="."]
@@ -213,7 +214,7 @@ stream = ExtResource("3_xepks")
 position = Vector2(0, -6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_hitbox"]
-position = Vector2(0, -6)
+position = Vector2(0, -13)
 shape = SubResource("CapsuleShape2D_4gx57")
 
 [connection signal="timeout" from="Meleetimer" to="." method="_on_meleetimer_timeout"]

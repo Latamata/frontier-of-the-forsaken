@@ -222,7 +222,6 @@ func switch_weapon():
 	var current_weapon = weapons[current_weapon_index]  # Get the new weapon
 	rotate_weapon(current_weapon)  # Now rotate it to match mouse
 
-
 func set_active_weapon(index):
 	for weapon in weapons:
 		weapon.hide()
@@ -308,7 +307,6 @@ func player_shoot():
 	$smoke_and_sword.rotation = gun.rotation
 	var offset = Vector2(50, 0).rotated($Musket.global_rotation)
 	$smoke_and_sword.global_position = $Musket.global_position + offset
-
 	$smoke_and_sword.play('smoke')
 	start_reload_if_needed()
 
@@ -324,24 +322,35 @@ func start_reload_if_needed():
 			gun_reloaded_stopped = false
 
 func _on_collection_area_area_entered(area: Area2D) -> void:
-	var mulitplier
-	if Globals.double_resources:
-		mulitplier = 2
-	else:
-		mulitplier = 1
-	if area.resource_type == 'health' :
-		if  HEALTH < 100:
+	var mulitplier = 2 if Globals.double_resources else 1
+
+	if area.resource_type == 'health':
+		if HEALTH < 100:
 			area.collected()
 			HEALTH += 15 
 			update_healthbar()
+			_play_pickup_sound()
 		else:
+			$Healthbar.visible = false
 			emit_signal('heal_npc', area)
-	if area.resource_type == 'gold':
+
+	elif area.resource_type == 'gold':
 		area.collected()
-		Globals.add_gold(5* mulitplier)  
+		Globals.add_gold(5 * mulitplier)
+		_play_pickup_sound()
+
 	elif area.resource_type == 'food':
 		area.collected()
-		Globals.add_food(1* mulitplier) 
+		Globals.add_food(1 * mulitplier)
+		_play_pickup_sound()
+
+func _play_pickup_sound():
+	var audio = AudioStreamPlayer.new()
+	audio.stream = preload("res://sound/pickupitem.wav")
+	add_child(audio)
+	audio.play()
+	# Auto-remove after playback
+	audio.finished.connect(audio.queue_free)
 
 func change_melee_speed():
 	var max_level = 5
