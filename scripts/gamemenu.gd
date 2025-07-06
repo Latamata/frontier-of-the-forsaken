@@ -6,6 +6,7 @@ const SAVE_PATH = "user://savegame.json"
 signal show_tutorial_requested
 
 func _ready() -> void:
+	
 	save_button.connect("pressed", _on_save_pressed)
 	load_button.connect("pressed", _on_load_pressed)
 
@@ -93,5 +94,68 @@ func _on_helpinstructions_button_down() -> void:
 	emit_signal("show_tutorial_requested")
 
 func _on_restart_button_down() -> void:
-	get_tree().paused = false  # Unpause the game
+	get_tree().paused = false
+	if not FileAccess.file_exists("user://autosave_battle.json"):
+		print("No autosave found, restarting without restoring globals.")
+		get_tree().reload_current_scene()
+		return
+
+	var file = FileAccess.open("user://autosave_battle.json", FileAccess.READ)
+	if file:
+		var content = file.get_as_text()
+		file.close()
+
+		var save_data = JSON.parse_string(content)
+		if save_data is Dictionary:
+			Globals.geo_map_camp = save_data.get("geo_map_camp", Globals.geo_map_camp)
+			Globals.food = save_data.get("food", Globals.food)
+			Globals.gold = save_data.get("gold", Globals.gold)
+			Globals.current_line = save_data.get("current_line", Globals.current_line)
+			Globals.soldier_count = save_data.get("soldier_count", Globals.soldier_count)
+			Globals.bullet_type = save_data.get("bullet_type", Globals.bullet_type)
+			Globals.bullets_unlocked = save_data.get("bullets_unlocked", Globals.bullets_unlocked)
+			Globals.golden_musket = save_data.get("golden_musket", Globals.golden_musket)
+			Globals.golden_sword = save_data.get("golden_sword", Globals.golden_sword)
+			Globals.talent_tree = save_data.get("talent_tree", Globals.talent_tree)
+			for talent_key in Globals.talent_tree.keys():
+				var talent = Globals.talent_tree[talent_key]
+				talent["level"] = int(talent.get("level", 0))
+				talent["max_level"] = int(talent.get("max_level", 1))
+			Globals.experience = save_data.get("experience", Globals.experience)
+			Globals.wave_count = int(save_data.get("wave_count", Globals.wave_count))
+			Globals.level = save_data.get("level", Globals.level)
+			Globals.xp_to_next = save_data.get("xp_to_next", Globals.xp_to_next)
+			Globals.time_of_day = save_data.get("current_time", Globals.time_of_day)
+			Globals.double_resources = save_data.get("double_resources", Globals.double_resources)
+			Globals.current_event = save_data.get("current_event", Globals.current_event)
+
 	get_tree().reload_current_scene()
+
+
+func disabe_save(disabled):
+	save_button.disabled = disabled
+func autosave_battle_state():
+	var save_data = {
+		"geo_map_camp": Globals.geo_map_camp,
+		"food": Globals.food,
+		"gold": Globals.gold,
+		"current_line": Globals.current_line,
+		"soldier_count": Globals.soldier_count,
+		"bullets_unlocked": Globals.bullets_unlocked,
+		"golden_musket": Globals.golden_musket,
+		"golden_sword": Globals.golden_sword,
+		"bullet_type": Globals.bullet_type,
+		"talent_tree": Globals.talent_tree,
+		"experience": Globals.experience,
+		"wave_count": Globals.wave_count,
+		"level": Globals.level,
+		"xp_to_next": Globals.xp_to_next,
+		"current_time": Globals.time_of_day,
+		"double_resources": Globals.double_resources,
+		"current_event": Globals.current_event
+	}
+
+	var file = FileAccess.open("user://autosave_battle.json", FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(save_data, "\t"))
+		file.close()

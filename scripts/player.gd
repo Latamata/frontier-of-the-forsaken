@@ -84,6 +84,10 @@ func _input(event):
 	if event.is_action_pressed("reload"):
 		if not gun_reloaded and reload_pumps > 0:
 			start_reload_if_needed()
+	if Input.is_action_just_pressed("select_weapon_1"):
+		switch_weapon_to_index(0)
+	elif Input.is_action_just_pressed("select_weapon_2"):
+		switch_weapon_to_index(1)
 
 func sprite_frame_direction():
 	if is_swinging:
@@ -210,17 +214,20 @@ func rotate_weapon(current_weapon):
 func get_current_weapon():
 	return weapons[current_weapon_index]  # Returns the active weapon node
 
-func switch_weapon():
+func switch_weapon_to_index(index: int):
+	if index >= weapons.size():
+		return
+
 	var previous_weapon = weapons[current_weapon_index]
 	last_weapon_rotation = previous_weapon.rotation
 	last_weapon_position = previous_weapon.position
 
-	current_weapon_index = (current_weapon_index + 1) % weapons.size()
+	current_weapon_index = index
 	set_active_weapon(current_weapon_index)
-	#start_reload_if_needed()
 
-	var current_weapon = weapons[current_weapon_index]  # Get the new weapon
-	rotate_weapon(current_weapon)  # Now rotate it to match mouse
+	var current_weapon = weapons[current_weapon_index]
+	rotate_weapon(current_weapon)
+
 
 func set_active_weapon(index):
 	for weapon in weapons:

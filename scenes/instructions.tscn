@@ -45,20 +45,20 @@ text = "close"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="battlemapinstruction/ColorRect"]
 layout_mode = 0
-offset_left = 47.0
-offset_top = 43.0
-offset_right = 349.0
-offset_bottom = 175.0
+offset_left = 54.0
+offset_top = 21.0
+offset_right = 356.0
+offset_bottom = 167.0
 mouse_filter = 1
-text = "🕹️  Move — WASD / Arrow Keys  
-🧨  Shoot — Left Mouse Click  
-🔁  Reload — R  
-🌊  Survive as many waves as you can!
-
-"
+text = "🕹️ Move — WASD / Arrow Keys
+🧨 Shoot — Left Mouse Click
+🔁 Reload — R
+🔫 Musket — 1
+🗡️ Sword — 2
+🌊 Survive as many waves as you can!"
 
 [node name="ControlsDrawing" type="Sprite2D" parent="battlemapinstruction/ColorRect"]
-position = Vector2(198, 283)
+position = Vector2(197, 288)
 scale = Vector2(1.57042, 0.9125)
 texture = ExtResource("2_nisbi")
 

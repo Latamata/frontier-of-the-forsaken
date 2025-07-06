@@ -3,6 +3,7 @@ extends Node2D
 @onready var wagonpin = $wagonpin
 @onready var ui = $UI
 @onready var paths = [$Path2D, $Path2D2, $Path2D3]
+@onready var playermenu: CanvasLayer = $playermenu
 
 var current_path: Path2D
 
@@ -38,6 +39,7 @@ var path_connections = {
 }
 
 func _ready():
+	playermenu.disabe_save(false)
 	Globals.double_resources = false
 	ui.hide_map_ui(true)
 	ui.tuts.hide_instruction("campaign", Globals.show_campaign_tut)

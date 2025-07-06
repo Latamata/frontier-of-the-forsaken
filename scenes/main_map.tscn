@@ -69,6 +69,7 @@ position = Vector2(124, -59.9996)
 curve = SubResource("Curve2D_3r0jk")
 
 [node name="playermenu" parent="." instance=ExtResource("3_qtsfq")]
+visible = false
 
 [connection signal="camp_action" from="UI" to="." method="_on_ui_camp_action"]
 [connection signal="move_action" from="UI" to="." method="_on_ui_move_action"]

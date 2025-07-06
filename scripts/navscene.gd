@@ -11,6 +11,7 @@ extends Node2D
 @onready var chest_container: Node2D = $Enviorment/chests
 @onready var waypoints = [ $waypoint1, $waypoint2, $waypoint3, $waypoint4]
 @onready var day_lighting: CanvasModulate = $day_lighting
+@onready var playermenu: CanvasLayer = $playermenu
 
 var musketman: PackedScene = preload("res://scenes/soldier.tscn")
 var IndicatorScene: PackedScene = preload("res://scenes/unitindicator.tscn")
@@ -25,6 +26,8 @@ var initial_click_position = Vector2()  # Position where the click started
 var rotation_angle: float
 
 func _ready() -> void:
+	playermenu.autosave_battle_state()
+	playermenu.disabe_save(true)
 	if Globals.skill_points > 0:
 		ui.hide_or_show_skills_indicator(true)
 	ui.tuts.hide_instruction("battle", Globals.show_battle_tut)
@@ -69,19 +72,26 @@ func _process(delta):
 	
 #OPTIMIZATION for placement
 var last_update_time = 0.0  # Tracks the last time rotation logic was updated
-var update_interval = 200  # Minimum interval between updates (in seconds)
+var update_interval = 150  # Minimum interval between updates (in seconds)
+var min_zoom = Vector2(0.5, 0.5)  # Most zoomed in
+var max_zoom = Vector2(2, 2)      # Most zoomed out
 func _input(event):
 	#print(is_ui_interacting)
 	if is_ui_interacting:
 		return
-	if event is InputEventMouseButton && is_instance_valid(player):
+# Define zoom limits (you can adjust these)
+	if event is InputEventMouseButton and is_instance_valid(player):
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if event.pressed:
-					camera_2d.zoom *= 0.9  # Zoom in
+					camera_2d.zoom *= 0.9
+					camera_2d.zoom.x = clamp(camera_2d.zoom.x, min_zoom.x, max_zoom.x)
+					camera_2d.zoom.y = clamp(camera_2d.zoom.y, min_zoom.y, max_zoom.y)
 			MOUSE_BUTTON_WHEEL_UP:
 				if event.pressed:
-					camera_2d.zoom *= 1.1  # Zoom out
+					camera_2d.zoom *= 1.1
+					camera_2d.zoom.x = clamp(camera_2d.zoom.x, min_zoom.x, max_zoom.x)
+					camera_2d.zoom.y = clamp(camera_2d.zoom.y, min_zoom.y, max_zoom.y)
 			MOUSE_BUTTON_LEFT:
 				if event.pressed:
 					var current_weapon = player.get_current_weapon()
@@ -105,12 +115,8 @@ func _input(event):
 	else:
 		is_rotating = false
 		assign_npcs_to_indicators(rotation_angle)
-	if Input.is_action_just_pressed("collect") and player:
-		player.looting = true
-	if Input.is_action_just_released("collect") and player:
-		player.looting = false
-	if Input.is_action_just_pressed("one_key") and player:
-		player.switch_weapon()
+
+
 
 func update_speed_based_on_tile(entity):
 	if not is_instance_valid(entity):

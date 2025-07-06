@@ -193,14 +193,17 @@ func rotate_weapon(target_angle: float):
 		sabre.z_index = 1
 
 func take_damage(amount: int):
-	if !$Healthbar.visible:
+	if HEALTH == MAX_HEALTH and !$Healthbar.visible:
 		$Healthbar.visible = true
 	HEALTH -= amount
 	HEALTH = max(HEALTH, 0)
 	healthbar.value = HEALTH
-
+	# Hide the healthbar again if fully healed (optional)
+	if HEALTH == MAX_HEALTH:
+		$Healthbar.visible = false
+	elif HEALTH < MAX_HEALTH:
+		$Healthbar.visible = true
 	if HEALTH <= 0:
-		
 		die()
 		emit_signal("soldier_died", light_holder)
 
@@ -208,11 +211,9 @@ func die():
 	animated_sprite_2d.stop()  # Stop movement animation
 	set_physics_process(false)  # Disable further movement
 	set_process(false)
-
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "rotation_degrees", 90, 0.5)  # Rotate sideways
 	tween.tween_callback(queue_free)  # Remove after animation
-
 	Globals.add_soldier_count(-1)
 
 func slow_affect(activate):
