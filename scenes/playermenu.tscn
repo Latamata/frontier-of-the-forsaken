@@ -25,7 +25,7 @@ offset_top = 118.0
 offset_right = 318.0
 offset_bottom = 158.0
 scale = Vector2(13.814, 10.2758)
-color = Color(0.0705882, 1, 1, 0.321569)
+color = Color(0.854902, 0.631373, 0.498039, 0.788235)
 
 [node name="save" type="Button" parent="menu_items"]
 layout_mode = 0

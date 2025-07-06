@@ -91,7 +91,7 @@ offset_top = 8.0
 offset_right = 973.0
 offset_bottom = 32.0
 mouse_filter = 1
-text = "Reload"
+text = "'R'eload"
 
 [node name="wave" type="RichTextLabel" parent="battlemapUI"]
 layout_mode = 0
@@ -223,7 +223,7 @@ offset_top = 330.0
 offset_right = 155.0
 offset_bottom = 464.0
 
-[node name="resources" type="Panel" parent="."]
+[node name="resources" type="ColorRect" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -233,6 +233,7 @@ offset_bottom = 22.0
 grow_horizontal = 2
 scale = Vector2(5.21036, 1.91125)
 pivot_offset = Vector2(40, 0)
+color = Color(0.854902, 0.631373, 0.498039, 0.788235)
 
 [node name="gold" type="RichTextLabel" parent="resources"]
 layout_mode = 1
@@ -315,7 +316,6 @@ theme_override_font_sizes/normal_font_size = 50
 text = "You Died!!"
 
 [node name="instructions" parent="." instance=ExtResource("2_gdt2y")]
-visible = false
 offset_left = 350.0
 offset_top = 73.0
 offset_right = -375.0

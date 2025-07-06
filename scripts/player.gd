@@ -86,6 +86,7 @@ func _input(event):
 			start_reload_if_needed()
 	if Input.is_action_just_pressed("select_weapon_1"):
 		switch_weapon_to_index(0)
+		start_reload_if_needed()
 	elif Input.is_action_just_pressed("select_weapon_2"):
 		switch_weapon_to_index(1)
 

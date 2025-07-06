@@ -46,6 +46,9 @@ offset_right = 223.5
 offset_bottom = 9.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.964706, 0.482353, 0.313726, 0.976471)
+theme_override_fonts/font = ExtResource("3_8ln24")
+theme_override_font_sizes/font_size = 40
 text = "Play"
 
 [node name="Options" type="Button" parent="main_screen"]
@@ -61,6 +64,9 @@ offset_right = 223.5
 offset_bottom = 77.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.964706, 0.482353, 0.313726, 0.976471)
+theme_override_fonts/font = ExtResource("3_8ln24")
+theme_override_font_sizes/font_size = 25
 text = "Options	"
 
 [node name="quit" type="Button" parent="main_screen"]
@@ -76,7 +82,23 @@ offset_right = 223.5
 offset_bottom = 152.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.964706, 0.482353, 0.313726, 0.976471)
+theme_override_fonts/font = ExtResource("3_8ln24")
+theme_override_font_sizes/font_size = 25
 text = "Quit"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="main_screen"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -25.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "v1.0"
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_wu84c")
