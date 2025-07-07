@@ -1,45 +1,52 @@
 # 🌲 Oregon Trail Roguelite — Tactical Zombie Survival
 
+🕹️ **[Play the game on Itch.io](https://latamata.itch.io/frontier-of-the-forsaken)**
+
 A mashup of **roguelite mechanics**, **zombie survival**, and **Oregon Trail** vibes.  
 Lead a line infantry through the undead frontier — fight, camp, and push west.
 
-> WASD for movement, mouse for commanding. Survive the trail, one wave at a time.
+
+A mashup of **roguelite mechanics**, **zombie survival**, and **Oregon Trail** vibes.  
+Lead a line infantry through the undead frontier — fight, camp, and push west.
+
+> 🎮 WASD for movement, mouse for commanding. Survive the trail, one wave at a time.
 
 ---
 
 ## 🧠 Concept
 
 Inspired by *Oregon Trail*, this game adds tactical control to the classic journey westward.  
-You'll guide your character through a **campaign map**, **set up infantry lines**, and **fend off waves of zombies** at every stop.
-
-## 🕹️ Core Gameplay
-
-- 🧍‍♂️ **WASD Movement**: Direct control over your lead character
-- 🖱️ **Click + Drag Infantry Placement**: RTS-style controls for forming lines
-- 🏕️ **Campaign Map**: Travel from camp to camp, each hosting randomized combat encounters
-- 🧟 **Zombie Waves**: Enemies attack in growing intensity — survive and move on
-- 🪖 **Permadeath + Roguelite Runs**: If your group falls, start over and try again
+Guide your squad through a **campaign map**, set up infantry lines, and fend off waves of zombies at every stop.
 
 ---
 
-## 🎨 Tools & Tech
+## 🕹️ Core Gameplay
+
+- 🧍‍♂️ **WASD Movement** – Direct your lead character
+- 🖱️ **Click + Drag Infantry** – RTS-style placement and commands
+- 🗺️ **Campaign Map** – Travel between randomized combat stops
+- 🧟 **Zombie Waves** – Survive increasingly intense attacks
+- 🪖 **Permadeath + Roguelite Runs** – Fall and start over
+
+---
+
+## 🔧 Tools & Tech
 
 - **Engine**: Godot 4.x  
-- **Art**: Custom + Sora
-- **Audio**: freesound, bandlabs.com
+- **Art**: Custom + [Sora](https://openai.com/sora)  
+- **Audio**: [freesound.org](https://freesound.org), [bandlab.com](https://www.bandlab.com/)
 
 ---
 
 ## 🗺️ Development Goals
 
-This project explores:
-- Combining **tactical RTS-like mechanics** with **roguelite structure**
-- Building a **multi-stage campaign** with movement between zones
-- Creating **tense survival pacing** through wave-based encounters
+- Combine **RTS-style mechanics** with **roguelite structure**
+- Create a **multi-zone campaign map**
+- Design **tense, wave-based survival encounters**
 
 ---
 
-## 🧪 How to Run
+## 🚀 How to Run
 
 ```bash
 git clone https://github.com/Latamata/oregon-trail-roguelite.git
