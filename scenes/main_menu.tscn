@@ -34,6 +34,7 @@ theme_override_font_sizes/normal_font_size = 57
 text = "Frontier of the Forsaken"
 
 [node name="Play" type="Button" parent="main_screen"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -52,6 +53,7 @@ theme_override_font_sizes/font_size = 40
 text = "Play"
 
 [node name="Options" type="Button" parent="main_screen"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,6 +72,7 @@ theme_override_font_sizes/font_size = 25
 text = "Options	"
 
 [node name="quit" type="Button" parent="main_screen"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
