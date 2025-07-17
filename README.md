@@ -1,13 +1,9 @@
-# 🌲 Oregon Trail Roguelite — Tactical Zombie Survival
+# 🌲 Frontier of the Forsaken — Tactical Zombie Survival
 
 🕹️ **[Play the game on Itch.io](https://latamata.itch.io/frontier-of-the-forsaken)**
 
-A mashup of **roguelite mechanics**, **zombie survival**, and **Oregon Trail** vibes.  
-Lead a line infantry through the undead frontier — fight, camp, and push west.
-
-
-A mashup of **roguelite mechanics**, **zombie survival**, and **Oregon Trail** vibes.  
-Lead a line infantry through the undead frontier — fight, camp, and push west.
+A mashup of **roguelite mechanics**, **zombie survival**, and classic frontier hardships.  
+Lead a line infantry through the undead wilderness — fight, camp, and push west.
 
 > 🎮 WASD for movement, mouse for commanding. Survive the trail, one wave at a time.
 
@@ -15,8 +11,9 @@ Lead a line infantry through the undead frontier — fight, camp, and push west.
 
 ## 🧠 Concept
 
-Inspired by *Oregon Trail*, this game adds tactical control to the classic journey westward.  
+Inspired by *classic frontier journeys* (like *Oregon Trail*), this game adds tactical control to the westward trek.  
 Guide your squad through a **campaign map**, set up infantry lines, and fend off waves of zombies at every stop.
+
 
 ---
 
